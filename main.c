@@ -6,15 +6,17 @@
 /*   By: jforner <jforner@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/02 17:30:22 by jforner           #+#    #+#             */
-/*   Updated: 2022/03/02 18:25:02 by jforner          ###   ########.fr       */
+/*   Updated: 2022/03/03 17:52:13 by jforner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "include/minishell.h"
-#include "ft_libft/libft.h"
 
 int	main(void)
 {
-	printf("Yo %d\n", ft_strlen("Cinq!"));
+	// char	yo[100];
+	char	slt[4] = "SLT\n";
+
+	printf("Rl = %s\n", readline(slt));
 	return (0);
 }

@@ -6,13 +6,14 @@
 /*   By: jforner <jforner@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/02 17:32:14 by jforner           #+#    #+#             */
-/*   Updated: 2022/03/02 18:24:31 by jforner          ###   ########.fr       */
+/*   Updated: 2022/03/03 17:50:11 by jforner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include "../ft_libft/libft.h"
 # include <stdio.h>
 # include <readline/readline.h>
 # include <readline/history.h>
