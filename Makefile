@@ -1,4 +1,4 @@
-SRCS = parse.c
+SRCS = env/createenv.c env/envutils.c
 
 MAIN = main.c
 

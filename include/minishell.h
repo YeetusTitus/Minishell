@@ -6,7 +6,7 @@
 /*   By: jforner <jforner@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/02 17:32:14 by jforner           #+#    #+#             */
-/*   Updated: 2022/03/03 17:50:11 by jforner          ###   ########.fr       */
+/*   Updated: 2022/03/09 21:11:34 by jforner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,4 +29,40 @@
 # include <term.h>
 # include <string.h>
 # include <stddef.h>
+
+typedef struct s_token
+{
+	char			error;
+	char			type;
+	void			*content;
+	void			*next;
+}	t_token;
+
+typedef struct s_command
+{
+	char	**path;
+	int		nbr;
+	char	***toexec;
+}	t_command;
+
+typedef struct s_env
+{
+	char	*name;
+	char	*content;
+	void	*next;
+}	t_env;
+
+// env/envutils
+t_env	*envnew(char *name, char *content);
+int		envsize(t_env *lst);
+t_env	*envlast(t_env *lst);
+void	envadd_back(t_env **alst, t_env *new);
+void	envadd_front(t_env **alst, t_env *new);
+
+// env/createenv
+int		lenachr(char *str, char chr);
+int		lenbchr(char *str, char chr);
+char	**content_env(char **cont, char *line);
+int		create_env(t_env **env, char **envp);
+
 #endif
