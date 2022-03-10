@@ -6,7 +6,7 @@
 /*   By: jforner <jforner@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/02 17:32:14 by jforner           #+#    #+#             */
-/*   Updated: 2022/03/09 21:11:34 by jforner          ###   ########.fr       */
+/*   Updated: 2022/03/10 14:35:41 by jforner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,4 +65,8 @@ int		lenbchr(char *str, char chr);
 char	**content_env(char **cont, char *line);
 int		create_env(t_env **env, char **envp);
 
+// env/export
+int		env_exist(t_env *env, char *name);
+void	export(t_env *env, char *name, char *content);
+void	print_env(t_env *env);
 #endif

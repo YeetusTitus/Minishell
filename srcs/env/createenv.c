@@ -6,7 +6,7 @@
 /*   By: jforner <jforner@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/09 15:49:36 by jforner           #+#    #+#             */
-/*   Updated: 2022/03/09 21:13:57 by jforner          ###   ########.fr       */
+/*   Updated: 2022/03/10 14:19:59 by jforner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,14 +74,13 @@ int	lenbchr(char *str, char chr)
 char	**content_env(char **cont, char *line)
 {
 	cont[0] = ft_substr(line, 0, lenbchr(line, '='));
-	if (!lenachr(line, '='))
-		cont[1] = NULL;
-	else
-		cont[1] = ft_substr(line, lenbchr(line, '=') + 1, ft_strlen(line));
-	if (cont[0][0] == 0 || (lenachr(line, '=') > 0 && cont[1][0] == 0))
+	cont[1] = ft_substr(line, lenbchr(line, '=') + 1, ft_strlen(line));
+	if (cont[0] == NULL || cont[1] == NULL)
 	{
-		free(cont[0]);
-		free(cont[1]);
+		if (cont[0] != NULL)
+			free(cont[0]);
+		if (cont[1] != NULL)
+			free(cont[1]);
 		free(cont);
 		return (NULL);
 	}

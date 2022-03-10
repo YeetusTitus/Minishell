@@ -1,4 +1,4 @@
-SRCS = env/createenv.c env/envutils.c
+SRCS = env/createenv.c env/envutils.c env/export.c
 
 MAIN = main.c
 
