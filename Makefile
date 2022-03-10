@@ -24,18 +24,18 @@ LIBFT = -Lft_libft -lft
 	gcc ${OFLAGS} ${EFLAGS} -o $@ $<
 
 ${NAME}: ${OBJS}
-	(cd ft_libft && make)
+	(cd libft && make)
 	gcc $(EFLAGS) -o $(NAME) $(MAIN) ${SRCSD} ${LIBFT} ${IRL} ${LRL}
 			
 all:	${NAME}
 
 clean:
 		rm  -f ${OBJS}
-		(cd ft_libft && make clean)
+		(cd libft && make clean)
 
 fclean:	clean
 		rm  -f ${NAME}
-		(cd ft_libft && make fclean)
+		(cd libft && make fclean)
 
 re:		fclean all
 
