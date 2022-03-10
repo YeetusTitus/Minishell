@@ -18,7 +18,7 @@ IRL = -I${HOME}/.brew/opt/readline/include
 
 LRL = -L${HOME}/.brew/opt/readline/lib -lreadline
 
-LIBFT = -Lft_libft -lft
+LIBFT = -Llibft -lft
 
 %.o: %.c ${HEADER}
 	gcc ${OFLAGS} ${EFLAGS} -o $@ $<
