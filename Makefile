@@ -1,4 +1,9 @@
-SRCS = env/createenv.c env/envutils.c env/export.c
+SRCS =	env/createenv.c \
+		env/envutils.c \
+		env/export.c \
+		lexer/lexer.c \
+		lexer/analyser.c \
+		lexer/analyser_utils.c \
 
 MAIN = main.c
 

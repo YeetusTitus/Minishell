@@ -21,12 +21,12 @@ int	main(int argc, char **argv, char **envp)
 	(void)(argv);
 	create_env(&env, envp);
 	i = -1;
-	export(env, "o", "");
-	export(env, "en Y", "Yolo");
+	ft_loop(envp);
+/*	export(env, "en Y", "Yolo");
 	print_env(env);
 	printf("=================================\n");
 	export(env, "o", "Les Bois !");
 	print_env(env);
-	// system("leaks minishell");
+*/	system("leaks minishell");
 	return (0);
 }

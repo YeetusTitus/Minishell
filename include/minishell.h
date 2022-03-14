@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jforner <jforner@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/02 17:32:14 by jforner           #+#    #+#             */
-/*   Updated: 2022/03/10 14:35:41 by jforner          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -30,6 +18,43 @@
 # include <string.h>
 # include <stddef.h>
 
+
+// enum lexer
+typedef enum type{
+ 	CHAR_GENERAL = -1,
+	CHAR_PIPE = '|',
+	CHAR_AMPERSAND = '&',
+	CHAR_QOUTE = '\'',
+	CHAR_DQUOTE = '\"',
+	CHAR_SEMICOLON = ';',
+	CHAR_WHITESPACE = ' ',
+	CHAR_ESCAPESEQUENCE = '\\',
+	CHAR_TAB = '\t',
+	CHAR_NEWLINE = '\n',
+	CHAR_GREATER = '>',
+	CHAR_LESSER = '<',
+    CHAR_WILDCART = '*',
+    CHAR_LPARENTHESIS = '(',
+    CHAR_RPARENTHESIS = ')',
+	CHAR_EQUAL = '=',
+	CHAR_DOLLAR = '$',
+    CHAR_NULL = 0
+//	TOKEN	= -1,
+} token_type;
+
+
+// lexer struct
+
+typedef struct s_lst
+{
+    struct s_lst   *prev;
+    struct s_lst   *next;
+    char            *data;
+    int             type;
+	int				pos;
+}   t_lst;
+
+// env struct 
 typedef struct s_token
 {
 	char			error;
@@ -69,4 +94,29 @@ int		create_env(t_env **env, char **envp);
 int		env_exist(t_env *env, char *name);
 void	export(t_env *env, char *name, char *content);
 void	print_env(t_env *env);
+
+
+// ----------------------------------------------------------------
+
+
+// lexer
+void    ft_loop(char **envp);
+t_lst  **get_data_in_lst(char *str);
+int  *get_enum_data(char *str);
+void    free_lst(t_lst **s);
+//void    free_array(int *array);
+
+//analyser
+void	get_token_in_qoute(t_lst **s);
+int	lstsize(t_lst **s);
+int lst_del(t_lst **s, int pos);
+t_lst   **get_lst_pos(t_lst **s);
+
+//analyser utils
+char	*ft_strjoin_v2(char *s1, char *s2);
+int	lstsize(t_lst **s);
+int lst_del(t_lst **s, int pos);
+t_lst   **get_lst_pos(t_lst **s);
+
 #endif
+
