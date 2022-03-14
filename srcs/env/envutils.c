@@ -6,11 +6,16 @@
 /*   By: jforner <jforner@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/09 16:33:05 by jforner           #+#    #+#             */
-/*   Updated: 2022/03/09 16:41:32 by jforner          ###   ########.fr       */
+/*   Updated: 2022/03/14 14:32:15 by jforner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+#include <minishell.h>
+
+// Fr :
+// Toutes les fonctions pour les listes chaînées pour la structure env
+// En :
+// All the functions for the linked lists for env structure
 
 t_env	*envnew(char *name, char *content)
 {

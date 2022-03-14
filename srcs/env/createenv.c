@@ -6,11 +6,11 @@
 /*   By: jforner <jforner@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/09 15:49:36 by jforner           #+#    #+#             */
-/*   Updated: 2022/03/10 14:19:59 by jforner          ###   ########.fr       */
+/*   Updated: 2022/03/14 16:04:07 by jforner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+#include <minishell.h>
 
 // Fr : 
 // Desc : Similaire à strlen,
@@ -69,7 +69,7 @@ int	lenbchr(char *str, char chr)
 // Desc : Dump the information on the actual line of Envp in the
 // stockage variable of information for the environment variable.
 // In : The pointer of the stockage variable and the actual line of Envp.*
-// Out : 1 ou 0 (1 = no error, 0 = errorr).
+// Out : 1 or 0 (1 = no error, 0 = errorr).
 
 char	**content_env(char **cont, char *line)
 {
@@ -96,7 +96,7 @@ char	**content_env(char **cont, char *line)
 // Desc : create the structure of the environment variable.
 // In : A pointer on the  structure of
 // the environment variable and the Envp variable .*
-// Out : 1 ou 0 (1 = no error, 0 = error).
+// Out : 1 or 0 (1 = no error, 0 = error).
 
 int	create_env(t_env **env, char **envp)
 {

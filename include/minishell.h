@@ -6,7 +6,7 @@
 /*   By: jforner <jforner@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/02 17:32:14 by jforner           #+#    #+#             */
-/*   Updated: 2022/03/10 15:37:38 by jforner          ###   ########.fr       */
+/*   Updated: 2022/03/11 14:46:01 by jforner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,9 @@ typedef struct s_command
 
 typedef struct s_env
 {
-	char	*name;
-	char	*content;
-	void	*next;
+	char			*name;
+	char			*content;
+	struct s_env	*next;
 }	t_env;
 
 // env/envutils
@@ -67,6 +67,13 @@ int		create_env(t_env **env, char **envp);
 
 // env/export
 int		env_exist(t_env *env, char *name);
-void	export(t_env *env, char *name, char *content);
+int		export(t_env *env, char *name, char *content);
 void	print_env(t_env *env);
+void	print_export(t_env *env);
+
+// env/unset
+int		unset(t_env **env, char *name);
+
+// utils/utils1
+int		ft_strcmp(char *str1, char *str2);
 #endif

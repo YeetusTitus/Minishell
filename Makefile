@@ -1,4 +1,5 @@
-SRCS = env/createenv.c env/envutils.c env/export.c
+SRCS = env/createenv.c env/envutils.c env/export.c env/unset.c \
+utils/utils1.c
 
 MAIN = main.c
 
@@ -18,14 +19,16 @@ IRL = -I${HOME}/.brew/opt/readline/include
 
 LRL = -L${HOME}/.brew/opt/readline/lib -lreadline
 
+INCLUDE = -Iinclude
+
 LIBFT = -Llibft -lft
 
 %.o: %.c ${HEADER}
-	gcc ${OFLAGS} ${EFLAGS} -o $@ $<
+	gcc ${OFLAGS} ${EFLAGS} ${INCLUDE} -o $@ $<
 
 ${NAME}: ${OBJS}
 	(cd libft && make)
-	gcc $(EFLAGS) -o $(NAME) $(MAIN) ${SRCSD} ${LIBFT} ${IRL} ${LRL}
+	gcc $(EFLAGS) -o $(NAME) $(MAIN) ${SRCSD} ${INCLUDE} ${LIBFT} ${IRL} ${LRL}
 			
 all:	${NAME}
 
