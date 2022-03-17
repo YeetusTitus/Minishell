@@ -6,7 +6,7 @@
 /*   By: jforner <jforner@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 16:48:46 by jforner           #+#    #+#             */
-/*   Updated: 2022/03/17 15:11:50 by jforner          ###   ########.fr       */
+/*   Updated: 2022/03/17 16:37:38 by jforner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	unset_export(t_env **env, char *name)
 		return (1);
 	}
 	envtemp = env[1];
-	while (envtemp != NULL)
+	while (envtemp->next != NULL)
 	{
 		if (ft_strcmp(envtemp->next->name, name))
 		{
