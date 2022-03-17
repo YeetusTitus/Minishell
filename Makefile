@@ -19,6 +19,8 @@ IRL = -I${HOME}/.brew/opt/readline/include
 
 LRL = -L${HOME}/.brew/opt/readline/lib -lreadline
 
+DEBUG = -g
+
 INCLUDE = -Iinclude
 
 LIBFT = -Llibft -lft

@@ -6,18 +6,11 @@
 /*   By: jforner <jforner@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 17:26:48 by jforner           #+#    #+#             */
-/*   Updated: 2022/03/08 16:46:32 by jforner          ###   ########.fr       */
+/*   Updated: 2022/03/17 11:31:59 by jforner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-
-char	**ft_malloc_error(char **tab, int size)
-{
-	while (size-- > 0)
-		free(tab[size]);
-	return (NULL);
-}
 
 t_bool	ft_splitage(char const *s, char c, char **tab, unsigned int nb_word)
 {

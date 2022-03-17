@@ -6,7 +6,7 @@
 /*   By: jforner <jforner@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/02 17:32:14 by jforner           #+#    #+#             */
-/*   Updated: 2022/03/11 14:46:01 by jforner          ###   ########.fr       */
+/*   Updated: 2022/03/17 11:32:53 by jforner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,14 +66,20 @@ char	**content_env(char **cont, char *line);
 int		create_env(t_env **env, char **envp);
 
 // env/export
-int		env_exist(t_env *env, char *name);
-int		export(t_env *env, char *name, char *content);
+int		env_exist(t_env **env, char *name);
+int		export(t_env **env, char *name, char *content);
+int		export_env(t_env **env, char *name, char *content);
 void	print_env(t_env *env);
-void	print_export(t_env *env);
+void	print_export(t_env **env);
 
 // env/unset
 int		unset(t_env **env, char *name);
+int		unset_env(t_env **env, char *name);
+int		unset_export(t_env **env, char *name);
+void	free_env(t_env *env);
 
 // utils/utils1
 int		ft_strcmp(char *str1, char *str2);
+char	**ft_malloc_error(char **tabl, int size);
+
 #endif

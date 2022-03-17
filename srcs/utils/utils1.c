@@ -6,7 +6,7 @@
 /*   By: jforner <jforner@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 12:30:31 by jforner           #+#    #+#             */
-/*   Updated: 2022/03/11 12:33:45 by jforner          ###   ########.fr       */
+/*   Updated: 2022/03/17 11:32:38 by jforner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,4 +23,12 @@ int	ft_strcmp(char *str1, char *str2)
 	if (str1[i] != str2[i])
 		return (0);
 	return (1);
+}
+
+char	**ft_malloc_error(char **tabl, int size)
+{
+	while (size-- > 0)
+		free(tabl[size]);
+	free (tabl);
+	return (NULL);
 }

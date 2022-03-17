@@ -6,7 +6,7 @@
 /*   By: jforner <jforner@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 16:48:46 by jforner           #+#    #+#             */
-/*   Updated: 2022/03/14 17:28:20 by jforner          ###   ########.fr       */
+/*   Updated: 2022/03/17 15:11:50 by jforner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,23 +26,32 @@
 
 int	unset(t_env **env, char *name)
 {
+	unset_env(env, name);
+	unset_export(env, name);
+	if (!env_exist(env, name))
+		return (1);
+	return (1);
+}
+
+int	unset_export(t_env **env, char *name)
+{
 	t_env	*envtemp;
 
-	if (!env_exist(*env, name))
+	if (env[1] == NULL)
 		return (1);
-	if (ft_strcmp((*env)->name, name))
+	if (ft_strcmp(env[1]->name, name))
 	{
-		*env = (*env)->next;
+		free(env[1]->name);
+		free(env[1]);
+		env[1] = env[1]->next;
 		return (1);
 	}
-	envtemp = *env;
+	envtemp = env[1];
 	while (envtemp != NULL)
 	{
 		if (ft_strcmp(envtemp->next->name, name))
 		{
 			free(envtemp->next->name);
-			if ()
-			free(envtemp->next->content);
 			free(envtemp->next);
 			envtemp->next = envtemp->next->next;
 			return (1);
@@ -50,4 +59,37 @@ int	unset(t_env **env, char *name)
 		envtemp = envtemp->next;
 	}
 	return (1);
+}
+
+int	unset_env(t_env **env, char *name)
+{
+	t_env	*envtemp;
+
+	if (!env_exist(env, name))
+		return (1);
+	if (ft_strcmp((*env)->name, name))
+	{
+		free_env(*env);
+		*env = (*env)->next;
+		return (1);
+	}
+	envtemp = env[0];
+	while (envtemp->next != NULL)
+	{
+		if (ft_strcmp(envtemp->next->name, name))
+		{
+			free_env(envtemp->next);
+			envtemp->next = envtemp->next->next;
+			return (1);
+		}
+		envtemp = envtemp->next;
+	}
+	return (1);
+}
+
+void	free_env(t_env *env)
+{
+	free(env->name);
+	free(env->content);
+	free(env);
 }

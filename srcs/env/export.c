@@ -6,7 +6,7 @@
 /*   By: jforner <jforner@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 13:10:05 by jforner           #+#    #+#             */
-/*   Updated: 2022/03/14 16:02:18 by jforner          ###   ########.fr       */
+/*   Updated: 2022/03/17 15:16:07 by jforner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,18 @@
 // In : The pointer of the structure env and the string to verify.
 // Out : 1 or 0 (1 = exist, 0 = doesn't exist).
 
-int	env_exist(t_env *env, char *name)
+int	env_exist(t_env **env, char *name)
 {
 	t_env	*envtemp;
 
-	envtemp = env;
+	envtemp = env[0];
+	while (envtemp != NULL)
+	{
+		if (ft_strcmp(envtemp->name, name))
+			return (1);
+		envtemp = envtemp->next;
+	}
+	envtemp = env[1];
 	while (envtemp != NULL)
 	{
 		if (ft_strcmp(envtemp->name, name))
@@ -38,7 +45,8 @@ int	env_exist(t_env *env, char *name)
 
 // Fr :
 // Desc : Si "name" est NULL affiche les variables d'environements
-// sinon rajoute une nouvelle variable d'environement
+// sinon rajoute une nouvelle variable d'environement ou une variable d'export
+// si "content" est égal à NULL.
 // et si la variable éxiste déjà change son contenu.
 // Entrée : Le pointeur de structure env, le nom de la variable et son contenu
 // Sortie : 1 ou 0 (1 = pas d'erreur, 0 = erreur).
@@ -46,31 +54,67 @@ int	env_exist(t_env *env, char *name)
 //
 // En :
 // Desc : if "name" est NULL display the environments variables
-// else add a new environment variable
+// else add a new environment variable or an export variable if content is NULL
 // and if the variable already exist change it's content.
 // In : The pointer of the stockage variable,
 // the name of the variable and it content.
 // Out : 1 or 0 (1 = no error, 0 = error).
 // Note : Only add allocated strings.
 
-int	export(t_env *env, char *name, char *content)
+int	export(t_env **env, char *name, char *content)
 {
-	t_env	*envtemp;
-
-	envtemp = env;
 	if (name == NULL)
 	{
 		print_export(env);
 		return (1);
 	}
+	if (content == NULL)
+	{
+		if (!env_exist(env, name))
+		{
+			if (env[1] == NULL)
+				env[1] = envnew(name, NULL);
+			else
+				envadd_back(&env[1], envnew(name, NULL));
+		}
+		else
+			free(name);
+	}
+	else
+	{
+		if (!export_env(env, name, content))
+			return (0);
+	}
+	return (1);
+}
+
+// Fr :
+// Desc : Continuité de export().
+// Note : Supprime la variable d'export si il y a un doublon dans env.
+//
+// En :
+// Desc : Continuity of export().
+// Note : Suppress the export variable if ditto in env.
+
+int	export_env(t_env **env, char *name, char *content)
+{
+	t_env	*envtemp;
+
+	envtemp = *env;
+	unset_export(env, name);
 	if (!env_exist(env, name))
-		envadd_back(&env, envnew(name, content));
+		envadd_back(env, envnew(name, content));
 	else
 	{
 		while (envtemp != NULL)
 		{
-			if (envtemp->name == name)
+			if (ft_strcmp(envtemp->name, name))
+			{
+				free(envtemp->name);
+				free(envtemp->content);
 				envtemp->content = content;
+				envtemp->name = name;
+			}
 			envtemp = envtemp->next;
 		}
 	}
@@ -101,14 +145,20 @@ void	print_env(t_env *env)
 // En :
 // Desc : Display the environments variables like export does.
 
-void	print_export(t_env *env)
+void	print_export(t_env **env)
 {
 	t_env	*envtemp;
 
-	envtemp = env;
+	envtemp = env[0];
 	while (envtemp != NULL)
 	{
 		printf("declare -x %s=\"%s\"\n", envtemp->name, envtemp->content);
+		envtemp = envtemp->next;
+	}
+	envtemp = env[1];
+	while (envtemp != NULL)
+	{
+		printf("declare -x %s\n", envtemp->name);
 		envtemp = envtemp->next;
 	}
 }
