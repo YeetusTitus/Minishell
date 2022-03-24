@@ -1,5 +1,6 @@
-SRCS = env/createenv.c env/envutils.c env/export.c env/unset.c \
-utils/utils1.c
+SRCS = env/createenv.c env/envutils.c env/export.c env/unset.c  env/envutils2.c  \
+utils/utils1.c \
+path/cd.c \
 
 MAIN = main.c
 
@@ -26,11 +27,11 @@ INCLUDE = -Iinclude
 LIBFT = -Llibft -lft
 
 %.o: %.c ${HEADER}
-	gcc ${OFLAGS} ${EFLAGS} ${INCLUDE} -o $@ $<
+	gcc ${OFLAGS} -g ${EFLAGS} ${INCLUDE} -o $@ $<
 
 ${NAME}: ${OBJS}
 	(cd libft && make)
-	gcc $(EFLAGS) -o $(NAME) $(MAIN) ${SRCSD} ${INCLUDE} ${LIBFT} ${IRL} ${LRL}
+	gcc $(EFLAGS) -g -o $(NAME) $(MAIN) ${SRCSD} ${INCLUDE} ${LIBFT} ${IRL} ${LRL}
 			
 all:	${NAME}
 

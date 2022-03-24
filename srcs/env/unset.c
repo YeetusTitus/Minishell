@@ -6,7 +6,7 @@
 /*   By: jforner <jforner@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 16:48:46 by jforner           #+#    #+#             */
-/*   Updated: 2022/03/17 16:37:38 by jforner          ###   ########.fr       */
+/*   Updated: 2022/03/23 17:24:24 by jforner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,5 +91,23 @@ void	free_env(t_env *env)
 {
 	free(env->name);
 	free(env->content);
+	free(env);
+}
+
+void	free_export(t_env **env)
+{
+	while (env[1] != NULL)
+	{
+		free(env[1]->name);
+		free(env[1]);
+		env[1] = env[1]->next;
+	}
+	while (env[0] != NULL)
+	{
+		free(env[0]->content);
+		free(env[0]->name);
+		free(env[0]);
+		env[0] = env[0]->next;
+	}
 	free(env);
 }

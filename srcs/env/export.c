@@ -6,7 +6,7 @@
 /*   By: jforner <jforner@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 13:10:05 by jforner           #+#    #+#             */
-/*   Updated: 2022/03/17 16:36:32 by jforner          ###   ########.fr       */
+/*   Updated: 2022/03/24 15:23:05 by jforner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 // Sortie : 1 ou 0 (1 = éxiste, 0 = n'éxiste pas).
 //
 // En :
-// Desc : Check if a environment variable withe the name "name" exist
+// Desc : Check if a environment variable with the name "name" exist
 // In : The pointer of the structure env and the string to verify.
 // Out : 1 or 0 (1 = exist, 0 = doesn't exist).
 
@@ -115,7 +115,7 @@ int	export_env(t_env **env, char *name, char *content)
 				envtemp->content = content;
 				envtemp->name = name;
 			}
-			envtemp = envtemp->next;
+			
 		}
 	}
 	return (1);

@@ -6,7 +6,7 @@
 /*   By: jforner <jforner@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/02 17:32:14 by jforner           #+#    #+#             */
-/*   Updated: 2022/03/17 11:32:53 by jforner          ###   ########.fr       */
+/*   Updated: 2022/03/24 15:24:30 by jforner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,9 @@ t_env	*envlast(t_env *lst);
 void	envadd_back(t_env **alst, t_env *new);
 void	envadd_front(t_env **alst, t_env *new);
 
+// env/envutils2
+t_env	*envname(t_env **env, char *name);
+
 // env/createenv
 int		lenachr(char *str, char chr);
 int		lenbchr(char *str, char chr);
@@ -77,9 +80,12 @@ int		unset(t_env **env, char *name);
 int		unset_env(t_env **env, char *name);
 int		unset_export(t_env **env, char *name);
 void	free_env(t_env *env);
+void	free_export(t_env **env);
 
 // utils/utils1
 int		ft_strcmp(char *str1, char *str2);
 char	**ft_malloc_error(char **tabl, int size);
 
+// path/cd
+void	cwdisdel(void);
 #endif

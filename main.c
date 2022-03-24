@@ -6,7 +6,7 @@
 /*   By: jforner <jforner@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/02 17:30:22 by jforner           #+#    #+#             */
-/*   Updated: 2022/03/17 16:46:02 by jforner          ###   ########.fr       */
+/*   Updated: 2022/03/23 17:24:49 by jforner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ int	main(int argc, char **argv, char **envp)
 		if (tabarg != NULL)
 			tabarg = ft_malloc_error(tabarg, tablen(tabarg));
 	}
-	system("leaks minishell");
+	free_export(env);
+	// system("leaks minishell");
 	return (0);
 }
