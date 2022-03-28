@@ -2,8 +2,10 @@ SRCS =	env/createenv.c \
 		env/envutils.c \
 		env/export.c \
 		lexer/lexer.c \
-		lexer/analyser.c \
-		lexer/analyser_utils.c \
+		lexer/get_quote.c \
+		lexer/get_command.c \
+		lexer/get_variable.c \
+		lexer/lst_utils.c \
 
 MAIN = main.c
 

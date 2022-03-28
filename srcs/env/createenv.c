@@ -120,3 +120,24 @@ int	create_env(t_env **env, char **envp)
 	free(cont);
 	return (1);
 }
+
+void	free_env(t_env **env)
+{
+	int		i;
+	t_env	*tmp;
+
+	i = -1;
+	while (++i < 2)
+	{
+		while (env[i])
+		{
+			if (env[i]->content)
+				free(env[i]->content);
+			if (env[i]->name)
+				free(env[i]->name);
+			tmp = env[i];
+			env[i] = env[i]->next;
+			free(tmp);
+		}
+	}
+}

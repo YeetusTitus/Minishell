@@ -1,6 +1,6 @@
 #include "../../include/minishell.h"
 
-static int	ft_strlen_v2(const char *str)
+int	ft_strlen_v2(const char *str)
 {
 	int	i;
 
@@ -18,6 +18,8 @@ char	*ft_strjoin_v2(char *s1, char *s2)
 
 	if (!s1)
 		return (NULL);
+    if (!s2)
+        return (s1);
 	i1 = ft_strlen_v2(s1);
 	i2 = ft_strlen_v2(s2);
 	str = malloc(sizeof(char) * (i1 + i2 + 1));
@@ -103,4 +105,36 @@ t_lst   **get_lst_pos(t_lst **s)
         lst = lst->next;
     }
     return (s);
+}
+
+void    del_prev(t_lst *lst, t_lst **s)
+{
+    lst = lst->next;
+    lst_del(s, lst->pos - 1);
+}
+
+void    free_lst(t_lst **s)
+{
+    t_lst  *lst;
+
+    while (*s)
+    {
+        lst = (*s)->next;
+        if ((*s)->data)
+            free((*s)->data);
+        free(*s);
+        *s = lst;
+    }
+    free(*s);
+    free(lst);
+    *s = NULL;
+}
+
+void    add_lst(t_lst *lst)
+{
+    t_lst   *tmp;
+
+    tmp = malloc(sizeof (t_lst));
+    tmp->prev = lst;
+    tmp->next = NULL;
 }

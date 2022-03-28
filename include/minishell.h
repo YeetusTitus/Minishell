@@ -23,6 +23,7 @@
 typedef enum type{
  	CHAR_GENERAL = -1,
 	CHAR_PIPE = '|',
+	CHAR_MINUS = '-',
 	CHAR_AMPERSAND = '&',
 	CHAR_QOUTE = '\'',
 	CHAR_DQUOTE = '\"',
@@ -83,6 +84,7 @@ int		envsize(t_env *lst);
 t_env	*envlast(t_env *lst);
 void	envadd_back(t_env **alst, t_env *new);
 void	envadd_front(t_env **alst, t_env *new);
+void	free_env(t_env **env);
 
 // env/createenv
 int		lenachr(char *str, char chr);
@@ -104,19 +106,43 @@ void    ft_loop(char **envp);
 t_lst  **get_data_in_lst(char *str);
 int  *get_enum_data(char *str);
 void    free_lst(t_lst **s);
-//void    free_array(int *array);
 
 //analyser
 void	get_token_in_qoute(t_lst **s);
 int	lstsize(t_lst **s);
 int lst_del(t_lst **s, int pos);
 t_lst   **get_lst_pos(t_lst **s);
+void    get_qoute(t_lst **s);
 
 //analyser utils
 char	*ft_strjoin_v2(char *s1, char *s2);
 int	lstsize(t_lst **s);
 int lst_del(t_lst **s, int pos);
 t_lst   **get_lst_pos(t_lst **s);
+void    del_prev(t_lst *lst, t_lst **s);
+int	ft_strlen_v2(const char *str);
+void    free_lst(t_lst **s);
+void    add_lst(t_lst *lst);
+
+//get quote protos;
+void    get_quote_case_1(t_lst *lst, t_lst **s);
+void    get_quote_case_2(t_lst *lst, t_lst **s);
+
+
+// get variable protos;
+void    get_variable(t_lst **s);
+void    translate_variable(t_lst **s, t_env **env);
+void    get_variable_case_1(t_lst *lst, t_env *tmp);
+void    get_variable_case_2(t_lst *lst, t_env *env, char *tmp2, int i);
+void    get_variable_in_quote(t_lst **s, t_env **envp);
+
+//get command protos;
+char	*find_path(char **env);
+void	free_tab(char **path_tab);
+char	*get_cmd(char **envp, char *cmd);
+char	**get_array_execve(t_lst *lst, t_lst **s);
+void	ft_exec_cmd(t_lst *lst, char **envp, char **cmd);
+char 	*ft_strndup(const char *s, int n);
+char	*ft_strncpy(char *dst, const char *src, size_t n);
 
 #endif
-
