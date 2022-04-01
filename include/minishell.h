@@ -6,7 +6,7 @@
 /*   By: jforner <jforner@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/02 17:32:14 by jforner           #+#    #+#             */
-/*   Updated: 2022/03/24 15:24:30 by jforner          ###   ########.fr       */
+/*   Updated: 2022/04/01 17:56:11 by jforner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
 # include <term.h>
 # include <string.h>
 # include <stddef.h>
+# include <errno.h>
 
 typedef struct s_token
 {
@@ -60,12 +61,15 @@ void	envadd_back(t_env **alst, t_env *new);
 void	envadd_front(t_env **alst, t_env *new);
 
 // env/envutils2
-t_env	*envname(t_env **env, char *name);
+t_env	*envname(t_env **env, char *name, int colonne);
+void	free_env(t_env *env);
+void	free_export(t_env **env);
 
 // env/createenv
 int		lenachr(char *str, char chr);
 int		lenbchr(char *str, char chr);
 char	**content_env(char **cont, char *line);
+void	create_env2(t_env **env);
 int		create_env(t_env **env, char **envp);
 
 // env/export
@@ -77,15 +81,23 @@ void	print_export(t_env **env);
 
 // env/unset
 int		unset(t_env **env, char *name);
-int		unset_env(t_env **env, char *name);
 int		unset_export(t_env **env, char *name);
-void	free_env(t_env *env);
-void	free_export(t_env **env);
+int		unset_env_set(t_env **env, char *name, int column);
 
 // utils/utils1
 int		ft_strcmp(char *str1, char *str2);
 char	**ft_malloc_error(char **tabl, int size);
+int		tablen(char **tabl);
 
 // path/cd
-void	cwdisdel(void);
+int		cd(t_env **env, char *path);
+void	cwdisdel(t_env **env);
+void	envcwd(t_env **env, char *path);
+void	envoldpwd(t_env **env);
+void	envoldpwd2(t_env **env);
+
+// path/pwd
+int		pwd(t_env **env);
+// echo
+int		ms_echo(char **table);
 #endif

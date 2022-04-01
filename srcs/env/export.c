@@ -6,7 +6,7 @@
 /*   By: jforner <jforner@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 13:10:05 by jforner           #+#    #+#             */
-/*   Updated: 2022/03/24 15:23:05 by jforner          ###   ########.fr       */
+/*   Updated: 2022/03/30 14:14:57 by jforner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,13 @@ int	env_exist(t_env **env, char *name)
 		envtemp = envtemp->next;
 	}
 	envtemp = env[1];
+	while (envtemp != NULL)
+	{
+		if (ft_strcmp(envtemp->name, name))
+			return (1);
+		envtemp = envtemp->next;
+	}
+	envtemp = env[2];
 	while (envtemp != NULL)
 	{
 		if (ft_strcmp(envtemp->name, name))
@@ -77,6 +84,8 @@ int	export(t_env **env, char *name, char *content)
 			else
 				envadd_back(&env[1], envnew(name, NULL));
 		}
+		else if (envname(env, name, 2) != NULL && !ft_strcmp(name, "CWD"))
+			export(env, name, ft_strdup(envname(env, name, 2)->content));
 		else
 			free(name);
 	}
@@ -102,9 +111,9 @@ int	export_env(t_env **env, char *name, char *content)
 
 	envtemp = *env;
 	unset_export(env, name);
-	if (!env_exist(env, name))
+	if (!envname(env, name, 0))
 		envadd_back(env, envnew(name, content));
-	else
+	else if (envname(env, name, 0) != NULL || envname(env, name, 1) != NULL)
 	{
 		while (envtemp != NULL)
 		{
@@ -114,8 +123,9 @@ int	export_env(t_env **env, char *name, char *content)
 				free(envtemp->content);
 				envtemp->content = content;
 				envtemp->name = name;
+				return (1);
 			}
-			
+			envtemp = envtemp->next;
 		}
 	}
 	return (1);
@@ -158,7 +168,10 @@ void	print_export(t_env **env)
 	envtemp = env[1];
 	while (envtemp != NULL)
 	{
-		printf("declare -x %s\n", envtemp->name);
+		if (envtemp->content == NULL)
+			printf("declare -x %s\n", envtemp->name);
+		else
+			printf("declare -x %s=\"%s\"\n", envtemp->name, envtemp->content);
 		envtemp = envtemp->next;
 	}
 }

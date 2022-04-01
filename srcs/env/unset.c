@@ -6,7 +6,7 @@
 /*   By: jforner <jforner@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 16:48:46 by jforner           #+#    #+#             */
-/*   Updated: 2022/03/23 17:24:24 by jforner          ###   ########.fr       */
+/*   Updated: 2022/03/30 17:08:38 by jforner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,9 @@
 
 int	unset(t_env **env, char *name)
 {
-	unset_env(env, name);
+	unset_env_set(env, name, 0);
 	unset_export(env, name);
+	unset_env_set(env, name, 2);
 	if (!env_exist(env, name))
 		return (1);
 	return (1);
@@ -41,39 +42,11 @@ int	unset_export(t_env **env, char *name)
 		return (1);
 	if (ft_strcmp(env[1]->name, name))
 	{
-		free(env[1]->name);
-		free(env[1]);
+		free_env(env[1]);
 		env[1] = env[1]->next;
 		return (1);
 	}
 	envtemp = env[1];
-	while (envtemp->next != NULL)
-	{
-		if (ft_strcmp(envtemp->next->name, name))
-		{
-			free(envtemp->next->name);
-			free(envtemp->next);
-			envtemp->next = envtemp->next->next;
-			return (1);
-		}
-		envtemp = envtemp->next;
-	}
-	return (1);
-}
-
-int	unset_env(t_env **env, char *name)
-{
-	t_env	*envtemp;
-
-	if (!env_exist(env, name))
-		return (1);
-	if (ft_strcmp((*env)->name, name))
-	{
-		free_env(*env);
-		*env = (*env)->next;
-		return (1);
-	}
-	envtemp = env[0];
 	while (envtemp->next != NULL)
 	{
 		if (ft_strcmp(envtemp->next->name, name))
@@ -87,27 +60,30 @@ int	unset_env(t_env **env, char *name)
 	return (1);
 }
 
-void	free_env(t_env *env)
+int	unset_env_set(t_env **env, char *name, int column)
 {
-	free(env->name);
-	free(env->content);
-	free(env);
-}
+	t_env	*envtemp;
 
-void	free_export(t_env **env)
-{
-	while (env[1] != NULL)
+	if (!env_exist(env, name))
+		return (1);
+	if (ft_strcmp((env[column])->name, name))
 	{
-		free(env[1]->name);
-		free(env[1]);
-		env[1] = env[1]->next;
+		free_env(env[column]);
+		env[column] = (env[column])->next;
+		return (1);
 	}
-	while (env[0] != NULL)
+	envtemp = env[column];
+	while (envtemp->next != NULL)
 	{
-		free(env[0]->content);
-		free(env[0]->name);
-		free(env[0]);
-		env[0] = env[0]->next;
+		if (ft_strcmp(envtemp->next->name, name))
+		{
+			if ((column == 2 && ft_strcmp(name, "CWD")))
+				return (1);
+			free_env(envtemp->next);
+			envtemp->next = envtemp->next->next;
+			return (1);
+		}
+		envtemp = envtemp->next;
 	}
-	free(env);
+	return (1);
 }

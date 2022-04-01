@@ -6,7 +6,7 @@
 /*   By: jforner <jforner@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/02 17:30:22 by jforner           #+#    #+#             */
-/*   Updated: 2022/03/23 17:24:49 by jforner          ###   ########.fr       */
+/*   Updated: 2022/03/31 16:32:34 by jforner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,22 +26,13 @@ char	*ft_strcpy(char *str)
 	return (cpy);
 }
 
-int	tablen(char **tabl)
-{
-	int	i;
-
-	i = 0;
-	while (tabl[i] != NULL)
-		i++;
-	return (i);
-}
-
 int	main(int argc, char **argv, char **envp)
 {
-	t_env	*env[2];
+	t_env	*env[3];
 	char	**tabarg;
 	char	**tabenv;
 	char	*str;
+	// char	*str2;
 	int		i;
 
 	(void)(argc);
@@ -50,8 +41,10 @@ int	main(int argc, char **argv, char **envp)
 	tabenv = NULL;
 	int	j = -1;
 	create_env(env, envp);
-	while (++j < 5)
+	while (++j < 20)
 	{
+		errno = 0;
+		cwdisdel(env);
 		i = -1;
 		str = readline("minishell> ");
 		tabarg = ft_split(str, ' ');
@@ -65,6 +58,17 @@ int	main(int argc, char **argv, char **envp)
 					if (i > 0)
 						unset(env, tabarg[i]);
 			}
+			else if (ft_strcmp(tabarg[0], "cd"))
+			{
+				if (tablen(tabarg) == 1)
+					cd(env, NULL);
+				else
+					cd(env, ft_strdup(tabarg[1]));
+			}
+			else if (ft_strcmp(tabarg[0], "pwd"))
+				pwd(env);
+			else if(ft_strcmp(tabarg[0], "env"))
+				print_env(*env);
 			else
 			{
 				while (++i < tablen(tabarg))
@@ -83,7 +87,6 @@ int	main(int argc, char **argv, char **envp)
 					}
 				}
 			}
-			print_env(*env);
 		}
 		free (str);
 		if (tabenv != NULL)

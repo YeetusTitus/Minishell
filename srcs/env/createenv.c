@@ -6,7 +6,7 @@
 /*   By: jforner <jforner@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/09 15:49:36 by jforner           #+#    #+#             */
-/*   Updated: 2022/03/14 18:44:46 by jforner          ###   ########.fr       */
+/*   Updated: 2022/03/31 12:35:05 by jforner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,6 @@ int	create_env(t_env **env, char **envp)
 	int		i;
 	char	**cont;
 
-	env[1] = NULL;
 	cont = (char **)malloc(3 * sizeof(char *));
 	cont[2] = NULL;
 	i = 0;
@@ -116,8 +115,12 @@ int	create_env(t_env **env, char **envp)
 		cont = content_env(cont, envp[i]);
 		if (cont == NULL)
 			return (0);
-		envadd_back(env, envnew(cont[0], cont[1]));
+		if (!ft_strcmp(cont[0], "OLDPWD"))
+			envadd_back(env, envnew(cont[0], cont[1]));
 	}
+	env[1] = envnew(ft_strdup("OLDPWD"), NULL);
+	env[2] = envnew(ft_strdup("?"), ft_strdup("0"));
+	envadd_back(&env[2], envnew(ft_strdup("CWD"), getcwd(NULL, 0)));
 	free(cont);
 	return (1);
 }

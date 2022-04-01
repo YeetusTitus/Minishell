@@ -1,6 +1,8 @@
 SRCS = env/createenv.c env/envutils.c env/export.c env/unset.c  env/envutils2.c  \
 utils/utils1.c \
-path/cd.c \
+path/cd.c path/pwd.c \
+signals/exit.c \
+echo.c
 
 MAIN = main.c
 

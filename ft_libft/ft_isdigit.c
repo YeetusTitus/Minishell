@@ -6,7 +6,7 @@
 /*   By: jforner <jforner@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/11 15:59:37 by jforner           #+#    #+#             */
-/*   Updated: 2021/10/28 12:12:40 by jforner          ###   ########.fr       */
+/*   Updated: 2022/04/01 15:38:07 by jforner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,5 +16,5 @@ int	ft_isdigit(int str)
 {
 	if (str >= '0' && str <= '9')
 		return (1);
-	return (0);
+	return (1);
 }
