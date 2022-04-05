@@ -36,8 +36,8 @@ int  *get_enum_data(char *str)
             array[i] = CHAR_RPARENTHESIS;
         else if (str[i] == '$')
             array[i] = CHAR_DOLLAR;
-        else if (str[i] == '=')
-            array[i] = CHAR_RPARENTHESIS;
+//        else if (str[i] == '=')
+//            array[i] = CHAR_RPARENTHESIS;
         else
            array[i] = CHAR_GENERAL;
         i++;
@@ -120,6 +120,7 @@ t_lst  **get_data_in_lst(char *str)
 // la loop qui permet d afficher le prompt et de garder l historique des commandes tapees
 void    ft_loop(char **envp)
 {
+
 /*    
     envp[0] = NULL;
     char *str = readline("$> ");
@@ -135,29 +136,53 @@ void    ft_loop(char **envp)
 */    
 
      
-    
+   
     char    *str;
     t_lst   **s;
     t_lst   *lst;
     int     i = 0;
     t_env   *env[2];
-    char **tempo;
+    t_red   **red;
+    char    **tempo = NULL;
+    char    **truc;
+    t_red   *t;
+
     create_env(env, envp);
     while (1)
     {
         str = readline("$> ");
         if (ft_strlen(str) > 0)
             add_history(str);
+                                 // lexer
         s = get_data_in_lst(str);
         lst = *s;
         get_qoute(s);
         get_variable(s);
         get_variable_in_quote(s, env);
         translate_variable(s, env);
-        lst = *s;
-        tempo = get_array_execve(lst, s);
-        ft_exec_cmd(lst, envp, tempo);
+                                //parsing
+        get_redirection_with_file(s);
+        red = get_red_array(s);
+        truc = get_simple_cmd_array(s);
+        t = *red;
         i = 0;
+        while (t)
+        {
+            while (t->file[i])
+            {
+                printf("%d      |    %s\n", t->type[i], t->file[i]);
+                i++;
+            }
+            t = t->next;
+            i = 0;
+        }
+//        tempo = get_array_execve(lst, s);
+//        ft_exec_cmd(lst, envp, tempo);
+        i = 0;
+        while (truc[i])
+        {
+            printf("%s\n", truc[i++]);
+        }
         if (ft_strlen(str) > 0)
         {
             free(str);
@@ -170,4 +195,5 @@ void    ft_loop(char **envp)
     }
     free_env(env);
 	system("leaks minishell");
+    
 }

@@ -17,7 +17,7 @@
 # include <term.h>
 # include <string.h>
 # include <stddef.h>
-
+# include <fcntl.h>
 
 // enum lexer
 typedef enum type{
@@ -54,6 +54,14 @@ typedef struct s_lst
     int             type;
 	int				pos;
 }   t_lst;
+
+// redirection struct
+typedef struct redirection
+{
+	int		*type;
+	char	**file;
+	void	*next;
+}	t_red;
 
 // env struct 
 typedef struct s_token
@@ -132,7 +140,7 @@ void    get_quote_case_2(t_lst *lst, t_lst **s);
 // get variable protos;
 void    get_variable(t_lst **s);
 void    translate_variable(t_lst **s, t_env **env);
-void    get_variable_case_1(t_lst *lst, t_env *tmp);
+void    get_variable_case_1(t_lst *lst, t_env *tmp, t_lst **s);
 void    get_variable_case_2(t_lst *lst, t_env *env, char *tmp2, int i);
 void    get_variable_in_quote(t_lst **s, t_env **envp);
 
@@ -144,5 +152,24 @@ char	**get_array_execve(t_lst *lst, t_lst **s);
 void	ft_exec_cmd(t_lst *lst, char **envp, char **cmd);
 char 	*ft_strndup(const char *s, int n);
 char	*ft_strncpy(char *dst, const char *src, size_t n);
+
+//init simpple cmd && reddirection array
+int    get_redirection_with_file(t_lst **s);
+int get_nb_red_lst(t_lst **s);
+t_red	**get_red_array(t_lst **s);
+t_red    **get_red_array_data(t_lst **s, t_red **f);
+int    get_simple_cmd_array_size(t_lst **s);
+char    **get_simple_cmd_array(t_lst **s);
+int check_red_token(t_lst **s);
+
+// reddirection.c
+void    dup_mannager(char **simple_cmd, t_red **s);
+void    greater_red(t_red *red, int j);
+void    smaller_red(t_red *red, int j);
+void    great_greater_red(t_red *red, int j);
+void    small_smaller_red(t_red *red, int j);
+void    restore_fd(void);
+void    ft_exec_pipe(void);
+void    ft_exec(void);
 
 #endif

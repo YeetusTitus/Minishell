@@ -105,8 +105,7 @@ void	ft_exec_cmd(t_lst *lst, char **envp, char **cmd)
 	if (!tmp)
 	{
 		ft_putstr_fd(lst->data, 1);
-		ft_putstr_fd(" - command not found\n", 1);
-//		exit(EXIT_FAILURE); // a remplacer avec le bon message d erreur;
+		ft_putstr_fd(" : command not found\n", 1);
 		return ;
 	}
 	else
@@ -115,10 +114,8 @@ void	ft_exec_cmd(t_lst *lst, char **envp, char **cmd)
 		if (pid < 0)
 		{
 			ft_putstr_fd("fork error\n", 1);
-	//		exit(EXIT_FAILURE); // a remplacer avec le bon message d erreur;
 			return ;
 		}
-		// inclure le dup manager ici;
 		if (pid == 0)
 			execve(tmp, cmd, envp);
 		waitpid(pid, NULL, 0);

@@ -1,5 +1,8 @@
 #include "../../include/minishell.h"
 
+
+
+
 // concatener les $ avec le texte qui le suit
 void    get_variable(t_lst **s)
 {
@@ -55,7 +58,7 @@ void    translate_variable(t_lst **s, t_env **env)
     while (lst)
     {
         if (lst->type == '$')
-            get_variable_case_1(lst, tmp);
+            get_variable_case_1(lst, tmp, s);
         else if (lst->type == -2)
             get_variable_case_2(lst, tmp, tmp2, i);
         i = 0;
@@ -65,23 +68,27 @@ void    translate_variable(t_lst **s, t_env **env)
 }
 
 // loop de la fonction du dessus pour la norme
-void    get_variable_case_1(t_lst *lst, t_env *tmp)
+void    get_variable_case_1(t_lst *lst, t_env *tmp, t_lst **s)
 {
     while (tmp)
     {
         if (ft_strcmp(lst->data + 1, tmp->name) == 0)
         {
-            free(lst->data);
-            lst->data = ft_strdup(tmp->content);
-            lst->type = -1;
+            if (tmp->content[0] == '\0')
+                lst_del(s, lst->pos);
+            else
+            {
+                free(lst->data);
+                lst->data = ft_strdup(tmp->content);
+                lst->type = -1;
+            }
             break ;
         }
                 tmp = tmp->next;
             }
     if (!tmp)
     {
-        free(lst->data);
-        lst->data = NULL;
+        lst_del(s, lst->pos);
     }
 }
 

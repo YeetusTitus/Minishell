@@ -6,6 +6,8 @@ SRCS =	env/createenv.c \
 		lexer/get_command.c \
 		lexer/get_variable.c \
 		lexer/lst_utils.c \
+		lexer/red_n_simple_cmd.c \
+		lexer/reddirection.c \
 
 MAIN = main.c
 
@@ -13,7 +15,7 @@ DIRECTORYS = srcs/
 
 SRCSD =	$(addprefix ${DIRECTORYS}, $(SRCS))
 
-EFLAGS = -Wall -Wextra -Werror -g
+EFLAGS = -Wall -Wextra -Werror -g 
 
 OBJS =	${SRCSD:.c=.o}
 
