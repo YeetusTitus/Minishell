@@ -6,12 +6,11 @@
 /*   By: jforner <jforner@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 14:20:57 by jforner           #+#    #+#             */
-/*   Updated: 2022/03/31 19:46:04 by jforner          ###   ########.fr       */
+/*   Updated: 2022/04/02 17:45:28 by jforner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
-// #include "../../include/minishell.h"
 
 void	envoldpwd2(t_env **env)
 {
@@ -96,6 +95,16 @@ void	cwdisdel(t_env **env)
 	}
 	closedir(dir);
 }
+
+// Fr :
+// Desc : Fonctionne comme le ecd de bash
+// Entrée : Un tableau de chaines de caractères
+// Sortie : 1 ou 0 (1 = pas d'erreur, 0 = erreur).
+//
+// En :
+// Desc : Work like the bash's cd (we hope)
+// In : A pointer to a the pointert of the environments variables
+// Out : 1 or 0 (1 = no error, 0 = error).
 
 int	cd(t_env **env, char *path)
 {

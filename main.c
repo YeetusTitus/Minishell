@@ -6,7 +6,7 @@
 /*   By: jforner <jforner@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/02 17:30:22 by jforner           #+#    #+#             */
-/*   Updated: 2022/03/31 16:32:34 by jforner          ###   ########.fr       */
+/*   Updated: 2022/04/02 14:56:15 by jforner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,8 @@ int	main(int argc, char **argv, char **envp)
 				pwd(env);
 			else if(ft_strcmp(tabarg[0], "env"))
 				print_env(*env);
+			else if (ft_strcmp(tabarg[0], "echo"))
+				ms_echo(&tabarg[1]);
 			else
 			{
 				while (++i < tablen(tabarg))
