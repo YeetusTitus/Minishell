@@ -6,7 +6,7 @@
 /*   By: jforner <jforner@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 17:51:02 by jforner           #+#    #+#             */
-/*   Updated: 2022/04/02 16:01:20 by jforner          ###   ########.fr       */
+/*   Updated: 2022/04/05 18:22:48 by jforner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	is_ch(char *str, char c)
 // In : A sting table
 // Out : 1 or 0 (1 = no error, 0 = error).
 
-int	ms_echo(char **table)
+void	ms_echo(char **table)
 {
 	int	i;
 
@@ -64,5 +64,4 @@ int	ms_echo(char **table)
 	}
 	if (table[0] == NULL || !ft_strcmp(table[0], "-n"))
 		write(1, "\n", 1);
-	return (1);
 }
