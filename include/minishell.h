@@ -6,7 +6,7 @@
 /*   By: jforner <jforner@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/02 17:32:14 by jforner           #+#    #+#             */
-/*   Updated: 2022/04/01 17:56:11 by jforner          ###   ########.fr       */
+/*   Updated: 2022/04/06 13:32:53 by jforner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,5 +99,5 @@ void	envoldpwd2(t_env **env);
 // path/pwd
 int		pwd(t_env **env);
 // echo
-int		ms_echo(char **table);
+void	ms_echo(char **table);
 #endif
