@@ -140,12 +140,10 @@ void    ft_loop(char **envp)
     char    *str;
     t_lst   **s;
     t_lst   *lst;
-    int     i = 0;
     t_env   *env[2];
     t_red   **red;
-    char    **tempo = NULL;
+//    char    **tempo = NULL;
     char    **truc;
-    t_red   *t;
 
     create_env(env, envp);
     while (1)
@@ -162,28 +160,13 @@ void    ft_loop(char **envp)
         translate_variable(s, env);
                                 //parsing
         get_redirection_with_file(s);
+        lst = *s;
         red = get_red_array(s);
         truc = get_simple_cmd_array(s);
-        t = *red;
-        i = 0;
-        while (t)
-        {
-            while (t->file[i])
-            {
-                printf("%d      |    %s\n", t->type[i], t->file[i]);
-                i++;
-            }
-            t = t->next;
-            i = 0;
-        }
+        ft_exec(red, truc, envp);
 //        tempo = get_array_execve(lst, s);
 //        ft_exec_cmd(lst, envp, tempo);
-        i = 0;
-        while (truc[i])
-        {
-            printf("%s\n", truc[i++]);
-        }
-        if (ft_strlen(str) > 0)
+/*        if (ft_strlen(str) > 0)
         {
             free(str);
             if ((*s))
@@ -192,7 +175,11 @@ void    ft_loop(char **envp)
         }
         if (tempo)
             free_tab(tempo);
-    }
+        if (truc)
+            free_tab(truc);
+        if (*red)
+            free_red(red);
+*/    }
     free_env(env);
 	system("leaks minishell");
     

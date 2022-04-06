@@ -15,7 +15,7 @@ DIRECTORYS = srcs/
 
 SRCSD =	$(addprefix ${DIRECTORYS}, $(SRCS))
 
-EFLAGS = -Wall -Wextra -Werror -g 
+EFLAGS = -Wall -Wextra -Werror -g -fsanitize=address 
 
 OBJS =	${SRCSD:.c=.o}
 

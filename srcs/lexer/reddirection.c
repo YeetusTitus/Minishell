@@ -1,147 +1,217 @@
 #include "../../include/minishell.h"
 
-void    dup_mannager(char **simple_cmd, t_red **s, char **envp)
+void    ft_exec(t_red **s, char **simple_cmd, char **envp)
 {
-    t_red   *red;
     int     i;
-    int     j;
+    t_red   *red;
     int     save_out;
     int     save_in;
+    int     fd;
 
     red = *s;
     i = 0;
-    j = 0;
     save_out = dup(1);
     save_in = dup(0);
-    while (simple_cmd[i] && )
+    while (simple_cmd[i])
     {
-        while (red->type[j] != -1)
-        {
-            if (red->type[j] == '>')
-                greater_red();
-            else if (red->type[j] == '<')
-                smaller_red();
-            else if (red->type[j] == '>' * -1)
-                great_greater_red();
-            else if (red->type[j] == '<' * -1)
-                small_smaller_red();
-            j++;
-        }
-        if (simple_cmd[i + 1])
-            ft_exec_pipe(simple_cmd[i], envp);
-        else if (simple_cmd[i + 1] == NULL)
-            ft_exec();
-        if (simple_cmd[i] == NULL)
-            break ;
-        j = 0;
-        red = red->next;
+        if (i == 0 && !simple_cmd[i + 1]) 
+            case_1_ft_exec(red, simple_cmd, i, envp, save_out);
+        else if (i == 0 && simple_cmd[i])
+            fd = case_2_ft_exec(red, simple_cmd, i, envp, save_out);
+        else if (i > 0 && !simple_cmd[i + 1])
+            case_3_ft_exec(red, simple_cmd, i, envp, fd, save_out);
+        else if (i > 0 && simple_cmd[i + 1])
+            fd = case_4_ft_exec(red, simple_cmd, i, envp, fd, save_out);
         i++;
     }
-    restore_fd();
+    while (wait(NULL) != -1)
+        ;
+    dup2(save_out, 1);
+    dup2(save_in, 0);
+    close(save_out);
+    close(save_in);
 }
 
-void    greater_red(t_red *red, int j)
+void    case_1_ft_exec(t_red *red, char **simple_cmd, int i, char **envp, int save_out)
 {
-    int fd;
-
-    fd = open(red->file[j], O_TRUNC | O_CREAT | O_RDWR, 0644);
-    if (fd == -1)
-    {
-        ft_putstr_fd(red->file[j], 1);
-        ft_putstr_fd(" : Can't open file or directory", 1);
-    }
-    dup2(fd, 1);
-    close(fd);
-}
-
-void    smaller_red(t_red *red, int j)
-{
-    int fd;
-
-    fd = open(red->file[j], O_RDWR);
-    if (fd == -1)
-    {
-        ft_putstr_fd(red->file[j], 1);
-        ft_putstr_fd(" : Can't open file or directory", 1);
-    }
-    dup2(fd, 0);
-    close(fd);
-}
-
-void    great_greater_red(t_red *red, int j)
-{
-    int fd;
-
-    fd = open(red->file[j], O_APPEND | O_CREAT | O_RDWR, 0644);
-    if (fd == -1)
-    {
-        ft_putstr_fd(red->file[j], 1);
-        ft_putstr_fd(" : Can't open file or directory", 1);
-    }
-    dup2(fd, 1);
-    close(fd);
-}
-
-////////////////////////////////////////////////////////////
-
-void    small_smaller_red()
-{
-
-}
-
-void    restore_fd(int  save)
-{
-
-}
-
-void    ft_exec_pipe(int save, char *cmd, char **envp)
-{
-    int     fd[2];
-    int     pid;
-    int     pid2;
-    char    *tmp;
+    char    *path;
     char    **cmd;
+    int     pid;
+    int     fd;
+    t_red   *tmp;
 
-    pipe(fd);
+    tmp = red;
+    fd = 0;
+//    red_dup_mannager(red, fd, 2);
     pid = fork();
     if (pid == 0)
     {
-        cmd = ft_split(cmd, ' ');
-        close(fd[0]);
-        tmp = get_cmd(envp, cmd[0]);
-	    if (!tmp)
+        cmd = ft_split(simple_cmd[i], ' ');
+        path = get_cmd(envp, cmd[0]);
+	    if (!path)
 	    {
-	    	ft_putstr_fd(lst->data, 1);
+            dup2(save_out, 1);
+            close(save_out);            
+	    	ft_putstr_fd(cmd[0], 1);
 	    	ft_putstr_fd(" : command not found\n", 1);
-		    return ; // ?? return ou continue?
+	        exit(1);
 	    }
-        execve(tmp, ft_split(cmd, ' '), envp);
+        else
+            execve(path, cmd, envp);
     }
     else
-    {
-        pid2 = fork();
-        dup2(1, save);
-        close(save);
-    }
-    if (pid2 == 0)
-    {
-        close(fd[0]);
-        execve();
-    }
+        waitpid(pid, NULL, 0);
 }
 
-
-void    ft_exec(void)
+int case_2_ft_exec(t_red *red, char **simple_cmd, int i, char **envp, int save_out)
 {
-    int pid;
+    int     ret;
+    int     pid;
+    char    *path;
+    char    **cmd;
+    int     fd[2];
+    t_red   *tmp;
 
+    tmp = red;
+    pipe(fd);
+    ret = fd[0];
     pid = fork();
     if (pid == 0)
     {
-        execve();
+        close(fd[0]);
+        dup2(fd[1], 1);
+        close(fd[1]);
+//        red_dup_mannager(red, fd[0], 0);
+        cmd = ft_split(simple_cmd[i], ' ');
+        path = get_cmd(envp, cmd[0]);
+	    if (!path)
+	    {
+            dup2(save_out, 1);
+            close(save_out);
+	    	ft_putstr_fd(cmd[0], 1);
+	    	ft_putstr_fd(" : command not found\n", 1);
+	        exit(1);
+	    }
+       else
+           execve(path, cmd, envp);
     }
     else
     {
-
+        close(fd[0]);
+        close(fd[1]);
+//        waitpid(pid, NULL, 0);
     }
+    return(ret);
+}
+
+void    case_3_ft_exec(t_red *red, char **simple_cmd, int i, char **envp, int fd_ret, int save_out)
+{
+    int     pid;
+    char    *path;
+    char    **cmd;
+    t_red   *tmp;
+
+    tmp = red;
+    dup2(fd_ret, 0);
+    close(fd_ret);
+    pid = fork();
+    if (pid == 0)
+    {
+//        fd = red_dup_mannager(red, fd, 1);
+        cmd = ft_split(simple_cmd[i], ' ');
+        path = get_cmd(envp, cmd[0]);
+        if (!path)
+        {
+            dup2(save_out, 1);
+            close(save_out);            
+        	ft_putstr_fd(cmd[0], 1);
+        	ft_putstr_fd(" : command not found\n", 1);
+            exit(1);
+        }
+        else
+            execve(path, cmd, envp);
+    }
+//    else
+//        waitpid(pid, NULL, 0);
+}
+
+int case_4_ft_exec(t_red *red, char **simple_cmd, int i, char **envp, int fd_ret, int save_out)
+{
+    int     ret;
+    int     pid;
+    char    *path;
+    char    **cmd;
+    int     fd[2];
+    t_red   *tmp;
+
+    tmp = red;
+//    fd_ret = red_dup_mannager(red, fd_ret, 0);
+    dup2(fd_ret, 0);
+    close(fd_ret);
+    pipe(fd);
+    ret = fd[0];
+    pid = fork();
+    if (pid == 0)
+    {
+        dup2(fd[1], 1);
+        close(fd[1]);
+        close(fd[0]);
+        cmd = ft_split(simple_cmd[i], ' ');
+        path = get_cmd(envp, cmd[0]);
+        if (!path)
+        {
+            dup2(save_out, 1);
+            close(save_out);            
+        	ft_putstr_fd(cmd[0], 1);
+        	ft_putstr_fd(" : command not found\n", 1);
+            exit(1);
+        }
+        else
+            execve(path, cmd, envp); 
+    }
+    else
+    {
+        close(fd[1]);
+        close(fd[0]);
+//        waitpid(pid, NULL, 0);
+    }
+    return (ret);
+}
+
+int red_dup_mannager(t_red *red, int fd_ret, int i)
+{
+    int j;
+    int fd;
+
+    j = 0;
+    while (red->type[j] != -1)
+    {
+        if (red->type[j] == '>')
+        {
+            fd = open(red->file[j], O_TRUNC | O_CREAT | O_RDWR, 0644);
+            if (i == 1)
+                fd_ret = fd;
+            dup2(fd, 1);
+            close(fd);
+        }
+        else if (red->type[j] == '<')
+        {
+            if (i == 0)
+                fd_ret = fd;
+            fd = open(red->file[j], O_RDONLY);
+            dup2(fd, 0);
+            close(fd);
+        }
+        else if (red->type[j] == '>' * -1)
+        {
+            if (i == 1)
+                fd_ret = fd;
+            fd = open(red->file[j],  O_APPEND | O_CREAT | O_RDWR, 0644);
+            dup2(fd, 1);
+            close(fd);
+        }
+        // faire aussi pour '<<'
+        j++;
+    }
+    return(fd_ret);
 }

@@ -1,5 +1,7 @@
 #include "../../include/minishell.h"
 
+// init le tableau de simple cmd et le tableau de redirection associe;
+
 int    get_redirection_with_file(t_lst **s)
 {
     t_lst  *lst;
@@ -63,8 +65,8 @@ t_red   **get_red_array(t_lst **s)
             size++;
         else if (lst->type == '|')
         {
-            red->type = malloc(sizeof(int) * (size + 1));
-            red->file = malloc(sizeof (char *) * (size + 1));
+            red->type = ft_calloc(1, sizeof(int) * (size + 1));
+            red->file = ft_calloc(1, sizeof(char *) * (size + 1));
             size = 0;
             red->next = ft_calloc(1, sizeof(t_red));
             red = red->next;
@@ -72,14 +74,14 @@ t_red   **get_red_array(t_lst **s)
         }
         else if (lst->type == 0)
         {
-            red->type = malloc(sizeof(int) * (size + 1));
-            red->file = malloc(sizeof (char *) * (size + 1));
+            red->type = ft_calloc(1, sizeof(int) * (size + 1));
+            red->file = ft_calloc(1, sizeof (char *) * (size + 1));
             size = 0;
             red->next = NULL;
         }
         lst = lst->next;
     }
-    first = get_red_array_data(s, first);
+    get_red_array_data(s, first);
     return (first);
 }
 
@@ -214,4 +216,23 @@ int check_red_token(t_lst **s)
         lst = lst->next;
     }
     return (0);
+}
+
+void    free_red(t_red **s)
+{
+    t_red   *red;
+
+    while (*s)
+    {
+        red = (*s)->next;
+        if ((*s)->type)
+            free((*s)->type);
+        if ((*s)->file)
+            free((*s)->file);
+        free(*s);
+        *s = red;
+    }
+    free(*s);
+    free(red);
+    *s = NULL;
 }
