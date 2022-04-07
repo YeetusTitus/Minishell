@@ -170,7 +170,7 @@ void    case_2_ft_exec(t_red *red, char **simple_cmd, int i, char **envp, int sa
 void    case_3_ft_exec(t_red *red, char **simple_cmd, int i, char **envp, int save_out);
 void    case_4_ft_exec(t_red *red, char **simple_cmd, int i, char **envp, int save_out);
 void    free_red(t_red **s);
-void    dup_mannager_out(t_red *red);
+void    dup_mannager_out(t_red *red, int i);
 int check_ambigous_redirect(t_red **s);
 
 #endif

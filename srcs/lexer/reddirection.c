@@ -84,7 +84,7 @@ void    case_1_ft_exec(t_red *red, char **simple_cmd, int i, char **envp, int sa
     pid = fork();
     if (pid == 0)
     {
-        dup_mannager_out(red);
+        dup_mannager_out(red, 1);
         cmd = ft_split(simple_cmd[i], ' ');
         path = get_cmd(envp, cmd[0]);
 	    if (!path)
@@ -118,7 +118,7 @@ void    case_2_ft_exec(t_red *red, char **simple_cmd, int i, char **envp, int sa
     {
         close(fd[1]);
         close(fd[0]);
-        dup_mannager_out(red);
+        dup_mannager_out(red, 1);
         cmd = ft_split(simple_cmd[i], ' ');
         path = get_cmd(envp, cmd[0]);
 	    if (!path)
@@ -153,7 +153,7 @@ void    case_3_ft_exec(t_red *red, char **simple_cmd, int i, char **envp, int sa
     pid = fork();
     if (pid == 0)
     {
-        dup_mannager_out(red);
+        dup_mannager_out(red, 1);
         cmd = ft_split(simple_cmd[i], ' ');
         path = get_cmd(envp, cmd[0]);
         if (!path)
@@ -188,7 +188,7 @@ void    case_4_ft_exec(t_red *red, char **simple_cmd, int i, char **envp, int sa
     {
         close(fd[1]);
         close(fd[0]);
-        dup_mannager_out(red);
+        dup_mannager_out(red, 1);
         cmd = ft_split(simple_cmd[i], ' ');
         path = get_cmd(envp, cmd[0]);
         if (!path)
@@ -211,10 +211,11 @@ void    case_4_ft_exec(t_red *red, char **simple_cmd, int i, char **envp, int sa
 }
 
 
-void    dup_mannager_out(t_red *red)
+void    dup_mannager_out(t_red *red, int i)
 {
     int j;
     int fd;
+    int fdpipe[2];
 
     fd = -1;
     j = 0;
@@ -232,7 +233,25 @@ void    dup_mannager_out(t_red *red)
             dup2(fd, 1);
             close(fd);
         }
-        j++;
+        else if (red->type[j] == '<')
+        {
+            fd = open(red->file[j], O_RDONLY);
+            if (fd < 0)
+            {
+                ft_putstr_fd(red->file[j], 1);
+                ft_putstr_fd(" : No such file or directory\n", 1);
+                if (i == 0)
+                    return ;
+                else
+                    exit(1);
+            }
+        }
+/*        else if (red->type[j] == '<' * -1)
+        {
+            pipe(fdpipe);
+
+        }
+*/        j++;
     }
 }
 

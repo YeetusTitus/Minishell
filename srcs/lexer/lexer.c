@@ -174,7 +174,7 @@ void    ft_loop(char **envp)
             else
             {
                 save = dup(1);
-                dup_mannager_out(*red);
+                dup_mannager_out(*red, 0);
                 dup2(save, 1);
                 close(save);
             }
