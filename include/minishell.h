@@ -166,10 +166,11 @@ int check_red_token(t_lst **s);
 void    ft_exec(t_red **s, char **simple_cmd, char **envp);
 int		red_dup_mannager(t_red *red, int fd_ret, int i);
 void    case_1_ft_exec(t_red *red, char **simple_cmd, int i, char **envp, int save_out);
-int 	case_2_ft_exec(t_red *red, char **simple_cmd, int i, char **envp, int save_out);
-void    case_3_ft_exec(t_red *red, char **simple_cmd, int i, char **envp, int fd, int save_out);
-int		case_4_ft_exec(t_red *red, char **simple_cmd, int i, char **envp, int fd_ret, int save_out);
+void    case_2_ft_exec(t_red *red, char **simple_cmd, int i, char **envp, int save_out);
+void    case_3_ft_exec(t_red *red, char **simple_cmd, int i, char **envp, int save_out);
+void    case_4_ft_exec(t_red *red, char **simple_cmd, int i, char **envp, int save_out);
 void    free_red(t_red **s);
-
+void    dup_mannager_out(t_red *red);
+int check_ambigous_redirect(t_red **s);
 
 #endif

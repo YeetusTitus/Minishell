@@ -144,7 +144,10 @@ void    ft_loop(char **envp)
     t_red   **red;
 //    char    **tempo = NULL;
     char    **truc;
+    int     save;
+    int     i;
 
+    i = 0;
     create_env(env, envp);
     while (1)
     {
@@ -163,9 +166,19 @@ void    ft_loop(char **envp)
         lst = *s;
         red = get_red_array(s);
         truc = get_simple_cmd_array(s);
-        ft_exec(red, truc, envp);
-//        tempo = get_array_execve(lst, s);
-//        ft_exec_cmd(lst, envp, tempo);
+        i = check_ambigous_redirect(red);
+        if (i == 0)
+        {
+            if (truc[0])
+                ft_exec(red, truc, envp);
+            else
+            {
+                save = dup(1);
+                dup_mannager_out(*red);
+                dup2(save, 1);
+                close(save);
+            }
+        }
 /*        if (ft_strlen(str) > 0)
         {
             free(str);
@@ -182,5 +195,4 @@ void    ft_loop(char **envp)
 */    }
     free_env(env);
 	system("leaks minishell");
-    
 }

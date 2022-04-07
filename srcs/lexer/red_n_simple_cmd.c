@@ -113,14 +113,14 @@ t_red    **get_red_array_data(t_lst **s, t_red **f)
         else if (lst->type == '<' * -1)
         {
             red->type[i] = lst->type;
-            red->file[i] = ft_strdup(lst->data + 1);
+            red->file[i] = ft_strdup(lst->data + 2);
             i++;
             lst = lst->next;
         }
         else if (lst->type == '>' * -1)
         {
             red->type[i] = lst->type;
-            red->file[i] = ft_strdup(lst->data + 1);
+            red->file[i] = ft_strdup(lst->data + 2);
             i++;
             lst = lst->next;
         }

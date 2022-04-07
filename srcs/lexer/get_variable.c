@@ -63,7 +63,8 @@ void    translate_variable(t_lst **s, t_env **env)
             get_variable_case_2(lst, tmp, tmp2, i);
         i = 0;
         tmp = *env;
-        lst = lst->next;
+        if (lst)
+            lst = lst->next;
     }
 }
 
