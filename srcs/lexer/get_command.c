@@ -11,6 +11,8 @@ void	free_tab(char **path_tab)
 {
 	int	i;
 
+	if (!path_tab)
+		return ;
 	i = 0;
 	while (path_tab[i])
 	{

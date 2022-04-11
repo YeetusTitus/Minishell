@@ -240,7 +240,7 @@ void    dup_mannager_out(t_red *red, int i, int save_out, char *cmd)
         }
         else if (red->type[j] == '<')
         {
-            close(0);
+//            close(0);
             fd = open(red->file[j], O_RDONLY);
             if (fd < 0)
             {
@@ -257,6 +257,7 @@ void    dup_mannager_out(t_red *red, int i, int save_out, char *cmd)
                 else
                     exit(1);
             }
+//            close(0);
             dup2(fd, 0);
             close(fd);
         }

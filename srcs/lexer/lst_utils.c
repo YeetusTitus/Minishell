@@ -117,6 +117,8 @@ void    free_lst(t_lst **s)
 {
     t_lst  *lst;
 
+    if (!s)
+        return ;
     while (*s)
     {
         lst = (*s)->next;
@@ -127,7 +129,7 @@ void    free_lst(t_lst **s)
     }
     free(*s);
     free(lst);
-    *s = NULL;
+    s = NULL;
 }
 
 void    add_lst(t_lst *lst)

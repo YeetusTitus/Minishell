@@ -120,46 +120,26 @@ t_lst  **get_data_in_lst(char *str)
 // la loop qui permet d afficher le prompt et de garder l historique des commandes tapees
 void    ft_loop(char **envp)
 {
-
-/*    
-    envp[0] = NULL;
-    char *str = readline("$> ");
-    int *arr = get_enum_data(str);
-    int i = 0;
-
-    while (arr[i])
-    {
-        printf("%d\n", arr[i]);
-        i++;
-    }
-        printf("%d\n", arr[i]);
-*/    
-
-     
-   
     char    *str;
     t_lst   **s;
-    t_lst   *lst;
     t_env   *env[2];
     t_red   **red;
-//    char    **tempo = NULL;
     char    **truc;
     int     save;
     int     i;
 
-    truc = NULL;
-    red = NULL;
-    s = NULL;
-    i = 0;
     create_env(env, envp);
     while (1)
     {
+        truc = NULL;
+        red = NULL;
+        s = NULL;
+        i = 0;
         str = readline("$> ");
         if (ft_strlen(str) > 0)
             add_history(str);
                                  // lexer
         s = get_data_in_lst(str);
-        lst = *s;
         get_qoute(s);
         get_variable(s);
         get_variable_in_quote(s, env);
@@ -173,7 +153,6 @@ void    ft_loop(char **envp)
             red = get_red_array(s);
             truc = get_simple_cmd_array(s);
         }
-//        i = check_ambigous_redirect(red);
         if (i == 0)
         {
             if (truc[0])
@@ -186,17 +165,10 @@ void    ft_loop(char **envp)
                 close(save);
             }
         }
-        if (ft_strlen(str) > 0)
-        {
-            free(str);
-            if ((*s))
-                free_lst(s);
-            free(s);
-        }
-        if (truc)
-            free_tab(truc);
-        if (*red)
-            free_red(red);
+        free(str);
+        free_lst(s);
+        free_tab(truc);
+        free_red(red);
     }
     free_env(env);
 	system("leaks minishell");

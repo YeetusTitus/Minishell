@@ -52,6 +52,7 @@ int check_pipe_place(t_lst **s)
         }
         if (lst->type == '|')
         {
+            lst = lst->next;
             while (lst->type == ' ')
                 lst = lst->next;
             if (lst->type == 0)
@@ -256,6 +257,8 @@ void    free_red(t_red **s)
 {
     t_red   *red;
 
+    if (!s)
+        return ;
     while (*s)
     {
         red = (*s)->next;
@@ -266,9 +269,9 @@ void    free_red(t_red **s)
         free(*s);
         *s = red;
     }
+    printf("RED A ETE FREE SA MERE\n");
     free(*s);
     free(red);
-    *s = NULL;
 }
 
 
