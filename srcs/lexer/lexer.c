@@ -162,37 +162,42 @@ void    ft_loop(char **envp)
         get_variable_in_quote(s, env);
         translate_variable(s, env);
                                 //parsing
-        get_redirection_with_file(s);
+        i = get_redirection_with_file(s);
         lst = *s;
+        if_only_red(s);
         red = get_red_array(s);
+        lst = *s;
         truc = get_simple_cmd_array(s);
-        i = check_ambigous_redirect(red);
+//        if (i == 0)
+//           i = check_ambigous_redirect(red);
+                                // execution
         if (i == 0)
         {
             if (truc[0])
+            {
                 ft_exec(red, truc, envp);
+            }
             else
             {
                 save = dup(1);
-                dup_mannager_out(*red, 0);
+                dup_mannager_out(*red, 0, save, NULL);
                 dup2(save, 1);
                 close(save);
             }
         }
-/*        if (ft_strlen(str) > 0)
+                                // free stuff
+        if (ft_strlen(str) > 0)
         {
             free(str);
             if ((*s))
                 free_lst(s);
             free(s);
         }
-        if (tempo)
-            free_tab(tempo);
         if (truc)
             free_tab(truc);
         if (*red)
             free_red(red);
-*/    }
+    }
     free_env(env);
 	system("leaks minishell");
 }

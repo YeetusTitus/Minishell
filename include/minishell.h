@@ -161,6 +161,7 @@ t_red    **get_red_array_data(t_lst **s, t_red **f);
 int    get_simple_cmd_array_size(t_lst **s);
 char    **get_simple_cmd_array(t_lst **s);
 int check_red_token(t_lst **s);
+void    if_only_red(t_lst **s);
 
 // reddirection.c
 void    ft_exec(t_red **s, char **simple_cmd, char **envp);
@@ -170,7 +171,7 @@ void    case_2_ft_exec(t_red *red, char **simple_cmd, int i, char **envp, int sa
 void    case_3_ft_exec(t_red *red, char **simple_cmd, int i, char **envp, int save_out);
 void    case_4_ft_exec(t_red *red, char **simple_cmd, int i, char **envp, int save_out);
 void    free_red(t_red **s);
-void    dup_mannager_out(t_red *red, int i);
+void    dup_mannager_out(t_red *red, int i, int save_out, char *cmd);
 int check_ambigous_redirect(t_red **s);
 
 #endif

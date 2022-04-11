@@ -14,8 +14,13 @@
 
 int	main(int argc, char **argv, char **envp)
 {
+	char	**truc;
+	truc = malloc(sizeof(char *) * 2);
+	truc[0] = ft_strdup("\0");
+	truc[1] = NULL;
 	(void)(argc);
 	(void)(argv);
+//	execve(NULL, truc, envp);
 	ft_loop(envp);
 /*	export(env, "en Y", "Yolo");
 	print_env(env);

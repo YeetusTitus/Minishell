@@ -1,5 +1,7 @@
 #include "../../include/minishell.h"
 
+
+// fonction qui fqit seg fault mdrr
 int check_ambigous_redirect(t_red **s)
 {
     t_red   *red;
@@ -77,16 +79,14 @@ void    case_1_ft_exec(t_red *red, char **simple_cmd, int i, char **envp, int sa
     char    **cmd;
     int     pid;
     int     fd;
-    t_red   *tmp;
 
-    tmp = red;
     fd = 0;
     pid = fork();
     if (pid == 0)
     {
-        dup_mannager_out(red, 1);
         cmd = ft_split(simple_cmd[i], ' ');
         path = get_cmd(envp, cmd[0]);
+        dup_mannager_out(red, 1, save_out, cmd[0]);
 	    if (!path)
 	    {
             dup2(save_out, 1);
@@ -118,9 +118,9 @@ void    case_2_ft_exec(t_red *red, char **simple_cmd, int i, char **envp, int sa
     {
         close(fd[1]);
         close(fd[0]);
-        dup_mannager_out(red, 1);
         cmd = ft_split(simple_cmd[i], ' ');
         path = get_cmd(envp, cmd[0]);
+        dup_mannager_out(red, 1, save_out, cmd[0]);
 	    if (!path)
 	    {
             dup2(save_out, 1);
@@ -130,7 +130,7 @@ void    case_2_ft_exec(t_red *red, char **simple_cmd, int i, char **envp, int sa
 	        exit(1);
 	    }
        else
-           execve(path, cmd, envp);
+            execve(path, cmd, envp);
     }
     else
     {
@@ -153,9 +153,9 @@ void    case_3_ft_exec(t_red *red, char **simple_cmd, int i, char **envp, int sa
     pid = fork();
     if (pid == 0)
     {
-        dup_mannager_out(red, 1);
         cmd = ft_split(simple_cmd[i], ' ');
         path = get_cmd(envp, cmd[0]);
+        dup_mannager_out(red, 1, save_out, cmd[0]);
         if (!path)
         {
             dup2(save_out, 1);
@@ -188,9 +188,9 @@ void    case_4_ft_exec(t_red *red, char **simple_cmd, int i, char **envp, int sa
     {
         close(fd[1]);
         close(fd[0]);
-        dup_mannager_out(red, 1);
         cmd = ft_split(simple_cmd[i], ' ');
         path = get_cmd(envp, cmd[0]);
+        dup_mannager_out(red, 1, save_out, cmd[0]);
         if (!path)
         {
             dup2(save_out, 1);
@@ -199,8 +199,8 @@ void    case_4_ft_exec(t_red *red, char **simple_cmd, int i, char **envp, int sa
         	ft_putstr_fd(" : command not found\n", 1);
             exit(1);
         }
-        else
-            execve(path, cmd, envp); 
+       else
+            execve(path, cmd, envp);
     }
     else
     {
@@ -211,24 +211,30 @@ void    case_4_ft_exec(t_red *red, char **simple_cmd, int i, char **envp, int sa
 }
 
 
-void    dup_mannager_out(t_red *red, int i)
+void    dup_mannager_out(t_red *red, int i, int save_out, char *cmd)
 {
     int j;
     int fd;
-    int fdpipe[2];
+    int save;
+    int fdp[2];
+    char    *str;
+    int     ret;
 
+    ret = -1;
     fd = -1;
     j = 0;
     while (red->type[j] != -1)
     {
         if (red->type[j] == '>')
         {
+            close(1);
             fd = open(red->file[j], O_TRUNC | O_CREAT | O_RDWR, 0644);
             dup2(fd, 1);
             close(fd);
         }
         else if (red->type[j] == '>' * -1)
         {
+            close(1);
             fd = open(red->file[j],  O_APPEND | O_CREAT | O_RDWR, 0644);
             dup2(fd, 1);
             close(fd);
@@ -238,59 +244,48 @@ void    dup_mannager_out(t_red *red, int i)
             fd = open(red->file[j], O_RDONLY);
             if (fd < 0)
             {
+                save = dup(1);
+                close(1);
+                dup2(save_out, 1);
+                close (save_out);
                 ft_putstr_fd(red->file[j], 1);
                 ft_putstr_fd(" : No such file or directory\n", 1);
+                dup2(save, 1);
+                close(save);
                 if (i == 0)
                     return ;
                 else
                     exit(1);
             }
-        }
-/*        else if (red->type[j] == '<' * -1)
-        {
-            pipe(fdpipe);
-
-        }
-*/        j++;
-    }
-}
-
-
-int red_dup_mannager(t_red *red, int fd_ret, int i)
-{
-    int j;
-    int fd;
-
-    fd = -1;
-    j = 0;
-    while (red->type[j] != -1)
-    {
-        if (red->type[j] == '>')
-        {
-            fd = open(red->file[j], O_TRUNC | O_CREAT | O_RDWR, 0644);
-            if (i == 1)
-                fd_ret = fd;
-            dup2(fd, 1);
-            close(fd);
-        }
-        else if (red->type[j] == '<')
-        {
-            if (i == 0)
-                fd_ret = fd;
-            fd = open(red->file[j], O_RDONLY);
             dup2(fd, 0);
             close(fd);
         }
-        else if (red->type[j] == '>' * -1)
+        else if (red->type[j] == '<' * -1)
         {
-            if (i == 1)
-                fd_ret = fd;
-            fd = open(red->file[j],  O_APPEND | O_TRUNC | O_CREAT | O_RDWR, 0644);
-            dup2(fd, 1);
-            close(fd);
+            pipe(fdp);
+            while (1)
+            {
+                str = readline("HereDoc > ");
+                if (ft_strncmp(str, red->file[j], ft_strlen(str)) == 0 || !str)
+                {
+                    free(str);
+                    break ;
+                }
+                write(fdp[1], str, ft_strlen(str));
+                write(fdp[1], "\n", 1);
+                free(str);
+            }
+            close(fdp[1]);
+            if (cmd == NULL)
+                return ;
+            else
+            {
+                dup2(fdp[0], 0);
+                close(fdp[0]);
+            }
         }
-        // faire aussi pour '<<'
         j++;
     }
-    return(fd_ret);
+//    return(ret);
 }
+

@@ -28,6 +28,8 @@ char	*get_cmd(char **envp, char *cmd)
 	char	*command;
 	int		i;
 
+	if (cmd[0] =='\0')
+		return ("\0");
     path = find_path(envp);
 	path_tab = ft_split(path, ':');
 	i = 0;

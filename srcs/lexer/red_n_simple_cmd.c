@@ -10,7 +10,7 @@ int    get_redirection_with_file(t_lst **s)
     // concatener les '>' avec son fichier (sans espace)
     while (lst)
     {
-        if (lst->type == '<' || lst->type == '>' || lst->type == '<' * -1 || lst->type == '>' * -1)
+        if (lst->type == '<' || lst->type == '>' || lst->type == '<' * -1 || lst->type == '>' * -1)// || lst->type == '|')
         {
             while (lst->next->type == 32 && lst->next)
                 lst_del(s, lst->pos + 1);
@@ -167,16 +167,21 @@ char    **get_simple_cmd_array(t_lst **s)
     int     size;
     char    **sc_array;
     int     i;
+    int     ok;
 
     lst = *s;
     size = get_simple_cmd_array_size(s) + 1; // +1 pour lq derniere case NULL du tab
     sc_array = malloc(sizeof(char *) * size);
     i = 0;
+    ok = 0;
     while (lst)
     {
         if (lst->type == -1)
         {
-            sc_array[i] = ft_strdup(lst->data);
+            if (ft_strlen(lst->data) < 1)
+                sc_array[i] = ft_strdup("\0");
+            else
+                sc_array[i] = ft_strdup(lst->data);
             lst = lst->next;
             while (lst->type == -1 || lst->type == 32)
             {
@@ -196,6 +201,7 @@ int check_red_token(t_lst **s)
     t_lst *lst;
 
     lst = *s;
+    printf("JE SUIS ICIIIII\n");
     while (lst)
     {
         if (lst->type == '|' || lst->type == '<' || lst->type == '>' || lst->type == '<' * -1 || lst->type == '>' * -1)
@@ -218,6 +224,7 @@ int check_red_token(t_lst **s)
     return (0);
 }
 
+
 void    free_red(t_red **s)
 {
     t_red   *red;
@@ -235,4 +242,39 @@ void    free_red(t_red **s)
     free(*s);
     free(red);
     *s = NULL;
+}
+
+void    if_only_red(t_lst **s)
+{
+    t_lst   *lst;
+    t_lst   *tmp;
+    int     secu;
+
+    lst = *s;
+    tmp = lst;
+    secu = 0;
+    while (lst)
+    {
+        if (lst->type == '|')
+        {
+            while (tmp->pos != lst->pos)
+            {
+                if (tmp->type == -1)
+                    secu++;
+                tmp = tmp->next;
+            }
+            if (secu == 0)
+            {
+                tmp = lst->prev;
+                tmp->next = ft_calloc(1, sizeof(t_lst));
+                tmp->next->type = -1;
+                tmp->next->data = ft_strdup("\0");
+                tmp->next->next = lst;
+                get_lst_pos(s);
+            }
+            tmp = lst;
+            secu = 0;
+        }
+        lst = lst->next;
+    }
 }
