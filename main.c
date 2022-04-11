@@ -6,11 +6,13 @@
 /*   By: jforner <jforner@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/02 17:30:22 by jforner           #+#    #+#             */
-/*   Updated: 2022/04/02 14:56:15 by jforner          ###   ########.fr       */
+/*   Updated: 2022/04/11 16:00:06 by jforner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
+
+int	yo;
 
 char	*ft_strcpy(char *str)
 {
@@ -28,25 +30,30 @@ char	*ft_strcpy(char *str)
 
 int	main(int argc, char **argv, char **envp)
 {
-	t_env	*env[3];
+	static t_env	*env[3];
 	char	**tabarg;
 	char	**tabenv;
 	char	*str;
-	// char	*str2;
 	int		i;
+	pid_t	pid;
 
 	(void)(argc);
 	(void)(argv);
 	tabarg = NULL;
 	tabenv = NULL;
+	str = NULL;
+	yo = 0;
 	int	j = -1;
+	signals();
 	create_env(env, envp);
-	while (++j < 20)
+	while (++j < 2)
 	{
 		errno = 0;
 		cwdisdel(env);
 		i = -1;
 		str = readline("minishell> ");
+		if (!str)
+			ms_exit(NULL, env);
 		tabarg = ft_split(str, ' ');
 		if (!tablen(tabarg))
 			export(env, NULL, NULL);
@@ -71,6 +78,21 @@ int	main(int argc, char **argv, char **envp)
 				print_env(*env);
 			else if (ft_strcmp(tabarg[0], "echo"))
 				ms_echo(&tabarg[1]);
+			else if (ft_strcmp(tabarg[0], "while"))
+			{
+				pid = fork();
+				if (pid == 0)
+				{
+					printf("cc\n");
+					printf("SLT\n");
+					while (1);
+					// return (1);
+				}
+				else
+					wait(NULL);
+			}
+			else if (ft_strcmp(tabarg[0], "exit"))
+				ms_exit(&tabarg[1], env);
 			else
 			{
 				while (++i < tablen(tabarg))
@@ -91,12 +113,13 @@ int	main(int argc, char **argv, char **envp)
 			}
 		}
 		free (str);
+		str = NULL;
 		if (tabenv != NULL)
 			tabenv = ft_malloc_error(tabenv, tablen(tabenv));
 		if (tabarg != NULL)
 			tabarg = ft_malloc_error(tabarg, tablen(tabarg));
 	}
 	free_export(env);
-	// system("leaks minishell");
+	system("leaks minishell");
 	return (0);
 }
