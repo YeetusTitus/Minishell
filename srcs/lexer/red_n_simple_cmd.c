@@ -269,7 +269,6 @@ void    free_red(t_red **s)
         free(*s);
         *s = red;
     }
-    printf("RED A ETE FREE SA MERE\n");
     free(*s);
     free(red);
 }

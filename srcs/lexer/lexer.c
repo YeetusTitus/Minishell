@@ -160,7 +160,8 @@ void    ft_loop(char **envp)
             else
             {
                 save = dup(1);
-                dup_mannager_out(*red, 0, save, NULL);
+                ft_exec(red, ft_split("cat", ' '), envp);        // Grosse arnaque pour eviter le seg fault (a voir si ca passe) fait <a cat au lieu de simplement <a
+//                dup_mannager_out(*red, 0, save, ft_split("cat", ' '));
                 dup2(save, 1);
                 close(save);
             }
