@@ -1,7 +1,5 @@
 #include "../../include/minishell.h"
 
-
-// fonction qui fqit seg fault mdrr
 int check_ambigous_redirect(t_red **s)
 {
     t_red   *red;
@@ -64,6 +62,7 @@ void    ft_exec(t_red **s, char **simple_cmd, char **envp)
         else if (i > 0 && simple_cmd[i + 1])
             case_4_ft_exec(red, simple_cmd, i, envp, save_out);
         i++;
+        red = red->next;
     }
     while (wait(NULL) != -1)
         ;
@@ -79,14 +78,16 @@ void    case_1_ft_exec(t_red *red, char **simple_cmd, int i, char **envp, int sa
     char    **cmd;
     int     pid;
     int     fd;
+    t_red   *tmp;
 
+    tmp = red;
     fd = 0;
     pid = fork();
     if (pid == 0)
     {
         cmd = ft_split(simple_cmd[i], ' ');
-        path = get_cmd(envp, cmd[0]);
         dup_mannager_out(red, 1, save_out, cmd[0]);
+        path = get_cmd(envp, cmd[0]);
 	    if (!path)
 	    {
             dup2(save_out, 1);
@@ -119,8 +120,8 @@ void    case_2_ft_exec(t_red *red, char **simple_cmd, int i, char **envp, int sa
         close(fd[1]);
         close(fd[0]);
         cmd = ft_split(simple_cmd[i], ' ');
-        path = get_cmd(envp, cmd[0]);
         dup_mannager_out(red, 1, save_out, cmd[0]);
+        path = get_cmd(envp, cmd[0]);
 	    if (!path)
 	    {
             dup2(save_out, 1);
@@ -130,7 +131,7 @@ void    case_2_ft_exec(t_red *red, char **simple_cmd, int i, char **envp, int sa
 	        exit(1);
 	    }
        else
-            execve(path, cmd, envp);
+           execve(path, cmd, envp);
     }
     else
     {
@@ -145,17 +146,16 @@ void    case_3_ft_exec(t_red *red, char **simple_cmd, int i, char **envp, int sa
     int     pid;
     char    *path;
     char    **cmd;
-    t_red   *tmp;
 
-    tmp = red;
+
     dup2(save_out, 1);
     close(save_out);
     pid = fork();
     if (pid == 0)
     {
         cmd = ft_split(simple_cmd[i], ' ');
-        path = get_cmd(envp, cmd[0]);
         dup_mannager_out(red, 1, save_out, cmd[0]);
+        path = get_cmd(envp, cmd[0]);
         if (!path)
         {
             dup2(save_out, 1);
@@ -189,8 +189,8 @@ void    case_4_ft_exec(t_red *red, char **simple_cmd, int i, char **envp, int sa
         close(fd[1]);
         close(fd[0]);
         cmd = ft_split(simple_cmd[i], ' ');
-        path = get_cmd(envp, cmd[0]);
         dup_mannager_out(red, 1, save_out, cmd[0]);
+        path = get_cmd(envp, cmd[0]);
         if (!path)
         {
             dup2(save_out, 1);
@@ -199,8 +199,8 @@ void    case_4_ft_exec(t_red *red, char **simple_cmd, int i, char **envp, int sa
         	ft_putstr_fd(" : command not found\n", 1);
             exit(1);
         }
-       else
-            execve(path, cmd, envp);
+        else
+            execve(path, cmd, envp); 
     }
     else
     {
@@ -209,7 +209,6 @@ void    case_4_ft_exec(t_red *red, char **simple_cmd, int i, char **envp, int sa
         close(fd[0]);
     }
 }
-
 
 void    dup_mannager_out(t_red *red, int i, int save_out, char *cmd)
 {
@@ -227,20 +226,21 @@ void    dup_mannager_out(t_red *red, int i, int save_out, char *cmd)
     {
         if (red->type[j] == '>')
         {
-            close(1);
+ //           close(0);
             fd = open(red->file[j], O_TRUNC | O_CREAT | O_RDWR, 0644);
             dup2(fd, 1);
             close(fd);
         }
         else if (red->type[j] == '>' * -1)
         {
-            close(1);
+//            close(0);
             fd = open(red->file[j],  O_APPEND | O_CREAT | O_RDWR, 0644);
             dup2(fd, 1);
             close(fd);
         }
         else if (red->type[j] == '<')
         {
+            close(0);
             fd = open(red->file[j], O_RDONLY);
             if (fd < 0)
             {
@@ -288,4 +288,3 @@ void    dup_mannager_out(t_red *red, int i, int save_out, char *cmd)
     }
 //    return(ret);
 }
-

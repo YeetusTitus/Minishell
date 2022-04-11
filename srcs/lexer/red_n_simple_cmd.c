@@ -10,7 +10,7 @@ int    get_redirection_with_file(t_lst **s)
     // concatener les '>' avec son fichier (sans espace)
     while (lst)
     {
-        if (lst->type == '<' || lst->type == '>' || lst->type == '<' * -1 || lst->type == '>' * -1)// || lst->type == '|')
+        if (lst->type == '<' || lst->type == '>' || lst->type == '<' * -1 || lst->type == '>' * -1)
         {
             while (lst->next->type == 32 && lst->next)
                 lst_del(s, lst->pos + 1);
@@ -31,6 +31,40 @@ int    get_redirection_with_file(t_lst **s)
     }
     return (0);
 }
+
+int check_pipe_place(t_lst **s)
+{
+    t_lst   *lst;
+
+    get_lst_pos(s);
+    lst = *s;
+    while (lst)
+    {
+        if (lst->pos == 1)
+        {
+            while(lst->type == ' ')
+                lst = lst->next;
+            if (lst->type == '|')
+            {
+                ft_putstr_fd("syntax error near unexpected token : |\n", 1);
+                return (1);
+            }
+        }
+        if (lst->type == '|')
+        {
+            while (lst->type == ' ')
+                lst = lst->next;
+            if (lst->type == 0)
+            {
+                ft_putstr_fd("syntax error near unexpected token : |\n", 1);
+                return (1);
+            }
+        }
+        lst = lst->next;
+    }
+    return (0);
+}
+
 
 int get_nb_red_lst(t_lst **s)
 {
@@ -167,21 +201,16 @@ char    **get_simple_cmd_array(t_lst **s)
     int     size;
     char    **sc_array;
     int     i;
-    int     ok;
 
     lst = *s;
     size = get_simple_cmd_array_size(s) + 1; // +1 pour lq derniere case NULL du tab
     sc_array = malloc(sizeof(char *) * size);
     i = 0;
-    ok = 0;
     while (lst)
     {
         if (lst->type == -1)
         {
-            if (ft_strlen(lst->data) < 1)
-                sc_array[i] = ft_strdup("\0");
-            else
-                sc_array[i] = ft_strdup(lst->data);
+            sc_array[i] = ft_strdup(lst->data);
             lst = lst->next;
             while (lst->type == -1 || lst->type == 32)
             {
@@ -201,7 +230,6 @@ int check_red_token(t_lst **s)
     t_lst *lst;
 
     lst = *s;
-    printf("JE SUIS ICIIIII\n");
     while (lst)
     {
         if (lst->type == '|' || lst->type == '<' || lst->type == '>' || lst->type == '<' * -1 || lst->type == '>' * -1)
@@ -224,7 +252,6 @@ int check_red_token(t_lst **s)
     return (0);
 }
 
-
 void    free_red(t_red **s)
 {
     t_red   *red;
@@ -243,6 +270,7 @@ void    free_red(t_red **s)
     free(red);
     *s = NULL;
 }
+
 
 void    if_only_red(t_lst **s)
 {

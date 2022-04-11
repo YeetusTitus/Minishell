@@ -147,6 +147,9 @@ void    ft_loop(char **envp)
     int     save;
     int     i;
 
+    truc = NULL;
+    red = NULL;
+    s = NULL;
     i = 0;
     create_env(env, envp);
     while (1)
@@ -162,21 +165,19 @@ void    ft_loop(char **envp)
         get_variable_in_quote(s, env);
         translate_variable(s, env);
                                 //parsing
-        i = get_redirection_with_file(s);
-        lst = *s;
-        if_only_red(s);
-        red = get_red_array(s);
-        lst = *s;
-        truc = get_simple_cmd_array(s);
-//        if (i == 0)
-//           i = check_ambigous_redirect(red);
-                                // execution
+        i += check_pipe_place(s);
+        if (i == 0)
+        {
+            i += get_redirection_with_file(s);
+            if_only_red(s);
+            red = get_red_array(s);
+            truc = get_simple_cmd_array(s);
+        }
+//        i = check_ambigous_redirect(red);
         if (i == 0)
         {
             if (truc[0])
-            {
                 ft_exec(red, truc, envp);
-            }
             else
             {
                 save = dup(1);
@@ -185,7 +186,6 @@ void    ft_loop(char **envp)
                 close(save);
             }
         }
-                                // free stuff
         if (ft_strlen(str) > 0)
         {
             free(str);
