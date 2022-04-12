@@ -18,12 +18,8 @@ int  *get_enum_data(char *str)
             array[i] = CHAR_QOUTE;
         else if (str[i] == '\"')
             array[i] = CHAR_DQUOTE;
-        else  if (str[i] == ';')
-            array[i] = CHAR_SEMICOLON;
         else  if (str[i] == ' ')
             array[i] = CHAR_WHITESPACE;
-        else  if (str[i] == '\\')
-            array[i] = CHAR_ESCAPESEQUENCE;
         else if (str[i] == '>')
             array[i] = CHAR_GREATER;
         else if (str[i] == '<')
@@ -127,6 +123,7 @@ void    ft_loop(char **envp)
     char    **truc;
     int     save;
     int     i;
+    int     pid;
 
     create_env(env, envp);
     while (1)
@@ -159,11 +156,16 @@ void    ft_loop(char **envp)
                 ft_exec(red, truc, envp);
             else
             {
-                save = dup(1);
-                ft_exec(red, ft_split("cat", ' '), envp);        // Grosse arnaque pour eviter le seg fault (a voir si ca passe) fait <a cat au lieu de simplement <a
-//                dup_mannager_out(*red, 0, save, ft_split("cat", ' '));
-                dup2(save, 1);
-                close(save);
+                wait(NULL);
+                pid = fork();
+                if (pid == 0)
+                {
+                    save = dup(1);
+                    dup_mannager_out(*red, 1, save, NULL);
+                    exit(0);
+                }
+                else
+                    wait(NULL);
             }
         }
         free(str);
