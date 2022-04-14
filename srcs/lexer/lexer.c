@@ -6,17 +6,17 @@
 /*   By: ktroude <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/14 17:25:29 by ktroude           #+#    #+#             */
-/*   Updated: 2022/04/14 17:25:30 by ktroude          ###   ########.fr       */
+/*   Updated: 2022/04/14 20:33:42 by ktroude          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
 // decouper la chaine de characteres tapee apres le prompt
-int  *get_enum_data(char *str)
+int	*get_enum_data(char *str)
 {
-	int *array;
-	int i;
+	int	*array;
+	int	i;
 
 	array = malloc(sizeof(int) * (ft_strlen_v2(str) + 1));
 	i = 0;
@@ -30,7 +30,7 @@ int  *get_enum_data(char *str)
 			array[i] = CHAR_QOUTE;
 		else if (str[i] == '\"')
 			array[i] = CHAR_DQUOTE;
-		else  if (str[i] == ' ')
+		else if (str[i] == ' ')
 			array[i] = CHAR_WHITESPACE;
 		else if (str[i] == '>')
 			array[i] = CHAR_GREATER;
@@ -50,32 +50,29 @@ int  *get_enum_data(char *str)
 			array[i] = CHAR_GENERAL;
 		i++;
 	}
-	array[i] =  CHAR_NULL;
+	array[i] = CHAR_NULL;
 	return (array);
 }
 
-
 // mettre les token dans une liste chainee 
-t_lst  **get_data_in_lst(char *str)
+t_lst	**get_data_in_lst(char *str)
 {
-	t_lst  *lst;
-	t_lst  **first;
-	int     *array;
-	int     i;
-	int     start;
-	int     pos;
+	t_lst	*lst;
+	t_lst	**first;
+	int		*array;
+	int		i;
+	int		start;
+	int		pos;
 
 	pos = 1;
 	start = 0;
 	i = 0;
 	array = get_enum_data(str);
 	lst = ft_calloc(1, sizeof(t_lst));
-	/*lst = malloc(sizeof(t_lst));
-	  lst->next = NULL;
-	  lst->prev = NULL;
-	  */    first = malloc(sizeof(t_lst *));
+	lst->prev = NULL;
+	first = malloc(sizeof(t_lst *));
 	*first = lst;
-	while(array[i])
+	while (array[i])
 	{
 		while (array[i] == array[i + 1] && (array[i] == -1 || array[i] == ' '))
 			i++;
@@ -123,20 +120,18 @@ t_lst  **get_data_in_lst(char *str)
 	return (first);
 }
 
-
-
 // la loop qui permet d afficher le prompt et de garder l historique des commandes tapees
-void    ft_loop(char **envp)
+void	ft_loop(char **envp)
 {
-	char    *str;
-	t_lst   **s;
-	t_env   *env[2]; // new version env a implemebter
-	t_red   **red;
-	char    **truc;
-	int     save;
-	int     i;
-	int     pid;
-	t_lst *lst;
+	char	*str;
+	t_lst	**s;
+	t_env	*env[2]; // new version env a implemebter
+	t_red	**red;
+	char	**truc;
+	int		save;
+	int		i;
+	int		pid;
+	t_lst	*lst;
 
 	create_env(env, envp);
 	while (1)
@@ -170,7 +165,7 @@ void    ft_loop(char **envp)
 			truc = get_simple_cmd_array(s);
 		}
 		i = 0;
-		while(truc[i])
+		while (truc[i])
 		{
 			printf("exec == %s\n", truc[i]);
 			i++;
@@ -179,8 +174,8 @@ void    ft_loop(char **envp)
 		if (i == 0)
 		{
 			if (truc[0])
-                ft_exec(red, truc, envp, env);
-            else
+				ft_exec(red, truc, envp, env);
+			else
 			{
 				wait(NULL);
 				pid = fork();
