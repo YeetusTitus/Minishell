@@ -6,24 +6,41 @@
 /*   By: jforner <jforner@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/07 18:53:50 by jforner           #+#    #+#             */
-/*   Updated: 2022/04/11 14:52:10 by jforner          ###   ########.fr       */
+/*   Updated: 2022/04/14 15:12:51 by jforner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-void	handler_int(int num)
+void	handler_sig(int num)
 {
 	(void)(num);
-	write(1, "ligma\n", 6);
+	if (!g_sign && num == 2)
+	{
+		write(1, "\n", 1);
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
+	}
+	else if (g_sign && num == 2)
+		write(1, "\n", 1);
+	if (g_sign && num == 3)
+		write(1, "Quit: 3\n", 8);
 }
 
-void	signals(void)
+void	sign_onoff(int toogle)
 {
-	struct sigaction	sig;
+	struct termios	conf;
 
-	sig.sa_flags = SA_RESTART;
-	sig.__sigaction_u.__sa_handler = handler_int;
-	sigaction(SIGINT, &sig, NULL);
-	signal(SIGQUIT, SIG_IGN);
+	tcgetattr(ttyslot(), &conf);
+	if (toogle)
+		conf.c_lflag |= ECHOCTL;
+	else
+		conf.c_lflag &= ~(ECHOCTL);
+	tcsetattr(ttyslot(), 0, &conf);
+	g_sign = toogle;
+	if (toogle)
+		signal(SIGQUIT, handler_sig);
+	else
+		signal(SIGQUIT, SIG_IGN);
 }

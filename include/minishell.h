@@ -6,7 +6,7 @@
 /*   By: jforner <jforner@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/02 17:32:14 by jforner           #+#    #+#             */
-/*   Updated: 2022/04/11 16:03:39 by jforner          ###   ########.fr       */
+/*   Updated: 2022/04/14 15:12:05 by jforner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,9 @@ typedef struct s_env
 	char			*content;
 	struct s_env	*next;
 }	t_env;
+
+//global pour les signaux
+extern int	g_sign;
 
 // env/envutils
 t_env			*envnew(char *name, char *content);
@@ -103,9 +106,10 @@ int				pwd(t_env **env);
 void			ms_echo(char **table);
 
 // signals/signals
-void			handler_term(int num);
-void			handler_int(int num);
-void			signals(void);
+void			handler_sig(int num);
+void			sign_onoff(int toogle);
+// declaration replace line
+void			rl_replace_line(const char *text, int clear_undo);
 
 // signals/exit
 void			ms_exit(char **table, t_env **env);
@@ -116,4 +120,5 @@ unsigned char	ms_atouc(char *str);
 int				verif_maxlong2(char *nbr, int neg);
 int				verif_maxlong(char *nbr);
 int				verif_isdigit(char *str);
+
 #endif

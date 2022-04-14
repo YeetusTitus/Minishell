@@ -1,8 +1,16 @@
-SRCS = env/createenv.c env/envutils.c env/export.c env/unset.c  env/envutils2.c  \
-utils/utils1.c \
-path/cd.c path/pwd.c \
-signals/exit.c signals/signals.c signals/exit_utils.c \
-echo.c
+SRCS =	env/createenv.c \
+		env/envutils.c \
+		env/export.c \
+		env/unset.c  \
+		env/envutils2.c  \
+		utils/utils1.c \
+		path/cd.c path/pwd.c \
+		signals/exit.c \
+		signals/exit_utils.c \
+		signals/signals.c \
+		echo.c
+
+SIGNALS = srcs/
 
 MAIN = main.c
 
@@ -31,7 +39,7 @@ LIBFT = -Llibft -lft
 %.o: %.c ${HEADER}
 	gcc ${OFLAGS} -g ${EFLAGS} ${INCLUDE} -o $@ $<
 
-${NAME}: ${OBJS}
+${NAME}: ${OBJS} 
 	(cd libft && make)
 	gcc $(EFLAGS) -g -o $(NAME) $(MAIN) ${SRCSD} ${INCLUDE} ${LIBFT} ${IRL} ${LRL}
 			
