@@ -6,7 +6,7 @@
 /*   By: jforner <jforner@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/09 15:49:36 by jforner           #+#    #+#             */
-/*   Updated: 2022/03/10 14:19:59 by jforner          ###   ########.fr       */
+/*   Updated: 2022/04/08 15:18:23 by jforner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int	lenbchr(char *str, char chr)
 // Desc : Dump the information on the actual line of Envp in the
 // stockage variable of information for the environment variable.
 // In : The pointer of the stockage variable and the actual line of Envp.*
-// Out : 1 ou 0 (1 = no error, 0 = errorr).
+// Out : 1 or 0 (1 = no error, 0 = errorr).
 
 char	**content_env(char **cont, char *line)
 {
@@ -96,13 +96,15 @@ char	**content_env(char **cont, char *line)
 // Desc : create the structure of the environment variable.
 // In : A pointer on the  structure of
 // the environment variable and the Envp variable .*
-// Out : 1 ou 0 (1 = no error, 0 = error).
+// Out : 1 or 0 (1 = no error, 0 = error).
 
 int	create_env(t_env **env, char **envp)
 {
 	int		i;
 	char	**cont;
 
+	if (env[2] && ft_strcmp(env[2]->name, "?"))
+		return (1);
 	cont = (char **)malloc(3 * sizeof(char *));
 	cont[2] = NULL;
 	i = 0;
@@ -115,8 +117,12 @@ int	create_env(t_env **env, char **envp)
 		cont = content_env(cont, envp[i]);
 		if (cont == NULL)
 			return (0);
-		envadd_back(env, envnew(cont[0], cont[1]));
+		if (!ft_strcmp(cont[0], "OLDPWD"))
+			envadd_back(env, envnew(cont[0], cont[1]));
 	}
+	env[1] = envnew(ft_strdup("OLDPWD"), NULL);
+	env[2] = envnew(ft_strdup("?"), ft_strdup("0"));
+	envadd_back(&env[2], envnew(ft_strdup("CWD"), getcwd(NULL, 0)));
 	free(cont);
 	return (1);
 }
