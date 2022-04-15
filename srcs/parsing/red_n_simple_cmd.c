@@ -78,6 +78,9 @@ int	check_pipe_place(t_lst **s)
 	return (0);
 }
 
+
+
+
 int	get_nb_red_lst(t_lst **s)
 {
 	t_lst	*lst;
@@ -192,51 +195,6 @@ t_red	**get_red_array_data(t_lst **s, t_red **f)
 	return (f);
 }
 
-int	get_simple_cmd_array_size(t_lst **s)
-{
-	t_lst	*lst;
-	int		size;
-
-	size = 1;
-	lst = *s;
-	while (lst)
-	{
-		if (lst->type == '|')
-			size++;
-		lst = lst->next;
-	}
-	return (size);
-}
-
-char	**get_simple_cmd_array(t_lst **s)
-{
-	t_lst	*lst;
-	int		size;
-	char	**sc_array;
-	int		i;
-
-	lst = *s;
-	size = get_simple_cmd_array_size(s) + 1;
-	sc_array = malloc(sizeof(char *) * size);
-	i = 0;
-	while (lst)
-	{
-		if (lst->type == -1)
-		{
-			sc_array[i] = ft_strdup(lst->data);
-			lst = lst->next;
-			while (lst->type == -1 || lst->type == 32)
-			{
-				sc_array[i] = ft_strjoin_v2(sc_array[i], lst->data);
-				lst = lst->next;
-			}
-			i++;
-		}
-		lst = lst->next;
-	}
-	sc_array[i] = NULL;
-	return (sc_array);
-}
 
 int	check_red_token(t_lst **s)
 {

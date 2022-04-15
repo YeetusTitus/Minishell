@@ -5,7 +5,7 @@ void    ft_loop(char **envp)
 {
 	char    *str;
 	t_lst   **s;
-	t_env   *env[2]; // new version env a implemebter
+	t_env   *env[3]; // new version env a implemebter
 	t_red   **red;
 	char    **truc;
 	int     save;

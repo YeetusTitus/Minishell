@@ -173,6 +173,15 @@ typedef struct exec
 	int	fd[2];
 }	t_exec;
 
+// simple_cmd struct
+typedef struct s_cmd
+{
+	t_lst	*lst;
+	int		size;
+	int		i;
+	char	**sc_array;
+}	t_cmd;
+
 // lexer
 void    ft_loop(char **envp);
 t_lst  **get_data_in_lst(char *str);

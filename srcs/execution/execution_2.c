@@ -85,37 +85,51 @@ void	loop_case_4_exec(t_exec ex, t_red *red, char **simple_cmd, char **envp, t_e
 
 void	is_built_in(t_env **env, char *simple_cmd)
 {
+	char	*name;
+	char	*content;
 	char	**table;
 	int		i;
+	int		j;
 
+	j = 0;
 	table = ft_split(simple_cmd, ' ');
 	i = 1;
-	if (ft_strncmp(table[0], "echo", 4) ==0)
+	if (ft_strncmp(table[0], "echo", 4) == 0)
 	{
 		ms_echo(table + 1);
 		exit(0);
 	}
-	if (ft_strncmp(table[0], "unset", 5) ==0)
+	if (ft_strncmp(table[0], "unset", 5) == 0)
 	{
 		unset(env, simple_cmd + 5);
 		exit(0);
 	}
-/*	if (ft_strncmp(table[0], "export", 6) ==0)
+	if (ft_strncmp(table[0], "export", 6) == 0)
 	{
-		if (!cmd || cmd[0][0] == '\0')
+		if (!tab[i])
 			export(env, NULL, NULL);
 		else
 		{
-			while(cmd[i])
+			while (table[i])
 			{
-				if (cmd[i + 1] == NULL)
-					break ;
-				export(env, cmd[i], cmd[i + 1]);
+				while (table[i][j++])
+				{
+					if (table[i][j] == '=')
+					{
+						name = ft_strndup(table[i], j);
+						content = ft_strdup(table[i] + j);
+						export(env, name, content);
+					}
+					else if (table[i][j + 1] == '\0' || table[i][j] != '=')
+						export(env, table[i], NULL);
+				}
+				j = 0;
+				i++;
 			}
 		}
-		exit(0);
+			exit(0);
 	}
-*/	if (ft_strncmp(table[0], "cd", 2) ==0)
+	if (ft_strncmp(table[0], "cd", 2) ==0)
 	{
 		cd(env, simple_cmd + 2);
 		exit(0);

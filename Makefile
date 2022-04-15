@@ -20,6 +20,7 @@ SRCS =  env/createenv.c \
 		parsing/get_variable_in_quote.c \
 		parsing/red_n_simple_cmd.c \
 		parsing/utils.c \
+		parsing/simple_cmd.c \
 		lexer/lexer.c \
 		lexer/lst_utils.c \
 		lexer/simple_quote.c \
