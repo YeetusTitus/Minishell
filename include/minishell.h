@@ -171,6 +171,7 @@ typedef struct exec
 	int	save_in;
 	int	save_out;
 	int	fd[2];
+	int	ret;
 }	t_exec;
 
 // simple_cmd struct
@@ -265,11 +266,12 @@ void    if_only_red(t_lst **s);
 void    ft_exec(t_red **s, char **simple_cmd, char **envp, t_env **env);
 void    case_1_ft_exec(t_red *red, char **simple_cmd, char **envp, t_exec ex, t_env **env);
 void    case_2_ft_exec(t_red *red, char **simple_cmd, char **envp, t_exec ex, t_env **env);
-void	loop_case_2_exec(char **envp, t_exec ex, char **simple_cmd);
+void	loop_case_2_exec(char **envp, t_exec ex, char **simple_cmd, t_red *red, t_env **env);
 void    case_3_ft_exec(t_red *red, char **simple_cmd, char **envp, t_exec ex, t_env **env);
 void    case_4_ft_exec(t_red *red, char **simple_cmd, char **envp, t_exec ex, t_env **env);
-void	loop_case_4_exec(t_exec ex, char **simple_cmd, char **envp);
-int	is_built_in(t_env **env, char *simple_cmd);
+void	loop_case_4_exec(t_exec ex, char **simple_cmd, char **envp, t_red *red, t_env **env);
+int	built_in_no_fork(t_env **env, char *simple_cmd, char **array);
+int	built_in_a_fork(char *simple_cmd, t_env **env);
 void    free_red(t_red **s);
 int		check_ambigous_redirect(t_red **s);
 void    restore_fd(t_exec ex);

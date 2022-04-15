@@ -56,16 +56,20 @@ void	case_1_ft_exec(t_red *red, char **simple_cmd, char **envp, t_exec ex, t_env
 	int		fd;
 	int		i;
 
+	cmd = NULL;
 	fd = 0;
-	cmd = ft_split(simple_cmd[ex.i], ' ');
-	dup_mannager_out(red, 1, ex.save_out, cmd[0]);
-	i = is_built_in(env, simple_cmd[ex.i]);
-	if (i != -10)
-		return ;
+	ex.ret = built_in_no_fork(env, simple_cmd[ex.i], simple_cmd);
 	pid = fork();
 	if (pid == 0)
 	{
+		cmd = ft_split(simple_cmd[ex.i], ' ');
 		path = get_cmd(envp, cmd[0]);
+		dup_mannager_out(red, 1, ex.save_out, cmd[0]);
+		if (ex.ret != -10)
+			exit(0);
+		i = built_in_a_fork(simple_cmd[ex.i], env);
+		if (i != -10)
+			exit(0);
 		if (!path)
 		{
 			dup2(ex.save_out, 1);
@@ -83,20 +87,16 @@ void	case_1_ft_exec(t_red *red, char **simple_cmd, char **envp, t_exec ex, t_env
 void	case_2_ft_exec(t_red *red, char **simple_cmd, char **envp, t_exec ex, t_env **env)
 {
 	int		pid;
-	int		i;
 	char	**cmd;
 
+	cmd = NULL;
 	pipe(ex.fd);
 	dup2(ex.fd[1], 1);
 	close(ex.fd[1]);
-	cmd = ft_split(simple_cmd[ex.i], ' ');
-	dup_mannager_out(red, 1, ex.save_out, cmd[0]);
-	i = is_built_in(env, simple_cmd[ex.i]);
-	if (i != -10)
-		return ;
+	ex.ret = built_in_no_fork(env, simple_cmd[ex.i], simple_cmd);
 	pid = fork();
 	if (pid == 0)
-		loop_case_2_exec(envp, ex, simple_cmd);
+		loop_case_2_exec(envp, ex, simple_cmd, red, env);
 	else
 	{
 		dup2(ex.fd[0], 0);
@@ -106,15 +106,23 @@ void	case_2_ft_exec(t_red *red, char **simple_cmd, char **envp, t_exec ex, t_env
 	}
 }
 
-void	loop_case_2_exec(char **envp, t_exec ex, char **simple_cmd)
+void	loop_case_2_exec(char **envp, t_exec ex, char **simple_cmd, t_red *red, t_env **env)
 {
 	char	**cmd;
 	char	*path;
+	int		i;
 
+	cmd = NULL;
 	close(ex.fd[1]);
 	close(ex.fd[0]);
 	cmd = ft_split(simple_cmd[ex.i], ' ');
 	path = get_cmd(envp, cmd[0]);
+	dup_mannager_out(red, 1, ex.save_out, cmd[0]);
+	if (ex.ret != -10)
+		exit(0);
+	i = built_in_a_fork(simple_cmd[ex.i], env);
+	if (i != -10)
+		exit(0);	
 	if (!path)
 	{
 		dup2(ex.save_out, 1);
