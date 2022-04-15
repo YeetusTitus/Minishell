@@ -62,6 +62,6 @@ void	ms_echo(char **table)
 			write(1, " ", 1);
 		i++;
 	}
-	if (table[0] == NULL || ft_strcmp(table[0], "-n") != 0)
+	if (table[0] == NULL || ft_strcmp(table[0], "-n") == 0)
 		write(1, "\n", 1);
 }

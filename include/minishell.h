@@ -13,7 +13,7 @@
 # include <stdlib.h>
 # include <dirent.h>
 # include <termios.h>
-# include <curses.h>
+//# include <curses.h>
 # include <term.h>
 # include <string.h>
 # include <stddef.h>
@@ -265,11 +265,11 @@ void    if_only_red(t_lst **s);
 void    ft_exec(t_red **s, char **simple_cmd, char **envp, t_env **env);
 void    case_1_ft_exec(t_red *red, char **simple_cmd, char **envp, t_exec ex, t_env **env);
 void    case_2_ft_exec(t_red *red, char **simple_cmd, char **envp, t_exec ex, t_env **env);
-void	loop_case_2_exec(char **envp, t_red *red, t_exec ex, char **simple_cmd, t_env **env);
+void	loop_case_2_exec(char **envp, t_exec ex, char **simple_cmd);
 void    case_3_ft_exec(t_red *red, char **simple_cmd, char **envp, t_exec ex, t_env **env);
 void    case_4_ft_exec(t_red *red, char **simple_cmd, char **envp, t_exec ex, t_env **env);
-void	loop_case_4_exec(t_exec ex, t_red *red, char **simple_cmd, char **envp, t_env **env);
-void	is_built_in(t_env **env, char *simple_cmd);
+void	loop_case_4_exec(t_exec ex, char **simple_cmd, char **envp);
+int	is_built_in(t_env **env, char *simple_cmd);
 void    free_red(t_red **s);
 int		check_ambigous_redirect(t_red **s);
 void    restore_fd(t_exec ex);

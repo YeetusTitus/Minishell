@@ -67,7 +67,7 @@ void	get_variable_case_1(t_lst *lst, t_env *tmp, t_lst **s)
 {
 	while (tmp)
 	{
-		if (ft_strcmp(lst->data + 1, tmp->name) == 0)
+		if (ft_strcmp(lst->data + 1, tmp->name) == 1)
 		{
 			if (tmp->content[0] == '\0')
 				lst_del(s, lst->pos);
@@ -101,7 +101,7 @@ void	get_variable_case_2(t_lst *lst, t_env *env, char *tmp2, int i)
 	{
 		while (env)
 		{
-			if (ft_strcmp(lst->data + i + 1, env->name) == 0)
+			if (ft_strcmp(lst->data + i + 1, env->name) == 1)
 			{
 				tmp2 = malloc(sizeof(char) * i + 1);
 				while (++j < i)
@@ -125,7 +125,7 @@ void	loop_get_variable_case_2(t_env *env, t_lst *lst, int i, char *tmp2)
 	j = -1;
 		while (env)
 		{
-			if (ft_strcmp(lst->data + i + 1, env->name) == 0)
+			if (ft_strcmp(lst->data + i + 1, env->name) == 1)
 			{
 				tmp2 = malloc(sizeof(char) * i + 1);
 				while (++j < i)

@@ -81,7 +81,7 @@ char	*env_name_loop(t_env *env, char *variable)
 {
 	while (env)
 	{
-		if (ft_strcmp(variable, env->name) == 0)
+		if (ft_strcmp(variable, env->name) == 1)
 		{
 			free(variable);
 			variable = ft_strdup(env->content);

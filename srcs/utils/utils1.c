@@ -12,7 +12,6 @@
 
 #include "../../include/minishell.h"
 
-/*
 int	ft_strcmp(char *str1, char *str2)
 {
 	int	i;
@@ -25,7 +24,7 @@ int	ft_strcmp(char *str1, char *str2)
 		return (0);
 	return (1);
 }
-*/
+
 char	**ft_malloc_error(char **tabl, int size)
 {
 	while (size-- > 0)

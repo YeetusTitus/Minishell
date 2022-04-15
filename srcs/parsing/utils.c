@@ -42,13 +42,13 @@ char	*ft_strncpy(char *dst, const char *src, size_t n)
 	}
 	return (dst);
 }
-
+/*
 int	ft_strcmp(char *s1, char *s2)
 {
 	int	i;
 
-	if (ft_strlen_v2(s1) != ft_strlen_v2(s2))
-		return (1);
+//	if (ft_strlen_v2(s1) != ft_strlen_v2(s2))
+//		return (1);
 	i = 0;
 	while (s1[i])
 	{
@@ -58,3 +58,4 @@ int	ft_strcmp(char *s1, char *s2)
 	}
 	return (s1[i] - s2[i]);
 }
+*/

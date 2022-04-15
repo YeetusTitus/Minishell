@@ -13,12 +13,12 @@ void    ft_loop(char **envp)
 	int     pid;
 	t_lst *lst;
 
-/*	if (!*env)
+	if (!*envp)
 	{
 		printf("ca se fait pas de tester ca gros degueu\n");
 		exit(0);
 	}
-*/	create_env(env, envp);
+	create_env(env, envp);
 	while (1)
 	{
 		truc = NULL;
@@ -67,9 +67,9 @@ void    ft_loop(char **envp)
 		}
 		free(str);
 		free_lst(s);
-		free_tab(truc);
+//		free_tab(truc);
 		free_red(red);
 	}
-	free_env(*env);
+//	free_env(*env);
 	system("leaks minishell");
 }
