@@ -6,7 +6,7 @@
 /*   By: jforner <jforner@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 14:20:57 by jforner           #+#    #+#             */
-/*   Updated: 2022/04/02 17:45:28 by jforner          ###   ########.fr       */
+/*   Updated: 2022/04/19 17:08:09 by jforner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,8 +75,8 @@ void	envcwd(t_env **env, char *path)
 			export(env, ft_strdup("PWD"), getcwd(NULL, 0));
 		}
 	}
-	free((envname(env, "CWD", 2))->content);
-	(envname(env, "CWD", 2))->content = getcwd(NULL, 0);
+	free((envname(env, ".", 2))->content);
+	(envname(env, ".", 2))->content = getcwd(NULL, 0);
 }
 
 void	cwdisdel(t_env **env)
@@ -110,27 +110,24 @@ int	cd(t_env **env, char *path)
 {
 	DIR		*dir;
 	char	*err;
+	int		change;
 
-	if (path == NULL)
-	{
-		if (envname(env, "HOME", 0) == NULL)
-		{
-			write(2, "minishell: cd: HOME not set\n", 28);
-			return (0);
-		}
-		path = ft_strdup(envname(env, "HOME", 0)->content);
-	}
+	change = cd_special(env, &path);
+	if (!change)
+		return (0);
 	dir = opendir(path);
 	if (dir == NULL)
 	{
 		err = ft_strjoin("minishell: cd: ", path);
 		perror(err);
 		free(err);
-		free(path);
+		if (change == 1)
+			free(path);
 		return (0);
 	}
+	if (change == 1)
+		free(path);
 	envcwd(env, path);
-	free(path);
 	closedir(dir);
 	return (1);
 }

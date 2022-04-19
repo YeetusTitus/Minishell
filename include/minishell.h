@@ -6,7 +6,7 @@
 /*   By: jforner <jforner@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/02 17:32:14 by jforner           #+#    #+#             */
-/*   Updated: 2022/04/14 15:12:05 by jforner          ###   ########.fr       */
+/*   Updated: 2022/04/19 17:13:45 by jforner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ void			envadd_front(t_env **alst, t_env *new);
 t_env			*envname(t_env **env, char *name, int colonne);
 void			free_env(t_env *env);
 void			free_export(t_env **env);
+int				env_error(char *name, char *content, char c);
 
 // env/createenv
 int				lenachr(char *str, char chr);
@@ -100,6 +101,7 @@ void			envoldpwd(t_env **env);
 void			envoldpwd2(t_env **env);
 
 // path/pwd
+int				cd_special(t_env **env, char **path);
 int				pwd(t_env **env);
 
 // echo

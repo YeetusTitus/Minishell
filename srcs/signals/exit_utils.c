@@ -6,7 +6,7 @@
 /*   By: jforner <jforner@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/11 15:13:29 by jforner           #+#    #+#             */
-/*   Updated: 2022/04/11 16:36:12 by jforner          ###   ########.fr       */
+/*   Updated: 2022/04/14 16:40:45 by jforner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,4 +108,29 @@ int	verif_isdigit(char *str)
 			return (0);
 	}
 	return (1);
+}
+
+char	*ms_itoa(int nbr)
+{
+	char	*str;
+	int		len;
+	int		temp;
+
+	len = 0;
+	temp = nbr;
+	if (!temp)
+		len = 1;
+	while (temp > 0)
+	{
+		temp /= 10;
+		len++;
+	}
+	str = malloc(sizeof(char) * len + 1);
+	str[len] = '\0';
+	while (len-- > 0)
+	{
+		str[len] = ((nbr % 10) + '0');
+		nbr /= 10;
+	}
+	return (str);
 }

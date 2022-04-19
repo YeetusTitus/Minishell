@@ -6,7 +6,7 @@
 /*   By: jforner <jforner@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/24 15:09:22 by jforner           #+#    #+#             */
-/*   Updated: 2022/03/31 17:44:27 by jforner          ###   ########.fr       */
+/*   Updated: 2022/04/19 17:30:12 by jforner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,4 +74,29 @@ void	free_export(t_env **env)
 		free(env[2]);
 		env[2] = env[2]->next;
 	}
+}
+
+int	env_error(char *name, char *content, char c)
+{
+	printf("Honorable\n");
+	if (ft_strchr(name, ' ') || ft_strchr(name, '|') || ft_strchr(name, '?')
+		|| ft_strchr(name, 39) || ft_strchr(name, '"') || ft_strchr(name, '&')
+		|| ft_strchr(name, '<') || ft_strchr(name, '>') || ft_strchr(name, '~')
+		|| ft_strchr(name, '.'))
+	{
+		write(2, "minishell: ", 11);
+		if (c == 'e')
+			write(2, "export: ", 8);
+		else if (c == 'u')
+			write(2, "unset: ", 7);
+		write(2, name, ft_strlen(name));
+		if (c == 'e' && content != NULL)
+		{
+			write(2, "=", 1);
+			write(2, content, ft_strlen(content));
+		}
+		write(2, ": not a valid identifier\n", 25);
+		return (0);
+	}
+	return (1);
 }

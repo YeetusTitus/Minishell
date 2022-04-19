@@ -6,7 +6,7 @@
 /*   By: jforner <jforner@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 18:33:45 by jforner           #+#    #+#             */
-/*   Updated: 2022/04/11 16:37:56 by jforner          ###   ########.fr       */
+/*   Updated: 2022/04/19 14:02:09 by jforner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,17 +28,17 @@
 
 int	exit_error(char **table)
 {
-	if (tablen(table) > 1)
-	{
-		write(2, "minishell: exit: too many arguments\n", 36);
-		return (-1);
-	}
 	if (!verif_isdigit(*table) || !verif_maxlong(*table))
 	{
 		write(2, "minishell: exit: ", 17);
 		write(2, *table, ft_strlen(*table));
 		write(2, ": numeric argument required\n", 28);
 		return (255);
+	}
+	if (tablen(table) > 1)
+	{
+		write(2, "minishell: exit: too many arguments\n", 36);
+		return (-1);
 	}
 	return (ms_atouc(*table));
 }
@@ -60,5 +60,14 @@ void	ms_exit(char **table, t_env **env)
 		exit(ft_atoi(envname(env, "?", 2)->content));
 	status = exit_error(table);
 	if (status >= 0)
+	{
+		free(envname(env, "?", 2)->content);
+		envname(env, "?", 2)->content = ft_itoa(status);
 		exit(status);
+	}
+	else
+	{
+		free(envname(env, "?", 2)->content);
+		envname(env, "?", 2)->content = ft_strdup("1");
+	}
 }

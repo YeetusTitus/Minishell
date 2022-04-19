@@ -6,7 +6,7 @@
 /*   By: jforner <jforner@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/02 17:30:22 by jforner           #+#    #+#             */
-/*   Updated: 2022/04/14 15:11:30 by jforner          ###   ########.fr       */
+/*   Updated: 2022/04/19 17:43:26 by jforner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,11 +48,10 @@ int	main(int argc, char **argv, char **envp)
 	cato = (char **)malloc(sizeof(char *) + 1);
 	cato[0] = ft_strdup("/bin/cat");
 	cato[1] = NULL;
-	
 	signal(SIGINT, handler_sig);
 	sign_onoff(0);
 	create_env(env, envp);
-	while (++j < 2)
+	while (++j < 5)
 	{
 		errno = 0;
 		cwdisdel(env);
@@ -76,7 +75,11 @@ int	main(int argc, char **argv, char **envp)
 				if (tablen(tabarg) == 1)
 					cd(env, NULL);
 				else
-					cd(env, ft_strdup(tabarg[1]));
+				{
+					char *dvd = ft_strdup(tabarg[1]);
+					cd(env, dvd);
+					free(dvd);
+				}
 			}
 			else if (ft_strcmp(tabarg[0], "pwd"))
 				pwd(env);
@@ -98,19 +101,19 @@ int	main(int argc, char **argv, char **envp)
 				ms_exit(&tabarg[1], env);
 			else
 			{
-				while (++i < tablen(tabarg))
+				while ((++i + 1) < tablen(tabarg))
 				{
 					if (!ft_strchr(tabarg[i], '='))
-						export(env, ft_strcpy(tabarg[i]), NULL);
+						export(env, ft_strdup(tabarg[i]), NULL);
 					else
 					{
 						if (tabenv != NULL)
 							tabenv = ft_malloc_error(tabenv, tablen(tabenv));
 						tabenv = ft_split(tabarg[i], '=');
 						if (tablen(tabenv) > 1)
-							export(env, ft_strcpy(tabenv[0]), ft_strcpy(tabenv[1]));
+							export(env, ft_strdup(tabenv[0]), ft_strdup(tabenv[1]));
 						else
-							export(env, ft_strcpy(tabenv[0]), ft_strcpy("\0"));
+							export(env, ft_strdup(tabenv[0]), ft_strdup("\0"));
 					}
 				}
 			}
@@ -122,6 +125,8 @@ int	main(int argc, char **argv, char **envp)
 		if (tabarg != NULL)
 			tabarg = ft_malloc_error(tabarg, tablen(tabarg));
 	}
+	free(cato[0]);
+	free(cato);
 	free_export(env);
 	system("leaks minishell");
 	return (0);

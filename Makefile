@@ -10,8 +10,6 @@ SRCS =	env/createenv.c \
 		signals/signals.c \
 		echo.c
 
-SIGNALS = srcs/
-
 MAIN = main.c
 
 DIRECTORYS = srcs/

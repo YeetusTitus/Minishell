@@ -6,7 +6,7 @@
 /*   By: jforner <jforner@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 13:10:05 by jforner           #+#    #+#             */
-/*   Updated: 2022/03/30 14:14:57 by jforner          ###   ########.fr       */
+/*   Updated: 2022/04/19 15:30:37 by jforner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,8 @@ int	export(t_env **env, char *name, char *content)
 		print_export(env);
 		return (1);
 	}
+	if (!env_error(name, content, 'e'))
+		return (0);
 	if (content == NULL)
 	{
 		if (!env_exist(env, name))
@@ -84,16 +86,14 @@ int	export(t_env **env, char *name, char *content)
 			else
 				envadd_back(&env[1], envnew(name, NULL));
 		}
-		else if (envname(env, name, 2) != NULL && !ft_strcmp(name, "CWD"))
+		else if (envname(env, name, 2) != NULL)
 			export(env, name, ft_strdup(envname(env, name, 2)->content));
 		else
 			free(name);
 	}
 	else
-	{
 		if (!export_env(env, name, content))
 			return (0);
-	}
 	return (1);
 }
 

@@ -6,7 +6,7 @@
 /*   By: jforner <jforner@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 16:48:46 by jforner           #+#    #+#             */
-/*   Updated: 2022/03/30 17:08:38 by jforner          ###   ########.fr       */
+/*   Updated: 2022/04/19 15:31:23 by jforner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@
 
 int	unset(t_env **env, char *name)
 {
+	if (!env_error(name, NULL, 'u'))
+		return (0);
 	unset_env_set(env, name, 0);
 	unset_export(env, name);
 	unset_env_set(env, name, 2);
@@ -77,8 +79,6 @@ int	unset_env_set(t_env **env, char *name, int column)
 	{
 		if (ft_strcmp(envtemp->next->name, name))
 		{
-			if ((column == 2 && ft_strcmp(name, "CWD")))
-				return (1);
 			free_env(envtemp->next);
 			envtemp->next = envtemp->next->next;
 			return (1);
