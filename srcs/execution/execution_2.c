@@ -26,7 +26,15 @@ void	case_3_ft_exec(t_red *red, char **simple_cmd, char **envp, t_exec ex, t_env
 	if (pid == 0)
 	{
 		cmd = ft_split(simple_cmd[ex.i], ' ');
-		path = get_cmd(envp, cmd[0]);
+		if (cmd[0][0] == '/')
+			path = cmd[0];
+		else
+			path = get_cmd(envp, cmd[0]);
+		if (access(path, 0) != 0)
+		{
+			free(path);
+			path = NULL;
+		}
 		dup_mannager_out(red, 1, ex.save_out, cmd[0]);
 		if (ex.ret != -10)
 			exit(0);
@@ -39,7 +47,7 @@ void	case_3_ft_exec(t_red *red, char **simple_cmd, char **envp, t_exec ex, t_env
 			close(ex.save_out);
 			ft_putstr_fd(cmd[0], 1);
 			ft_putstr_fd(" : command not found\n", 1);
-			exit(1);
+			exit(127);
 		}
 		else
 			execve(path, cmd, envp);
@@ -79,7 +87,15 @@ void	loop_case_4_exec(t_exec ex, char **simple_cmd, char **envp, t_red *red, t_e
 	close(ex.fd[1]);
 	close(ex.fd[0]);
 	cmd = ft_split(simple_cmd[ex.i], ' ');
-	path = get_cmd(envp, cmd[0]);
+	if (cmd[0][0] == '/')
+			path = cmd[0];
+	else
+		path = get_cmd(envp, cmd[0]);
+	if (access(path, 0) != 0)
+	{
+		free(path);
+		path = NULL;
+	}
 	dup_mannager_out(red, 1, ex.save_out, cmd[0]);
 	if (ex.ret != -10)
 		exit(0);
@@ -94,7 +110,7 @@ void	loop_case_4_exec(t_exec ex, char **simple_cmd, char **envp, t_red *red, t_e
 		close(ex.save_out);
 		ft_putstr_fd(cmd[0], 1);
 		ft_putstr_fd(" : command not found\n", 1);
-		exit(1);
+		exit(127);
 	}
 	else
 		execve(path, cmd, envp);
@@ -108,7 +124,7 @@ int	built_in_a_fork(char *simple_cmd, t_env **env)
 {
 	char	**table;
 	int		i;
-
+	
 	table = ft_split(simple_cmd, ' ');
 	i = 0;
 	if (ft_strncmp(table[0], "echo", 4) == 0)
@@ -162,6 +178,8 @@ int	built_in_no_fork(t_env **env, char *simple_cmd, char **array)
 	}
 	if (ft_strncmp(table[0], "export", 6) == 0)
 	{
+		if (!table[1])
+			return (-10);
 		while (table[i])
 		{
 			while (table[i][j++])

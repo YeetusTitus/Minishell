@@ -48,7 +48,7 @@ int	check_pipe_place(t_lst **s)
 {
 	t_lst	*lst;
 
-	get_lst_pos(s);
+//	get_lst_pos(s);
 	lst = *s;
 	while (lst)
 	{

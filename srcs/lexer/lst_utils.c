@@ -78,12 +78,15 @@ t_lst	**get_lst_pos(t_lst **s)
 	t_lst	*lst;
 	int		i;
 
+	if (!s || !*s)
+		return (s);
 	i = 1;
 	lst = *s;
 	while (lst)
 	{
-		lst->pos = i++;
+		lst->pos = i;
 		lst = lst->next;
+		i++;
 	}
 	return (s);
 }

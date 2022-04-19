@@ -19,6 +19,7 @@
 # include <stddef.h>
 # include <fcntl.h>
 
+int	g_retour;
 
 typedef struct s_token
 {
@@ -172,6 +173,7 @@ typedef struct exec
 	int	save_out;
 	int	fd[2];
 	int	ret;
+	int	pid;
 }	t_exec;
 
 // simple_cmd struct
@@ -224,13 +226,13 @@ t_lst   *double_quote_case_3(t_lst *lst, t_lst **s);
 void    get_variable(t_lst **s);
 void    translate_variable(t_lst **s, t_env **env);
 void    get_variable_case_1(t_lst *lst, t_env *tmp, t_lst **s);
-void    get_variable_case_2(t_lst *lst, t_env *env, char *tmp2, int i);
+void    get_variable_case_2(t_lst *lst, t_env *tmp, char *tmp2, int i);
 void	loop_get_variable_case_2(t_env *env, t_lst *lst, int i, char *tmp2);
 void    get_variable_case_2_loop(t_lst *lst, int i, char *tmp, char *tmp2);
 void    get_variable_in_quote(t_lst **s, t_env **envp);
 void    get_variable_in_quote_loop(t_lst *lst, t_env **envp);
 char    *get_variable_name(t_env **envp, int i, t_lst *lst);
-char	*env_name_loop(t_env *env, char *variable);
+char	*env_name_loop(t_env **env, char *variable);
 char	*get_end_variable(t_lst *lst);
 
 //parsing utils
@@ -264,7 +266,7 @@ void    if_only_red(t_lst **s);
 
 // execution.c
 void    ft_exec(t_red **s, char **simple_cmd, char **envp, t_env **env);
-void    case_1_ft_exec(t_red *red, char **simple_cmd, char **envp, t_exec ex, t_env **env);
+int    case_1_ft_exec(t_red *red, char **simple_cmd, char **envp, t_exec ex, t_env **env);
 void    case_2_ft_exec(t_red *red, char **simple_cmd, char **envp, t_exec ex, t_env **env);
 void	loop_case_2_exec(char **envp, t_exec ex, char **simple_cmd, t_red *red, t_env **env);
 void    case_3_ft_exec(t_red *red, char **simple_cmd, char **envp, t_exec ex, t_env **env);
@@ -274,7 +276,7 @@ int	built_in_no_fork(t_env **env, char *simple_cmd, char **array);
 int	built_in_a_fork(char *simple_cmd, t_env **env);
 void    free_red(t_red **s);
 int		check_ambigous_redirect(t_red **s);
-void    restore_fd(t_exec ex);
+int    restore_fd(t_exec ex);
 
 //redirection.c
 void    dup_mannager_out(t_red *red, int i, int save_out, char *cmd);

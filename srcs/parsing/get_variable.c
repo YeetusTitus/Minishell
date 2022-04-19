@@ -65,6 +65,16 @@ void	translate_variable(t_lst **s, t_env **env)
 // loop de la fonction du dessus pour la norme
 void	get_variable_case_1(t_lst *lst, t_env *tmp, t_lst **s)
 {
+	int	i;
+
+	i = 0;
+	if (ft_strcmp(lst->data, "$?") == 1)
+	{
+		free(lst->data);
+		lst->data = ft_itoa(g_retour);
+		lst->type = -1;
+		return ;
+	}
 	while (tmp)
 	{
 		if (ft_strcmp(lst->data + 1, tmp->name) == 1)
@@ -118,6 +128,8 @@ void	get_variable_case_2(t_lst *lst, t_env *env, char *tmp2, int i)
 	}
 	lst->type = -1;
 }
+
+/*
 void	loop_get_variable_case_2(t_env *env, t_lst *lst, int i, char *tmp2)
 {
 	int	j;
@@ -138,7 +150,7 @@ void	loop_get_variable_case_2(t_env *env, t_lst *lst, int i, char *tmp2)
 			env = env->next;
 		}
 }
-
+*/
 
 void	get_variable_case_2_loop(t_lst *lst, int i, char *tmp, char *tmp2)
 {

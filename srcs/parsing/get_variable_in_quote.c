@@ -56,10 +56,8 @@ char	*get_variable_name(t_env **envp, int i, t_lst *lst)
 {
 	char	*variable;
 	int		j;
-	t_env	*env;
 
 	j = i;
-	env = *envp;
 	while (lst->data[j])
 	{
 		if (lst->data[j] == ' ' || lst->data[j] == '\'' || lst->data[j] == '"'
@@ -70,24 +68,30 @@ char	*get_variable_name(t_env **envp, int i, t_lst *lst)
 		j++;
 	}
 	variable = ft_strndup(lst->data + i, j - i);
-	variable = env_name_loop(env, variable);
-	if (!variable)
-		variable = env_name_loop(envp[1], variable);
-	env = *envp;
+	variable = env_name_loop(envp, variable);
+//	if (!variable)
+//		variable = env_name_loop(envp[1], variable);
 	return (variable);
 }
 
-char	*env_name_loop(t_env *env, char *variable)
+char	*env_name_loop(t_env **env, char *variable)
 {
-	while (env)
+	int	i;
+
+	i = 0;
+	while (i < 3)
 	{
-		if (ft_strcmp(variable, env->name) == 1)
+		if (!env[i]->content)
+			i++;
+		if (ft_strcmp(variable, env[i]->name) == 1)
 		{
 			free(variable);
-			variable = ft_strdup(env->content);
+			variable = ft_strdup(env[i]->content);
 			return (variable);
 		}
-		env = env->next;
+		env[i] = env[i]->next;
+		if (env[i]->next == NULL)
+			i++;
 	}
 	variable = ft_strdup("\0");
 	return (variable);

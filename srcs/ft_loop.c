@@ -1,5 +1,7 @@
 #include "../include/minishell.h"
 
+
+
 // la loop qui permet d afficher le prompt et de garder l historique des commandes tapees
 void    ft_loop(char **envp)
 {
@@ -19,6 +21,7 @@ void    ft_loop(char **envp)
 		exit(0);
 	}
 	create_env(env, envp);
+	g_retour = 0;
 	while (1)
 	{
 		truc = NULL;
@@ -38,6 +41,7 @@ void    ft_loop(char **envp)
 		get_variable_in_quote(s, env);
 		translate_variable(s, env);
 		//parsing
+		lst = *s;
 		i += check_pipe_place(s);
 		if (i == 0)
 		{
@@ -46,7 +50,6 @@ void    ft_loop(char **envp)
 			red = get_red_array(s);
 			truc = get_simple_cmd_array(s);
 		}
-		lst = *s;
 		if (i == 0)
 		{
 			if (truc[0])
@@ -65,10 +68,14 @@ void    ft_loop(char **envp)
 					wait(NULL);
 			}
 		}
+		if (i != 0)
+			g_retour = 1;
 		free(str);
 		free_lst(s);
 //		free_tab(truc);
 		free_red(red);
+		free(envname(env, "?", 2)->content);
+		envname(env, "?", 2)->content = ft_itoa(g_retour);
 	}
 //	free_env(*env);
 	system("leaks minishell");

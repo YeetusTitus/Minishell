@@ -12,6 +12,8 @@
 
 #include "include/minishell.h"
 
+int	g_retour = 0;
+
 int	g_sign;
 
 int	main(int argc, char **argv, char **envp)
