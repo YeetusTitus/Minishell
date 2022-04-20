@@ -83,7 +83,7 @@ void	red_man_cas_4(t_red *red, int j, char *cmd)
 	while (1)
 	{
 		str = readline("HereDoc > ");
-		if (ft_strncmp(str, red->file[j], ft_strlen(str)) == 0 || !str)
+		if (ft_strncmp(str, red->file[j], ft_strlen(red->file[j])) == 0 || !str)
 		{
 			free(str);
 			break ;
