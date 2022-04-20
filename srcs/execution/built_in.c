@@ -59,6 +59,7 @@ int	built_in_no_fork(t_env **env, char *simple_cmd, char **array)
 	if (ft_strncmp(b.table[0], "exit", 4) == 0)
 	{
 		ms_exit(b.table + 1, env);
+		free_tab(b.table);
 		return (0);
 	}
 	free_tab(b.table);
@@ -86,8 +87,8 @@ int	export_no_fork(t_built b, t_env **env)
 			b.j = 0;
 			b.i++;
 	}
+	free_tab(b.table);
 	if (b.ret == 1)
 		return (0);
-	free_tab(b.table);
 	return (1);
 }

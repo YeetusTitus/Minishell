@@ -32,10 +32,10 @@ int	cd_no_fork(t_built b, t_env **env, char *simple_cmd)
 	while (b.table[0][b.i] == ' ')
 		b.i++;
 	b.j = cd(env, simple_cmd + b.i);
+	free_tab(b.table);
 	if (b.j == 1)
 		return (0);
-	free_tab(b.table);
-		return (1);
+	return (1);
 }
 
 int	unset_no_fork(t_built b, t_env **env)
@@ -45,8 +45,8 @@ int	unset_no_fork(t_built b, t_env **env)
 		b.j = unset(env, b.table[b.i]);
 		b.i ++;
 	}
+	free_tab(b.table);
 	if (b.j == 1)
 		return (0);
-	free_tab(b.table);
-		return (1);
+	return (1);
 }
