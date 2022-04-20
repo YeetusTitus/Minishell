@@ -29,7 +29,6 @@ void	ft_loop(char **envp)
 	{
 		s = lexer(env);
 		parsing(s, env, envp);
-		free_lst(s);
 	}
 	system("leaks minishell");
 }
@@ -72,6 +71,7 @@ void	parsing(t_lst **s, t_env **env, char **envp)
 		execution(simple_cmd, envp, env, red);
 	if (i != 0)
 		g_retour = 1;
+	free_lst(s);
 }
 
 void	execution(char **s_cmd, char **envp, t_env **env, t_red **red)
@@ -95,5 +95,5 @@ void	execution(char **s_cmd, char **envp, t_env **env, t_red **red)
 			wait(NULL);
 	}
 	free_red(red);
-	free_tab(s_cmd);
+//	free_tab(s_cmd);
 }

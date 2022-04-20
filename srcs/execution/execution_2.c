@@ -58,6 +58,7 @@ void	cmd_not_found(char **cmd, t_exec ex)
 	close(ex.save_out);
 	ft_putstr_fd(cmd[0], 1);
 	ft_putstr_fd(" : command not found\n", 1);
+	free_tab(cmd);
 	exit(127);
 }
 
@@ -86,4 +87,5 @@ void	child_things(t_exec ex, t_red *red, t_env **env, char **envp)
 		cmd_not_found(cmd, ex);
 	else
 		execve(path, cmd, envp);
+	free_tab(cmd);
 }

@@ -49,19 +49,16 @@ int	restore_fd(t_exec ex)
 	dup2(ex.save_in, 0);
 	close(ex.save_out);
 	close(ex.save_in);
+	free_tab(ex.s_cmd);
 	return (g_retour);
 }
 
 int	c1_ft_exec(t_red *red, char **envp, t_exec ex, t_env **env)
 {
-	char	**cmd;
-
-	cmd = NULL;
 	ex.ret = built_in_no_fork(env, ex.s_cmd[ex.i], ex.s_cmd);
 	ex.pid = fork();
 	if (ex.pid == 0)
 		child_things(ex, red, env, envp);
-	free_tab(cmd);
 	return (ex.pid);
 }
 

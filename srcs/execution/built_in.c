@@ -61,6 +61,7 @@ int	built_in_no_fork(t_env **env, char *simple_cmd, char **array)
 		ms_exit(b.table + 1, env);
 		return (0);
 	}
+	free_tab(b.table);
 	return (-10);
 }
 
@@ -70,7 +71,7 @@ int	export_no_fork(t_built b, t_env **env)
 		return (-10);
 	while (b.table[b.i])
 	{
-		while (b.table[b.i][b.j++])
+		while (b.table[b.i][b.j])
 		{
 			if (b.table[b.i][b.j] == '=')
 			{
@@ -80,12 +81,13 @@ int	export_no_fork(t_built b, t_env **env)
 			}
 			else if (b.table[b.i][b.j + 1] == '\0' && b.table[b.i][b.j] != '=')
 				b.ret = export(env, b.table[b.i], NULL);
+				b.j++;
 		}
 			b.j = 0;
 			b.i++;
 	}
 	if (b.ret == 1)
 		return (0);
-	else
-		return (1);
+	free_tab(b.table);
+	return (1);
 }

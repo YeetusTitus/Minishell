@@ -31,6 +31,7 @@ void	free_tab(char **path_tab)
 		free(path_tab[i]);
 		i++;
 	}
+		free(path_tab[i]);
 	free(path_tab);
 }
 

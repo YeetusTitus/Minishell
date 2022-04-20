@@ -126,11 +126,11 @@ int	cd(t_env **env, char *path)
 		err = ft_strjoin("minishell: cd: ", path);
 		perror(err);
 		free(err);
-		free(path);
+//		free(path);
 		return (0);
 	}
 	envcwd(env, path);
-	free(path);
+//	free(path);
 	closedir(dir);
 	return (1);
 }
