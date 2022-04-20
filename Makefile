@@ -18,10 +18,13 @@ SRCS =  env/createenv.c \
 		execution/get_command.c \
 		execution/get_array_exec.c \
 		parsing/get_quote.c \
+		parsing/check_pipe.c \
 		parsing/get_variable.c \
 		parsing/get_variable_in_quote.c \
 		parsing/red_n_simple_cmd.c \
+		parsing/red_array_data.c \
 		parsing/utils.c \
+		parsing/red_utils.c \
 		parsing/simple_cmd.c \
 		lexer/lexer.c \
 		lexer/enum.c \

@@ -6,7 +6,7 @@
 /*   By: ktroude <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 16:13:41 by ktroude           #+#    #+#             */
-/*   Updated: 2022/04/19 19:28:37 by ktroude          ###   ########.fr       */
+/*   Updated: 2022/04/20 16:44:38 by ktroude          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,23 @@ typedef struct s_variable
 	int		len;
 	char	*tmp;
 }	t_variable;
+
+//get_red_array_data struct
+typedef struct s_data
+{
+	t_lst	*lst;
+	t_red	*red;
+	int		i;
+}	t_data;
+
+//red_n_simple_cmd.c struct
+typedef struct s_pars
+{
+	t_lst	*lst;
+	int		size;
+	t_red	**first;
+	t_red	*red;
+}	t_pars;
 
 // exec struct
 typedef struct exec
@@ -291,20 +308,23 @@ char			*ft_strncpy(char *dst, const char *src, size_t n);
 
 //init simpple cmd && reddirection array
 int				get_redirection_with_file(t_lst **s);
+int				get_red_in_f_error(t_lst *lst);
 int				print_error(t_lst *lst);
 int				get_nb_red_lst(t_lst **s);
 t_red			**get_red_array(t_lst **s);
-int				get_red_array_loop_1(t_red *red, int size);
-int			get_red_array_loop(t_red *red, int size);
+t_pars			get_red_array_loop(t_pars p);
+t_pars			get_red_array_loop_2(t_pars p);
 t_red			**get_red_array_data(t_lst **s, t_red **f);
-t_red			*red_array_data_thing(t_lst *lst, int i, t_red *red);
-t_red			*red_array_data_thing_2(t_lst *lst, int i, t_red *red);
-t_red			*red_array_data_thing_3(t_lst *lst, int i, t_red *red);
+t_data			get_red_array_data_thing(t_data d, int i);
+t_data			get_red_array_data_thing_pipe(t_data d);
+t_data			get_red_array_data_thing_end(t_data d);
 int				get_simple_cmd_array_size(t_lst **s);
 char			**get_simple_cmd_array(t_lst **s);
 int				check_red_token(t_lst **s);
+int				red_token_error(t_lst *lst);
 int				error_txt(t_lst *lst);
 int				check_pipe_place(t_lst **s);
+int				token_error(void);
 int				print_error_2(void);
 void			if_only_red(t_lst **s);
 void			if_only_red_loop(t_lst *tmp, t_lst *lst, t_lst **s);
@@ -339,8 +359,8 @@ void			red_man_cas_3(t_red *red, int j, int save_out, int i);
 void			red_man_cas_4(t_red *red, int j, char *cmd);
 
 // ft_loop proto
-void	ft_execution(char **simple_cmd, t_red **red, char **envp, t_env **env);
-t_lst	**lexer(t_lst **s, t_env **env);
-t_red 	**parsing(t_lst **s, t_red **red, t_env **env, char **envp);
+t_lst			**lexer(t_env **env);
+void			parsing(t_lst **s, t_env **env, char **envp);
+void			execution(char **s_cmd, char **envp, t_env **env, t_red **red);
 
 #endif
