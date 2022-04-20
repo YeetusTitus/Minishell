@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ktroude <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/04/19 16:13:41 by ktroude           #+#    #+#             */
+/*   Updated: 2022/04/19 19:28:37 by ktroude          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -19,7 +31,79 @@
 # include <stddef.h>
 # include <fcntl.h>
 
-int	g_retour;
+extern int	g_retour;
+extern int	g_sign;
+
+// lexer struct
+typedef struct s_lst
+{
+	struct s_lst	*prev;
+	struct s_lst	*next;
+	char			*data;
+	int				type;
+	int				pos;
+}	t_lst;
+
+//struct lexer.c
+typedef struct s_lexer
+{
+	int		*array;
+	int		i;
+	int		start;
+	int		pos;
+	t_lst	*lst;
+}	t_lex;
+
+// redirection struct
+typedef struct redirection
+{
+	int		*type;
+	char	**file;
+	void	*next;
+}	t_red;
+
+//get_variable_in_quote struct
+typedef struct s_variable
+{
+	int		i;
+	int		j;
+	int		len;
+	char	*tmp;
+}	t_variable;
+
+// exec struct
+typedef struct exec
+{
+	int		i;
+	int		save_in;
+	int		save_out;
+	int		fd[2];
+	int		ret;
+	int		pid;
+	char	**s_cmd;
+}	t_exec;
+
+// simple_cmd struct
+typedef struct s_cmd
+{
+	t_lst	*lst;
+	int		size;
+	int		i;
+	char	**sc;
+}	t_cmd;
+
+// built in struct dans exec
+typedef struct s_built
+{
+	char	*name;
+	char	*content;
+	char	**table;
+	int		i;
+	int		j;
+	int		ret;
+}	t_built;
+
+// --------------------------------------------------------------------
 
 typedef struct s_token
 {
@@ -43,8 +127,28 @@ typedef struct s_env
 	struct s_env	*next;
 }	t_env;
 
-//global pour les signaux
-extern int	g_sign;
+// enum lexer
+typedef enum type{
+	CHAR_GENERAL = -1,
+	CHAR_PIPE = '|',
+	CHAR_MINUS = '-',
+	CHAR_AMPERSAND = '&',
+	CHAR_QOUTE = '\'',
+	CHAR_DQUOTE = '\"',
+	CHAR_SEMICOLON = ';',
+	CHAR_WHITESPACE = ' ',
+	CHAR_ESCAPESEQUENCE = '\\',
+	CHAR_TAB = '\t',
+	CHAR_NEWLINE = '\n',
+	CHAR_GREATER = '>',
+	CHAR_LESSER = '<',
+	CHAR_WILDCART = '*',
+	CHAR_LPARENTHESIS = '(',
+	CHAR_RPARENTHESIS = ')',
+	CHAR_EQUAL = '=',
+	CHAR_DOLLAR = '$',
+	CHAR_NULL = 0
+}	t_token_type;
 
 // env/envutils
 t_env			*envnew(char *name, char *content);
@@ -111,180 +215,132 @@ int				verif_maxlong2(char *nbr, int neg);
 int				verif_maxlong(char *nbr);
 int				verif_isdigit(char *str);
 
-
-// ----------------------------------------------------------------
-
-// enum lexer
-typedef enum type{
- 	CHAR_GENERAL = -1,
-	CHAR_PIPE = '|',
-	CHAR_MINUS = '-',
-	CHAR_AMPERSAND = '&',
-	CHAR_QOUTE = '\'',
-	CHAR_DQUOTE = '\"',
-	CHAR_SEMICOLON = ';',
-	CHAR_WHITESPACE = ' ',
-	CHAR_ESCAPESEQUENCE = '\\',
-	CHAR_TAB = '\t',
-	CHAR_NEWLINE = '\n',
-	CHAR_GREATER = '>',
-	CHAR_LESSER = '<',
-    CHAR_WILDCART = '*',
-    CHAR_LPARENTHESIS = '(',
-    CHAR_RPARENTHESIS = ')',
-	CHAR_EQUAL = '=',
-	CHAR_DOLLAR = '$',
-    CHAR_NULL = 0
-//	TOKEN	= -1,
-} token_type;
-
-// lexer struct
-typedef struct s_lst
-{
-    struct s_lst   *prev;
-    struct s_lst   *next;
-    char            *data;
-    int             type;
-	int				pos;
-}   t_lst;
-
-// redirection struct
-typedef struct redirection
-{
-	int		*type;
-	char	**file;
-	void	*next;
-}	t_red;
-
-//get_variable_in_quote struct
-typedef struct s_variable
-{
-	int		i;
-	int		j;
-	int		len;
-	char	*tmp;
-}	t_variable;
-
-// exec struct
-typedef struct exec
-{
-	int	i;
-	int	save_in;
-	int	save_out;
-	int	fd[2];
-	int	ret;
-	int	pid;
-}	t_exec;
-
-// simple_cmd struct
-typedef struct s_cmd
-{
-	t_lst	*lst;
-	int		size;
-	int		i;
-	char	**sc_array;
-}	t_cmd;
+// --------------------------------------------
 
 // lexer
-void    ft_loop(char **envp);
-t_lst  **get_data_in_lst(char *str);
-int  *get_enum_data(char *str);
-int		*get_enum_data_loop(int *array, char *str);
-void    free_lst(t_lst **s);
+void			ft_loop(char **envp);
+t_lst			**get_data_in_lst(char *str);
+t_lex			init_struct(char *str);
+t_lex			stop_cond(t_lex t);
+t_lex			big_loop_lexer(t_lex t, char *str);
+t_lex			loop_get_data_lst(t_lex t, char *str);
+int				*get_enum_data(char *str);
+int				*get_enum_data_loop(int *array, char *str);
+int				enum_loop(char *str, int i, int *array);
+void			free_lst(t_lst **s);
 
 //analyser
-void	get_token_in_qoute(t_lst **s);
-int	lstsize(t_lst **s);
-int lst_del(t_lst **s, int pos);
-t_lst   **get_lst_pos(t_lst **s);
-void    get_qoute(t_lst **s);
-
+void			get_token_in_qoute(t_lst **s);
+int				lstsize(t_lst **s);
+int				lst_del(t_lst **s, int pos);
+t_lst			**get_lst_pos(t_lst **s);
+void			get_qoute(t_lst **s);
 
 //analyser utils
-char	*ft_strjoin_v2(char *s1, char *s2);
-int	lstsize(t_lst **s);
-int lst_del(t_lst **s, int pos);
-t_lst	*lst_del_loop(int i, t_lst *lst, int pos, t_lst **s);
-t_lst   **get_lst_pos(t_lst **s);
-void    del_prev(t_lst *lst, t_lst **s);
-int	ft_strlen_v2(const char *str);
-void    free_lst(t_lst **s);
-void    add_lst(t_lst *lst);
+char			*ft_strjoin_v2(char *s1, char *s2);
+int				lstsize(t_lst **s);
+int				lst_del(t_lst **s, int pos);
+t_lst			*lst_del_loop(int i, t_lst *lst, int pos, t_lst **s);
+t_lst			**get_lst_pos(t_lst **s);
+void			del_prev(t_lst *lst, t_lst **s);
+int				ft_strlen_v2(const char *str);
+void			free_lst(t_lst **s);
+void			add_lst(t_lst *lst);
 
 //get quote protos;
-void    get_qoute(t_lst **s);
-t_lst   *simple_quote(t_lst *lst, t_lst **s);
-t_lst   *double_quote(t_lst *lst, t_lst **s);
-t_lst   *simple_quote_case_1(t_lst *lst, t_lst **s);
-t_lst   *simple_quote_case_2(t_lst *lst, t_lst **s);
-t_lst   *simple_quote_case_3(t_lst *lst, t_lst **s);
-t_lst   *double_quote_case_1(t_lst *lst, t_lst **s);
-t_lst   *double_quote_case_2(t_lst *lst, t_lst **s);
-t_lst   *double_quote_case_3(t_lst *lst, t_lst **s);
+void			get_qoute(t_lst **s);
+t_lst			*simple_quote(t_lst *lst, t_lst **s);
+t_lst			*double_quote(t_lst *lst, t_lst **s);
+t_lst			*simple_quote_case_1(t_lst *lst, t_lst **s);
+t_lst			*simple_quote_case_2(t_lst *lst, t_lst **s);
+t_lst			*simple_quote_case_3(t_lst *lst, t_lst **s);
+t_lst			*double_quote_case_1(t_lst *lst, t_lst **s);
+t_lst			*double_quote_case_2(t_lst *lst, t_lst **s);
+t_lst			*double_quote_case_3(t_lst *lst, t_lst **s);
 
 // get variable protos;
-void    get_variable(t_lst **s);
-void    translate_variable(t_lst **s, t_env **env);
-void    get_variable_case_1(t_lst *lst, t_env *tmp, t_lst **s);
-void    get_variable_case_2(t_lst *lst, t_env *tmp, char *tmp2, int i);
-void	loop_get_variable_case_2(t_env *env, t_lst *lst, int i, char *tmp2);
-void    get_variable_case_2_loop(t_lst *lst, int i, char *tmp, char *tmp2);
-void    get_variable_in_quote(t_lst **s, t_env **envp);
-void    get_variable_in_quote_loop(t_lst *lst, t_env **envp);
-char    *get_variable_name(t_env **envp, int i, t_lst *lst);
-char	*env_name_loop(t_env **env, char *variable);
-char	*get_end_variable(t_lst *lst);
+void			get_variable(t_lst **s);
+void			translate_variable(t_lst **s, t_env **env);
+void			get_variable_case_1(t_lst *lst, t_env *tmp, t_lst **s);
+void			free_lst_data(t_lst *lst, t_env *tmp);
+void			get_variable_case_2(t_lst *lst, t_env *tmp, char *tmp2, int i);
+void			loop_get_v_case_2(t_env *env, t_lst *lst, int i, char *tmp2);
+void			get_v_case_2_loop(t_lst *lst, int i, char *tmp2);
+void			get_variable_in_quote(t_lst **s, t_env **envp);
+void			get_variable_in_quote_loop(t_lst *lst, t_env **envp);
+char			*get_variable_name(t_env **envp, int i, t_lst *lst);
+char			*env_name_loop(t_env **env, char *variable);
+char			*get_end_variable(t_lst *lst);
 
 //parsing utils
-char *ft_strndup(const char *s, int n);
-char	*ft_strncpy(char *dst, const char *src, size_t n);
-int	ft_strcmp(char *s1, char *s2);
-
+char			*ft_strndup(const char *s, int n);
+char			*ft_strncpy(char *dst, const char *src, size_t n);
+int				ft_strcmp(char *s1, char *s2);
 
 //get command protos;
-char	*find_path(char **env);
-void	free_tab(char **path_tab);
-char	*get_cmd(char **envp, char *cmd);
-char	**get_array_execve(t_lst *lst, t_lst **s);
-char    **get_array_execve_size_loop(t_lst *lst, int pos, int i, char **array);
-char    **get_array_execve_data_loop(int pos, t_lst *lst, char **array, int i);
-void	ft_exec_cmd(t_lst *lst, char **envp, char **cmd);
-void	ft_exec_cmd_loop(char *tmp, char **cmd, char **envp);
-char 	*ft_strndup(const char *s, int n);
-char	*ft_strncpy(char *dst, const char *src, size_t n);
+char			*find_path(char **env);
+void			free_tab(char **path_tab);
+char			*get_cmd(char **envp, char *cmd);
+char			**get_array_execve(t_lst *lst, t_lst **s);
+char			**g_a_execve_size(t_lst *lst, int pos, int i, char **array);
+char			**g_a_execve_data(int pos, t_lst *lst, char **array, int i);
+void			ft_exec_cmd(t_lst *lst, char **envp, char **cmd);
+void			ft_exec_cmd_loop(char *tmp, char **cmd, char **envp);
+char			*ft_strndup(const char *s, int n);
+char			*ft_strncpy(char *dst, const char *src, size_t n);
 
 //init simpple cmd && reddirection array
-int    get_redirection_with_file(t_lst **s);
-int get_nb_red_lst(t_lst **s);
-t_red	**get_red_array(t_lst **s);
-t_red    **get_red_array_data(t_lst **s, t_red **f);
-int    get_simple_cmd_array_size(t_lst **s);
-char    **get_simple_cmd_array(t_lst **s);
-int check_red_token(t_lst **s);
-int check_pipe_place(t_lst **s);
-void    if_only_red(t_lst **s);
+int				get_redirection_with_file(t_lst **s);
+int				print_error(t_lst *lst);
+int				get_nb_red_lst(t_lst **s);
+t_red			**get_red_array(t_lst **s);
+int				get_red_array_loop_1(t_red *red, int size);
+int			get_red_array_loop(t_red *red, int size);
+t_red			**get_red_array_data(t_lst **s, t_red **f);
+t_red			*red_array_data_thing(t_lst *lst, int i, t_red *red);
+t_red			*red_array_data_thing_2(t_lst *lst, int i, t_red *red);
+t_red			*red_array_data_thing_3(t_lst *lst, int i, t_red *red);
+int				get_simple_cmd_array_size(t_lst **s);
+char			**get_simple_cmd_array(t_lst **s);
+int				check_red_token(t_lst **s);
+int				error_txt(t_lst *lst);
+int				check_pipe_place(t_lst **s);
+int				print_error_2(void);
+void			if_only_red(t_lst **s);
+void			if_only_red_loop(t_lst *tmp, t_lst *lst, t_lst **s);
 
 // execution.c
-void    ft_exec(t_red **s, char **simple_cmd, char **envp, t_env **env);
-int    case_1_ft_exec(t_red *red, char **simple_cmd, char **envp, t_exec ex, t_env **env);
-void    case_2_ft_exec(t_red *red, char **simple_cmd, char **envp, t_exec ex, t_env **env);
-void	loop_case_2_exec(char **envp, t_exec ex, char **simple_cmd, t_red *red, t_env **env);
-void    case_3_ft_exec(t_red *red, char **simple_cmd, char **envp, t_exec ex, t_env **env);
-void    case_4_ft_exec(t_red *red, char **simple_cmd, char **envp, t_exec ex, t_env **env);
-void	loop_case_4_exec(t_exec ex, char **simple_cmd, char **envp, t_red *red, t_env **env);
-int	built_in_no_fork(t_env **env, char *simple_cmd, char **array);
-int	built_in_a_fork(char *simple_cmd, t_env **env);
-void    free_red(t_red **s);
-int		check_ambigous_redirect(t_red **s);
-int    restore_fd(t_exec ex);
+void			ft_exec(t_red **s, char **simple_cmd, char **envp, t_env **env);
+int				c1_ft_exec(t_red *red, char **envp, t_exec ex, t_env **env);
+void			c2_ft_exec(t_red *red, char **envp, t_exec ex, t_env **env);
+void			c3_ft_exec(t_red *red, char **envp, t_exec ex, t_env **env);
+void			c4_ft_exec(t_red *red, char **envp, t_exec ex, t_env **env);
+int				built_in_no_fork(t_env **env, char *s_cmd, char **array);
+int				built_in_a_fork(char *simple_cmd, t_env **env);
+void			free_red(t_red **s);
+int				check_ambigous_redirect(t_red **s);
+int				restore_fd(t_exec ex);
+void			cmd_not_found(char **cmd, t_exec ex);
+void			child_things(t_exec ex, t_red *red, t_env **env, char **envp);
+
+// built in in exec
+int				built_in_a_fork(char *simple_cmd, t_env **env);
+int				built_in_no_fork(t_env **env, char *simple_cmd, char **array);
+int				export_no_fork(t_built b, t_env **env);
+int				export_fork(char **table, t_env **env);
+int				cd_no_fork(t_built b, t_env **env, char *simple_cmd);
+int				unset_no_fork(t_built b, t_env **env);
 
 //redirection.c
-void    dup_mannager_out(t_red *red, int i, int save_out, char *cmd);
-void    red_man_cas_1(t_red *red, int j);
-void    red_man_cas_2(t_red *red, int j);
-void    red_man_cas_3(t_red *red, int j, int save_out, int i);
-void    red_man_cas_4(t_red *red, int j, char *cmd);
+void			dup_mannager_out(t_red *red, int i, int save_out, char *cmd);
+void			red_man_cas_1(t_red *red, int j);
+void			red_man_cas_2(t_red *red, int j);
+void			red_man_cas_3(t_red *red, int j, int save_out, int i);
+void			red_man_cas_4(t_red *red, int j, char *cmd);
 
-
+// ft_loop proto
+void	ft_execution(char **simple_cmd, t_red **red, char **envp, t_env **env);
+t_lst	**lexer(t_lst **s, t_env **env);
+t_red 	**parsing(t_lst **s, t_red **red, t_env **env, char **envp);
 
 #endif

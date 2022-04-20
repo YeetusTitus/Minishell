@@ -6,7 +6,7 @@
 /*   By: ktroude <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/14 17:07:31 by ktroude           #+#    #+#             */
-/*   Updated: 2022/04/14 17:14:09 by ktroude          ###   ########.fr       */
+/*   Updated: 2022/04/19 19:25:34 by ktroude          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,6 @@ char	*get_variable_name(t_env **envp, int i, t_lst *lst)
 	}
 	variable = ft_strndup(lst->data + i, j - i);
 	variable = env_name_loop(envp, variable);
-//	if (!variable)
-//		variable = env_name_loop(envp[1], variable);
 	return (variable);
 }
 

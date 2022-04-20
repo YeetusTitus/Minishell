@@ -22,16 +22,17 @@ void	ft_exec(t_red **s, char **simple_cmd, char **envp, t_env **env)
 	ex.i = 0;
 	ex.save_out = dup(1);
 	ex.save_in = dup(0);
+	ex.s_cmd = simple_cmd;
 	while (simple_cmd[ex.i])
 	{
 		if (ex.i == 0 && !simple_cmd[ex.i + 1])
-			ex.pid = case_1_ft_exec(red, simple_cmd, envp, ex, env);
+			ex.pid = c1_ft_exec(red, envp, ex, env);
 		else if (ex.i == 0 && simple_cmd[ex.i])
-			case_2_ft_exec(red, simple_cmd, envp, ex, env);
+			c2_ft_exec(red, envp, ex, env);
 		else if (ex.i > 0 && !simple_cmd[ex.i + 1])
-			case_3_ft_exec(red, simple_cmd, envp, ex, env);
+			c3_ft_exec(red, envp, ex, env);
 		else if (ex.i > 0 && simple_cmd[ex.i + 1])
-			case_4_ft_exec(red, simple_cmd, envp, ex, env);
+			c4_ft_exec(red, envp, ex, env);
 		ex.i++;
 		red = red->next;
 	}
@@ -42,7 +43,7 @@ int	restore_fd(t_exec ex)
 {
 	while (wait(&ex.pid) != -1)
 		;
-	if ( WIFEXITED(ex.pid) )
+	if (WIFEXITED(ex.pid))
 	g_retour = WEXITSTATUS(ex.pid);
 	dup2(ex.save_out, 1);
 	dup2(ex.save_in, 0);
@@ -51,51 +52,20 @@ int	restore_fd(t_exec ex)
 	return (g_retour);
 }
 
-int	case_1_ft_exec(t_red *red, char **simple_cmd, char **envp, t_exec ex, t_env **env)
+int	c1_ft_exec(t_red *red, char **envp, t_exec ex, t_env **env)
 {
-	char	*path;
 	char	**cmd;
-	int		fd;
-	int		i;
 
 	cmd = NULL;
-	fd = 0;
-	ex.ret = built_in_no_fork(env, simple_cmd[ex.i], simple_cmd);
+	ex.ret = built_in_no_fork(env, ex.s_cmd[ex.i], ex.s_cmd);
 	ex.pid = fork();
 	if (ex.pid == 0)
-	{
-		cmd = ft_split(simple_cmd[ex.i], ' ');
-		if (cmd[0][0] == '/')
-			path = ft_strdup(cmd[0]);
-		else
-			path = get_cmd(envp, cmd[0]);
-		if (access(path, 0) != 0)
-		{
-			free(path);
-			path = NULL;
-		}
-		dup_mannager_out(red, 1, ex.save_out, cmd[0]);
-		if (ex.ret != -10)
-			exit(0);
-		i = built_in_a_fork(simple_cmd[ex.i], env);
-		if (i != -10)
-			exit(0);
-		if (!path)
-		{
-			dup2(ex.save_out, 1);
-			close(ex.save_out);
-			ft_putstr_fd(cmd[0], 1);
-			ft_putstr_fd(" : command not found\n", 1);
-			exit(127);
-		}
-		else
-			execve(path, cmd, envp);
-	}
+		child_things(ex, red, env, envp);
 	free_tab(cmd);
 	return (ex.pid);
 }
 
-void	case_2_ft_exec(t_red *red, char **simple_cmd, char **envp, t_exec ex, t_env **env)
+void	c2_ft_exec(t_red *red, char **envp, t_exec ex, t_env **env)
 {
 	int		pid;
 	char	**cmd;
@@ -104,10 +74,14 @@ void	case_2_ft_exec(t_red *red, char **simple_cmd, char **envp, t_exec ex, t_env
 	pipe(ex.fd);
 	dup2(ex.fd[1], 1);
 	close(ex.fd[1]);
-	ex.ret = built_in_no_fork(env, simple_cmd[ex.i], simple_cmd);
+	ex.ret = built_in_no_fork(env, ex.s_cmd[ex.i], ex.s_cmd);
 	pid = fork();
 	if (pid == 0)
-		loop_case_2_exec(envp, ex, simple_cmd, red, env);
+	{
+		close(ex.fd[1]);
+		close(ex.fd[0]);
+		child_things(ex, red, env, envp);
+	}
 	else
 	{
 		dup2(ex.fd[0], 0);
@@ -115,41 +89,4 @@ void	case_2_ft_exec(t_red *red, char **simple_cmd, char **envp, t_exec ex, t_env
 		close(ex.fd[1]);
 		free_tab(cmd);
 	}
-}
-
-void	loop_case_2_exec(char **envp, t_exec ex, char **simple_cmd, t_red *red, t_env **env)
-{
-	char	**cmd;
-	char	*path;
-	int		i;
-
-	cmd = NULL;
-	close(ex.fd[1]);
-	close(ex.fd[0]);
-	cmd = ft_split(simple_cmd[ex.i], ' ');
-	if (cmd[0][0] == '/')
-			path = cmd[0];
-	else
-		path = get_cmd(envp, cmd[0]);
-	if (access(path, 0) != 0)
-	{
-		free(path);
-		path = NULL;
-	}	
-	dup_mannager_out(red, 1, ex.save_out, cmd[0]);
-	if (ex.ret != -10)
-		exit(0);
-	i = built_in_a_fork(simple_cmd[ex.i], env);
-	if (i != -10)
-		exit(0);	
-	if (!path)
-	{
-		dup2(ex.save_out, 1);
-		close(ex.save_out);
-		ft_putstr_fd(cmd[0], 1);
-		ft_putstr_fd(" : command not found\n", 1);
-		exit(127);
-	}
-	else
-		execve(path, cmd, envp);
 }

@@ -26,14 +26,14 @@ char	**get_array_execve(t_lst *lst, t_lst **s)
 		array = NULL;
 		return (array);
 	}
-	array = get_array_execve_size_loop(lst, pos, i, array);
+	array = g_a_execve_size(lst, pos, i, array);
 	lst = *s;
 	if (array)
-		array = get_array_execve_data_loop(pos, lst, array, i);
+		array = g_a_execve_data(pos, lst, array, i);
 	return (array);
 }
 
-char	**get_array_execve_size_loop(t_lst *lst, int pos, int i, char **array)
+char	**g_a_execve_size(t_lst *lst, int pos, int i, char **array)
 {
 	while (lst->type == 32 && lst->next)
 		lst = lst->next;
@@ -50,7 +50,7 @@ char	**get_array_execve_size_loop(t_lst *lst, int pos, int i, char **array)
 	return (array);
 }
 
-char	**get_array_execve_data_loop(int pos, t_lst *lst, char **array, int i)
+char	**g_a_execve_data(int pos, t_lst *lst, char **array, int i)
 {
 	int	j;
 

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   simple_cmd.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ktroude <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/04/19 19:22:40 by ktroude           #+#    #+#             */
+/*   Updated: 2022/04/19 19:22:46 by ktroude          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/minishell.h"
 
 int	get_simple_cmd_array_size(t_lst **s)
@@ -22,23 +34,23 @@ char	**get_simple_cmd_array(t_lst **s)
 
 	cmd.lst = *s;
 	cmd.size = get_simple_cmd_array_size(s) + 1;
-	cmd.sc_array = malloc(sizeof(char *) * cmd.size);
+	cmd.sc = malloc(sizeof(char *) * cmd.size);
 	cmd.i = 0;
 	while (cmd.lst)
 	{
 		if (cmd.lst->type == -1)
 		{
-			cmd.sc_array[cmd.i] = ft_strdup(cmd.lst->data);
+			cmd.sc[cmd.i] = ft_strdup(cmd.lst->data);
 			cmd.lst = cmd.lst->next;
 			while (cmd.lst->type == -1 || cmd.lst->type == 32)
 			{
-				cmd.sc_array[cmd.i] = ft_strjoin_v2(cmd.sc_array[cmd.i], cmd.lst->data);
+				cmd.sc[cmd.i] = ft_strjoin_v2(cmd.sc[cmd.i], cmd.lst->data);
 				cmd.lst = cmd.lst->next;
 			}
 			cmd.i++;
 		}
 		cmd.lst = cmd.lst->next;
 	}
-	cmd.sc_array[cmd.i] = NULL;
-	return (cmd.sc_array);
+	cmd.sc[cmd.i] = NULL;
+	return (cmd.sc);
 }

@@ -82,28 +82,20 @@ void	get_variable_case_1(t_lst *lst, t_env *tmp, t_lst **s)
 			if (tmp->content[0] == '\0')
 				lst_del(s, lst->pos);
 			else
-			{
-				free(lst->data);
-				lst->data = ft_strdup(tmp->content);
-				lst->type = -1;
-			}
+				free_lst_data(lst, tmp);
 			break ;
 		}
 		tmp = tmp->next;
 	}
 	if (!tmp)
-	{
 		lst_del(s, lst->pos);
-	}
 }
 
 // idem que case 1
 void	get_variable_case_2(t_lst *lst, t_env *env, char *tmp2, int i)
 {
 	int		j;
-	char	*tmp;
 
-	tmp = NULL;
 	j = -1;
 	while (lst->data[i] != '$' && lst->data[i])
 		i++;
@@ -124,36 +116,15 @@ void	get_variable_case_2(t_lst *lst, t_env *env, char *tmp2, int i)
 			env = env->next;
 		}
 		if (!env)
-			get_variable_case_2_loop(lst, i, tmp, tmp2);
+			get_v_case_2_loop(lst, i, tmp2);
 	}
 	lst->type = -1;
 }
 
-/*
-void	loop_get_variable_case_2(t_env *env, t_lst *lst, int i, char *tmp2)
+void	get_v_case_2_loop(t_lst *lst, int i, char *tmp2)
 {
-	int	j;
+	char	*tmp;
 
-	j = -1;
-		while (env)
-		{
-			if (ft_strcmp(lst->data + i + 1, env->name) == 1)
-			{
-				tmp2 = malloc(sizeof(char) * i + 1);
-				while (++j < i)
-					tmp2[j] = lst->data[j];
-				tmp2[j] = '\0';
-				free(lst->data);
-				lst->data = ft_strjoin_v2(tmp2, env->content);
-				break ;
-			}
-			env = env->next;
-		}
-}
-*/
-
-void	get_variable_case_2_loop(t_lst *lst, int i, char *tmp, char *tmp2)
-{
 	tmp = ft_strndup(lst->data, i);
 	while (lst->data[++i])
 	{

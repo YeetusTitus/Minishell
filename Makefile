@@ -13,6 +13,8 @@ SRCS =  env/createenv.c \
 		execution/redirection.c \
 		execution/execution_1.c \
 		execution/execution_2.c \
+		execution/built_in.c \
+		execution/built_in_mini.c \
 		execution/get_command.c \
 		execution/get_array_exec.c \
 		parsing/get_quote.c \
@@ -22,6 +24,7 @@ SRCS =  env/createenv.c \
 		parsing/utils.c \
 		parsing/simple_cmd.c \
 		lexer/lexer.c \
+		lexer/enum.c \
 		lexer/lst_utils.c \
 		lexer/simple_quote.c \
 		lexer/double_quote.c \

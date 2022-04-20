@@ -42,20 +42,10 @@ char	*ft_strncpy(char *dst, const char *src, size_t n)
 	}
 	return (dst);
 }
-/*
-int	ft_strcmp(char *s1, char *s2)
-{
-	int	i;
 
-//	if (ft_strlen_v2(s1) != ft_strlen_v2(s2))
-//		return (1);
-	i = 0;
-	while (s1[i])
-	{
-		if (s1[i] != s2[i])
-			return (s1[i] - s2[i]);
-		i++;
-	}
-	return (s1[i] - s2[i]);
+void	free_lst_data(t_lst *lst, t_env *tmp)
+{
+	free(lst->data);
+	lst->data = ft_strdup(tmp->content);
+	lst->type = -1;
 }
-*/
