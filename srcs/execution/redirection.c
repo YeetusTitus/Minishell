@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ktroude <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: jforner <jforner@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/14 12:18:27 by ktroude           #+#    #+#             */
-/*   Updated: 2022/04/14 12:19:29 by ktroude          ###   ########.fr       */
+/*   Updated: 2022/04/21 15:01:32 by jforner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,8 @@ void	red_man_cas_3(t_red *red, int j, int save_out, int i)
 		close(1);
 		dup2(save_out, 1);
 		close (save_out);
-		ft_putstr_fd(red->file[j], 1);
-		ft_putstr_fd(" : No such file or directory\n", 1);
+		ft_putstr_fd(red->file[j], 2);
+		ft_putstr_fd(" : No such file or directory\n", 2);
 		dup2(save, 1);
 		close(save);
 		if (i == 0)

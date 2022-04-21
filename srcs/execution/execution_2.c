@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   execution.c                                        :+:      :+:    :+:   */
+/*   execution_2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ktroude <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: jforner <jforner@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/14 12:39:08 by ktroude           #+#    #+#             */
-/*   Updated: 2022/04/14 13:11:30 by ktroude          ###   ########.fr       */
+/*   Updated: 2022/04/21 15:00:33 by jforner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,8 @@ void	cmd_not_found(char **cmd, t_exec ex)
 {
 	dup2(ex.save_out, 1);
 	close(ex.save_out);
-	ft_putstr_fd(cmd[0], 1);
-	ft_putstr_fd(" : command not found\n", 1);
+	ft_putstr_fd(cmd[0], 2);
+	ft_putstr_fd(" : command not found\n", 2);
 	free_tab(cmd);
 	exit(127);
 }

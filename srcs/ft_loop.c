@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_loop.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ktroude <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: jforner <jforner@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 16:40:40 by ktroude           #+#    #+#             */
-/*   Updated: 2022/04/20 16:42:31 by ktroude          ###   ########.fr       */
+/*   Updated: 2022/04/21 14:38:02 by jforner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ t_lst	**lexer(t_env **env)
 
 	str = readline("$> ");
 	if (str == NULL)
-		exit(0);
+		ms_exit(NULL);
 	if (ft_strlen(str) > 0)
 		add_history(str);
 	s = get_data_in_lst(str);

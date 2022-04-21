@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_in.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ktroude <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: jforner <jforner@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 17:28:03 by ktroude           #+#    #+#             */
-/*   Updated: 2022/04/19 17:33:55 by ktroude          ###   ########.fr       */
+/*   Updated: 2022/04/21 14:34:28 by jforner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int	built_in_no_fork(t_env **env, char *simple_cmd, char **array)
 		return (cd_no_fork(b, env, simple_cmd));
 	if (ft_strncmp(b.table[0], "exit", 4) == 0)
 	{
-		ms_exit(b.table + 1, env);
+		ms_exit(b.table + 1);
 		free_tab(b.table);
 		return (0);
 	}

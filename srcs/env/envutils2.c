@@ -6,7 +6,7 @@
 /*   By: jforner <jforner@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/24 15:09:22 by jforner           #+#    #+#             */
-/*   Updated: 2022/04/21 11:41:23 by jforner          ###   ########.fr       */
+/*   Updated: 2022/04/21 14:39:31 by jforner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ int	env_error(char *name, char *content, char c)
 			write(2, content, ft_strlen(content));
 		}
 		write(2, ": not a valid identifier\n", 25);
+		g_retour = 1;
 		return (0);
 	}
 	return (1);

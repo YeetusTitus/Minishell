@@ -6,7 +6,7 @@
 /*   By: jforner <jforner@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 18:33:45 by jforner           #+#    #+#             */
-/*   Updated: 2022/04/21 10:55:14 by jforner          ###   ########.fr       */
+/*   Updated: 2022/04/21 14:36:02 by jforner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,23 +51,23 @@ int	exit_error(char **table)
 // Desc : Display "exit" and terminate the program if there is no error
 // In : A string table and env
 
-void	ms_exit(char **table, t_env **env)
+void	ms_exit(char **table)
 {
 	int	status;
 
 	printf("exit\n");
 	if (table == NULL || !tablen(table))
-		exit(ft_atoi(envname(env, "?", 2)->content));
+	{
+		// system("leaks minishell");
+		exit(g_retour);
+	}
 	status = exit_error(table);
 	if (status >= 0)
 	{
-		free(envname(env, "?", 2)->content);
-		envname(env, "?", 2)->content = ft_itoa(status);
+		g_retour = status;
+		// system("leaks minishell");
 		exit(status);
 	}
 	else
-	{
-		free(envname(env, "?", 2)->content);
-		envname(env, "?", 2)->content = ft_strdup("1");
-	}
+		g_retour = 1;
 }

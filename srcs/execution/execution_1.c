@@ -6,7 +6,7 @@
 /*   By: jforner <jforner@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/14 12:39:08 by ktroude           #+#    #+#             */
-/*   Updated: 2022/04/21 11:36:42 by jforner          ###   ########.fr       */
+/*   Updated: 2022/04/21 14:56:44 by jforner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	restore_fd(t_exec ex)
 	while (wait(&ex.pid) != -1)
 		;
 	if (WIFEXITED(ex.pid))
-	g_retour = WEXITSTATUS(ex.pid);
+		g_retour = WEXITSTATUS(ex.pid);
 	dup2(ex.save_out, 1);
 	dup2(ex.save_in, 0);
 	close(ex.save_out);

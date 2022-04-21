@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_command.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ktroude <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: jforner <jforner@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/14 13:11:58 by ktroude           #+#    #+#             */
-/*   Updated: 2022/04/14 13:13:21 by ktroude          ###   ########.fr       */
+/*   Updated: 2022/04/21 15:01:19 by jforner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	free_tab(char **path_tab)
 		free(path_tab[i]);
 		i++;
 	}
-		free(path_tab[i]);
+	free(path_tab[i]);
 	free(path_tab);
 }
 
@@ -74,8 +74,8 @@ void	ft_exec_cmd(t_lst *lst, char **envp, char **cmd)
 	tmp = get_cmd(envp, lst->data);
 	if (!tmp)
 	{
-		ft_putstr_fd(lst->data, 1);
-		ft_putstr_fd(" : command not found\n", 1);
+		ft_putstr_fd(lst->data, 2);
+		ft_putstr_fd(" : command not found\n", 2);
 		return ;
 	}
 	else
@@ -89,7 +89,7 @@ void	ft_exec_cmd_loop(char *tmp, char **cmd, char **envp)
 	pid = fork();
 	if (pid < 0)
 	{
-		ft_putstr_fd("fork error\n", 1);
+		ft_putstr_fd("fork error\n", 2);
 		return ;
 	}
 	if (pid == 0)

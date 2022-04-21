@@ -6,7 +6,7 @@
 /*   By: jforner <jforner@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 16:13:41 by ktroude           #+#    #+#             */
-/*   Updated: 2022/04/21 11:07:18 by jforner          ###   ########.fr       */
+/*   Updated: 2022/04/21 14:33:02 by jforner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -225,7 +225,7 @@ void			sign_onoff(int toogle);
 void			rl_replace_line(const char *text, int clear_undo);
 
 // signals/exit
-void			ms_exit(char **table, t_env **env);
+void			ms_exit(char **table);
 int				exit_error(char **table);
 
 // signals/exit_utils
