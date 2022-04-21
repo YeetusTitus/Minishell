@@ -6,7 +6,7 @@
 /*   By: jforner <jforner@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/24 15:09:22 by jforner           #+#    #+#             */
-/*   Updated: 2022/04/21 14:39:31 by jforner          ###   ########.fr       */
+/*   Updated: 2022/04/21 17:42:56 by jforner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ int	env_error(char *name, char *content, char c)
 	if (ft_strchr(name, ' ') || ft_strchr(name, '|') || ft_strchr(name, '?')
 		|| ft_strchr(name, 39) || ft_strchr(name, '"') || ft_strchr(name, '&')
 		|| ft_strchr(name, '<') || ft_strchr(name, '>') || ft_strchr(name, '~')
-		|| ft_strchr(name, '.'))
+		|| ft_strchr(name, '.') || ft_strchr(name, ' '))
 	{
 		write(2, "minishell: ", 11);
 		if (c == 'e')

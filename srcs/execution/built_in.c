@@ -6,7 +6,7 @@
 /*   By: jforner <jforner@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 17:28:03 by ktroude           #+#    #+#             */
-/*   Updated: 2022/04/21 14:34:28 by jforner          ###   ########.fr       */
+/*   Updated: 2022/04/21 18:29:36 by jforner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,10 +78,30 @@ int	export_no_fork(t_built b, t_env **env)
 			{
 				b.name = ft_strndup(b.table[b.i], b.j);
 				b.content = ft_strdup(b.table[b.i] + b.j + 1);
+				// ft_putstr_fd("name =", 2);
+				// ft_putstr_fd(b.name, 2);
+				// ft_putstr_fd("! content =", 2);
+				// ft_putstr_fd(b.content, 2);
+				// ft_putstr_fd("!\n", 2);
 				b.ret = export(env, b.name, b.content);
+				// if (envname(env, b.name, 0) != NULL)
+				// {
+				// 	ft_putstr_fd(envname(env, b.name, 0)->name, 2);
+				// 	ft_putstr_fd("!\n", 2);
+				// }
 			}
-			else if (b.table[b.i][b.j + 1] == '\0' && b.table[b.i][b.j] != '=')
+			else if (!ft_strchr(b.table[b.i], '='))
+			{
 				b.ret = export(env, b.table[b.i], NULL);
+				// ft_putstr_fd("name =", 2);
+				// ft_putstr_fd(b.table[b.i], 2);
+				// ft_putstr_fd("!\n", 2);
+				// if (envname(env, b.name, 1) != NULL)
+				// {
+				// 	ft_putstr_fd(envname(env, b.name, 1)->name, 2);
+				// 	ft_putstr_fd("!\n", 2);
+				// }
+			}
 				b.j++;
 		}
 			b.j = 0;
