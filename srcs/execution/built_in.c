@@ -6,7 +6,7 @@
 /*   By: jforner <jforner@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 17:28:03 by ktroude           #+#    #+#             */
-/*   Updated: 2022/04/21 18:29:36 by jforner          ###   ########.fr       */
+/*   Updated: 2022/04/21 20:00:24 by jforner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,11 @@ int	built_in_a_fork(char *simple_cmd, t_env **env)
 		i = pwd(env);
 		if (i == 0)
 			return (1);
+		return (0);
+	}
+	if (ft_strncmp(table[0], "env", 3) == 0)
+	{
+		print_env(*env);
 		return (0);
 	}
 	return (-10);
@@ -90,12 +95,12 @@ int	export_no_fork(t_built b, t_env **env)
 				// 	ft_putstr_fd("!\n", 2);
 				// }
 			}
-			else if (!ft_strchr(b.table[b.i], '='))
+			else if (!ft_strchr(b.table[b.i], '=') && !(b.j))
 			{
-				b.ret = export(env, b.table[b.i], NULL);
 				// ft_putstr_fd("name =", 2);
 				// ft_putstr_fd(b.table[b.i], 2);
 				// ft_putstr_fd("!\n", 2);
+				b.ret = export(env, ft_strdup(b.table[b.i]), NULL);
 				// if (envname(env, b.name, 1) != NULL)
 				// {
 				// 	ft_putstr_fd(envname(env, b.name, 1)->name, 2);
