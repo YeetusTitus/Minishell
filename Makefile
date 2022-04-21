@@ -1,9 +1,38 @@
-SRCS =	env/createenv.c \
-		env/envutils.c \
-		env/export.c \
+SRCS =  env/createenv.c \
+        env/envutils.c \
+        env/export.c \
+        env/unset.c  \
+        env/envutils2.c  \
+        utils/utils1.c \
+        path/cd.c \
+		path/pwd.c \
+        signals/exit.c \
+        signals/exit_utils.c \
+        signals/signals.c \
+        echo.c \
+		execution/redirection.c \
+		execution/execution_1.c \
+		execution/execution_2.c \
+		execution/built_in.c \
+		execution/built_in_mini.c \
+		execution/get_command.c \
+		execution/get_array_exec.c \
+		parsing/get_quote.c \
+		parsing/check_pipe.c \
+		parsing/get_variable.c \
+		parsing/get_variable_in_quote.c \
+		parsing/red_n_simple_cmd.c \
+		parsing/red_array_data.c \
+		parsing/utils.c \
+		parsing/red_utils.c \
+		parsing/simple_cmd.c \
 		lexer/lexer.c \
-		lexer/analyser.c \
-		lexer/analyser_utils.c \
+		lexer/enum.c \
+		lexer/lst_utils.c \
+		lexer/simple_quote.c \
+		lexer/double_quote.c \
+		lexer/utils.c \
+        ft_loop.c \
 
 MAIN = main.c
 
@@ -11,7 +40,7 @@ DIRECTORYS = srcs/
 
 SRCSD =	$(addprefix ${DIRECTORYS}, $(SRCS))
 
-EFLAGS = -Wall -Wextra -Werror -g
+EFLAGS = -Wall -Wextra -Werror -g #-fsanitize=address 
 
 OBJS =	${SRCSD:.c=.o}
 

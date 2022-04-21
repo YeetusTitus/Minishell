@@ -1,128 +1,82 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lexer.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jforner <jforner@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/04/14 17:25:29 by ktroude           #+#    #+#             */
+/*   Updated: 2022/04/21 11:22:39 by jforner          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/minishell.h"
 
-// decouper la chaine de characteres tapee apres le prompt
-int  *get_enum_data(char *str)
-{
-    int *array;
-    int i;
-
-    array = malloc(sizeof(int) * ft_strlen(str) + 1);
-    i = -1;
-    while (str[++i])
-    {
-        if (str[i] == '|')
-            array[i] = CHAR_PIPE;
-        else if (str[i] == '&')
-            array[i] = CHAR_AMPERSAND;
-        else if (str[i] == '\'')
-            array[i] = CHAR_QOUTE;
-        else if (str[i] == '\"')
-            array[i] = CHAR_DQUOTE;
-        else  if (str[i] == ';')
-            array[i] = CHAR_SEMICOLON;
-        else  if (str[i] == ' ')
-            array[i] = CHAR_WHITESPACE;
-        else  if (str[i] == '\\')
-            array[i] = CHAR_ESCAPESEQUENCE;
-        else if (str[i] == '>')
-            array[i] = CHAR_GREATER;
-        else if (str[i] == '<')
-            array[i] = CHAR_LESSER;
-        else if (str[i] == '*')
-            array[i] = CHAR_WILDCART;
-        else if (str[i] == '(')
-            array[i] = CHAR_LPARENTHESIS;
-        else if (str[i] == ')')
-            array[i] = CHAR_RPARENTHESIS;
-        else if (str[i] == '$')
-            array[i] = CHAR_RPARENTHESIS;
-        else if (str[i] == '=')
-            array[i] = CHAR_RPARENTHESIS;
-        else
-           array[i] = CHAR_GENERAL;
-    }
-    array[i] =  CHAR_NULL;
-    return (array);
-}
-
 // mettre les token dans une liste chainee 
-t_lst  **get_data_in_lst(char *str)
+t_lst	**get_data_in_lst(char *str)
 {
-    t_lst  *lst;
-    t_lst  *tmp;
-    t_lst  **first;
-    int     *array;
-    int     i;
-    int     start;
-    int     pos;
+	t_lst	**first;
+	t_lex	t;
 
-    pos = 1;
-    start = 0;
-    i = 0;
-    array = get_enum_data(str);
-    lst = malloc(sizeof(t_lst));
-    lst->next = NULL;
-    lst->prev = NULL;
-    first = malloc(sizeof(t_lst *));
-    *first = lst;
-    while(array[i])
-    {
-        while (array[i] == array[i + 1] && (array[i] == -1 || array[i] == ' '))
-            i++;
-        i++;
-        lst->data = ft_substr(str, start, i - start);
-        lst->pos = pos++;
-        lst->type = array[i];
-        tmp = malloc(sizeof(t_lst));
-        tmp->prev = lst;
-        tmp->next = NULL;
-        lst->next = tmp;
-        lst = lst->next;
-        start = i;
-    }
-    free(array);
-    return (first);
+	t = init_struct(str);
+	first = malloc(sizeof(t_lst *));
+	*first = t.lst;
+	while (t.array[t.i])
+		t = big_loop_lexer(t, str);
+	free(t.array);
+	return (first);
 }
 
-void    free_lst(t_lst **s)
+t_lex	init_struct(char *str)
 {
-    t_lst  *lst;
+	t_lex	t;
 
-    while (*s)
-    {
-        lst = (*s)->next;
-        free((*s)->data);
-        free(*s);
-        *s = lst;
-    }
-    free(*s);
-    free(lst);
-    *s = NULL;
+	t.pos = 1;
+	t.start = 0;
+	t.i = 0;
+	t.array = get_enum_data(str);
+	t.lst = ft_calloc(1, sizeof(t_lst));
+	return (t);
 }
 
-// la loop qui permet d afficher le prompt et de garder l historique des commandes tapees
-void    ft_loop(char **envp)
+t_lex	loop_get_data_lst(t_lex t, char *str)
 {
-    char    *str;
-    t_lst   **s;
-    t_lst   *lst;
-    char    *tmp;
-    tmp = envp[0];
+	t.i++;
+	t.lst->data = ft_substr(str, t.start, t.i - t.start);
+	t.lst->pos = t.pos++;
+	t.lst->next = ft_calloc(1, sizeof(t_lst));
+	t.lst->next->prev = t.lst;
+	t.lst = t.lst->next;
+	t.lst->next = NULL;
+	t.start = t.i;
+	return (t);
+}
 
-    str = readline("$> ");
-    if (ft_strlen(str) > 1)
-        add_history(str);
-    s = get_data_in_lst(str);
-    get_token_in_qoute(s);
-    lst = *s;
-    while (lst->next)
-    {
-        printf("%s--   %d\n", lst->data, lst->pos);
-        lst = lst->next;
-    }
- //   tmp = get_command(envp, s);
- //   lst = *s;
-    free_lst(s);
-    free(s);
-    free(str);
+t_lex	stop_cond(t_lex t)
+{
+	t.lst->type = 0;
+	t.lst->data = ft_strdup("\0");
+	t.lst->next = NULL;
+	return (t);
+}
+
+t_lex	big_loop_lexer(t_lex t, char *str)
+{
+	while (t.array[t.i] == t.array[t.i + 1] && (t.array[t.i] == -1
+			|| t.array[t.i] == ' '))
+		t.i++;
+	t.lst->type = t.array[t.i];
+	if (t.array[t.i] == '|' && t.array[t.i + 1] == '|' && t.i++ >= 0)
+		t.lst->type = '|' * -1;
+	else if (t.array[t.i] == '&' && t.array[t.i + 1] == '&' && t.i++ >= 0)
+		t.lst->type = '&' * -1;
+	else if (t.array[t.i] == '<' && t.array[t.i + 1] == '<' && t.i++ >= 0)
+		t.lst->type = '<' * -1;
+	else if (t.array[t.i] == '>' && t.array[t.i + 1] == '>' && t.i++ >= 0)
+		t.lst->type = '>' * -1;
+	if (t.array[t.i] == 0)
+		t = stop_cond(t);
+	else
+		t = loop_get_data_lst(t, str);
+	return (t);
 }
