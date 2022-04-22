@@ -29,32 +29,24 @@ t_lst	*double_quote_case_1(t_lst *lst, t_lst **s)
 	lst_del(s, lst->pos - 1);
 	while (lst->next->data)
 	{
+		lst->type = -2;
 		if (lst->next->type == '"')
 			break ;
 		lst->data = ft_strjoin_v2(lst->data, lst->next->data);
-		lst->type = -2;
 		lst_del(s, lst->pos + 1);
 	}
 	if (lst->next->type != 0)
 		lst_del(s, lst->pos + 1);
-	lst = lst->next;
+//	lst = lst->next;
 	return (lst);
 }
 
 t_lst	*double_quote_case_2(t_lst *lst, t_lst **s)
 {
+		lst = lst->next;
+	lst_del(s, lst->pos - 1);
 	lst = lst->next;
 	lst_del(s, lst->pos - 1);
-	if (lst->next->type == 0)
-	{
-		lst_del(s, lst->pos);
-		return (lst);
-	}
-	else
-	{
-		lst = lst->next;
-		lst_del(s, lst->pos - 1);
-	}
 	return (lst);
 }
 

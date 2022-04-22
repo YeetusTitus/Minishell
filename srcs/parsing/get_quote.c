@@ -29,6 +29,7 @@ void	get_qoute(t_lst **s)
 			lst = double_quote(lst, s);
 		else if (lst->type == '\'')
 			lst = simple_quote(lst, s);
-		lst = lst->next;
+		else
+			lst = lst->next;
 	}
 }

@@ -24,7 +24,7 @@ void	free_red(t_red **s)
 		if ((*s)->type)
 			free((*s)->type);
 		if ((*s)->file)
-			free((*s)->file);
+			free_tab((*s)->file);
 		free(*s);
 		*s = red;
 	}

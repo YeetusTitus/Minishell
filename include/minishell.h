@@ -267,7 +267,6 @@ void			free_lst(t_lst **s);
 void			add_lst(t_lst *lst);
 
 //get quote protos;
-void			get_qoute(t_lst **s);
 t_lst			*simple_quote(t_lst *lst, t_lst **s);
 t_lst			*double_quote(t_lst *lst, t_lst **s);
 t_lst			*simple_quote_case_1(t_lst *lst, t_lst **s);

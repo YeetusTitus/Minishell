@@ -27,7 +27,7 @@ t_lst	*simple_quote_case_1(t_lst *lst, t_lst **s)
 {
 	lst = lst->next;
 	lst_del(s, lst->pos - 1);
-	while (lst->next->data)
+	while (lst)
 	{
 		if (lst->next->type == '\'')
 			break ;
@@ -45,16 +45,8 @@ t_lst	*simple_quote_case_2(t_lst *lst, t_lst **s)
 {
 	lst = lst->next;
 	lst_del(s, lst->pos - 1);
-	if (lst->next->type == 0)
-	{
-		lst_del(s, lst->pos);
-		return (lst);
-	}
-	else
-	{
-		lst = lst->next;
-		lst_del(s, lst->pos - 1);
-	}
+	lst = lst->next;
+	lst_del(s, lst->pos - 1);
 	return (lst);
 }
 
