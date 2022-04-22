@@ -67,9 +67,7 @@ int	c1_ft_exec(t_red *red, char **envp, t_exec ex, t_env **env)
 void	c2_ft_exec(t_red *red, char **envp, t_exec ex, t_env **env)
 {
 	int		pid;
-	char	**cmd;
 
-	cmd = NULL;
 	pipe(ex.fd);
 	dup2(ex.fd[1], 1);
 	close(ex.fd[1]);
@@ -86,6 +84,5 @@ void	c2_ft_exec(t_red *red, char **envp, t_exec ex, t_env **env)
 		dup2(ex.fd[0], 0);
 		close(ex.fd[0]);
 		close(ex.fd[1]);
-		free_tab(cmd);
 	}
 }

@@ -54,7 +54,10 @@ int	built_in_no_fork(t_env **env, char *simple_cmd, char **array)
 	b.table = ft_split(simple_cmd, ' ');
 	b.i = 1;
 	if (array[1])
+	{
+		free_tab(b.table);
 		return (-10);
+	}
 	if (ft_strncmp(b.table[0], "unset", 5) == 0)
 		return (unset_no_fork(b, env));
 	if (ft_strncmp(b.table[0], "export", 6) == 0)

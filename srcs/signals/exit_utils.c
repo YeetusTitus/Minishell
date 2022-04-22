@@ -25,7 +25,7 @@ unsigned char	ms_atouc(char *str)
 
 	i = -1;
 	nbr = 0;
-	while (++i < ft_strlen(str))
+	while (++i < ft_strlen_v2(str))
 	{
 		nbr *= 10;
 		if (str[i] >= '0' && str[i] <= '9')

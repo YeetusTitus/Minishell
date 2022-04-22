@@ -87,5 +87,4 @@ void	child_things(t_exec ex, t_red *red, t_env **env, char **envp)
 		cmd_not_found(cmd, ex);
 	else
 		execve(path, cmd, envp);
-	free_tab(cmd);
 }
