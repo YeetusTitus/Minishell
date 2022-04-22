@@ -6,7 +6,7 @@
 /*   By: jforner <jforner@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 14:20:57 by jforner           #+#    #+#             */
-/*   Updated: 2022/04/21 11:06:14 by jforner          ###   ########.fr       */
+/*   Updated: 2022/04/22 16:13:14 by jforner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,9 +125,9 @@ int	cd(t_env **env, char *path)
 			free(path);
 		return (0);
 	}
+	envcwd(env, path);
 	if (change == 1)
 		free(path);
-	envcwd(env, path);
 	closedir(dir);
 	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: jforner <jforner@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 14:28:42 by jforner           #+#    #+#             */
-/*   Updated: 2022/04/21 10:53:14 by jforner          ###   ########.fr       */
+/*   Updated: 2022/04/22 16:13:23 by jforner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	cd_special(t_env **env, char **path)
 {
-	if (*path == NULL)
+	if (*path == NULL || (int)*path[0] == 0)
 	{
 		if (envname(env, "HOME", 0) == NULL)
 		{
