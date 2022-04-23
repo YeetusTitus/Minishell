@@ -54,6 +54,13 @@ typedef struct s_lexer
 	t_lst	*lst;
 }	t_lex;
 
+//get_quote.c struct
+typedef struct s_quote
+{
+	t_lst	*lst;
+	int		i;
+}	t_quote;
+
 // redirection struct
 typedef struct redirection
 {
@@ -253,7 +260,6 @@ void			get_token_in_qoute(t_lst **s);
 int				lstsize(t_lst **s);
 int				lst_del(t_lst **s, int pos);
 t_lst			**get_lst_pos(t_lst **s);
-void			get_qoute(t_lst **s);
 
 //analyser utils
 char			*ft_strjoin_v2(char *s1, char *s2);
@@ -267,14 +273,13 @@ void			free_lst(t_lst **s);
 void			add_lst(t_lst *lst);
 
 //get quote protos;
-t_lst			*simple_quote(t_lst *lst, t_lst **s);
-t_lst			*double_quote(t_lst *lst, t_lst **s);
-t_lst			*simple_quote_case_1(t_lst *lst, t_lst **s);
-t_lst			*simple_quote_case_2(t_lst *lst, t_lst **s);
-t_lst			*simple_quote_case_3(t_lst *lst, t_lst **s);
-t_lst			*double_quote_case_1(t_lst *lst, t_lst **s);
-t_lst			*double_quote_case_2(t_lst *lst, t_lst **s);
-t_lst			*double_quote_case_3(t_lst *lst, t_lst **s);
+int				get_qoute(t_lst **s);
+t_quote			simple_quote(t_quote q, t_lst **s);
+t_quote			simple_quote_case_1(t_quote q, t_lst **s);
+t_quote			simple_quote_case_2(t_quote q, t_lst **s);
+t_quote			double_quote(t_quote q, t_lst **s);
+t_quote			double_quote_case_1(t_quote q, t_lst **s);
+t_quote			double_quote_case_2(t_quote q, t_lst **s);
 
 // get variable protos;
 void			get_variable(t_lst **s);
@@ -343,6 +348,8 @@ int				check_ambigous_redirect(t_red **s);
 int				restore_fd(t_exec ex);
 void			cmd_not_found(char **cmd, t_exec ex);
 void			child_things(t_exec ex, t_red *red, t_env **env, char **envp);
+int				get_env_array_size(t_env **env);
+char			**get_env_array(t_env **env);
 
 // built in in exec
 int				built_in_a_fork(char *simple_cmd, t_env **env);
@@ -361,7 +368,7 @@ void			red_man_cas_4(t_red *red, int j, char *cmd);
 
 // ft_loop proto
 t_lst			**lexer(t_env **env);
-void			parsing(t_lst **s, t_env **env, char **envp);
-void			execution(char **s_cmd, char **envp, t_env **env, t_red **red);
+void			parsing(t_lst **s, t_env **env);
+void			execution(char **s_cmd, t_env **env, t_red **red);
 
 #endif

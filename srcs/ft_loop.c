@@ -28,7 +28,7 @@ void	ft_loop(char **envp)
 	while (1)
 	{
 		s = lexer(env);
-		parsing(s, env, envp);
+		parsing(s, env);
 	}
 	system("leaks minishell");
 }
@@ -38,6 +38,7 @@ t_lst	**lexer(t_env **env)
 {
 	t_lst	**s;
 	char	*str;
+	int		i;
 
 	str = readline("$> ");
 	if (str == NULL)
@@ -45,7 +46,15 @@ t_lst	**lexer(t_env **env)
 	if (ft_strlen(str) > 0)
 		add_history(str);
 	s = get_data_in_lst(str);
-	get_qoute(s);
+	i = get_qoute(s);
+	if (i > 0)
+	{
+		free(str);
+		free_lst(s);
+		g_retour = 258;
+		ft_putstr_fd("Quote error\n", 2);
+		return (NULL);
+	}
 	get_variable(s);
 	get_variable_in_quote(s, env);
 	translate_variable(s, env);
@@ -53,12 +62,14 @@ t_lst	**lexer(t_env **env)
 	return (s);
 }
 
-void	parsing(t_lst **s, t_env **env, char **envp)
+void	parsing(t_lst **s, t_env **env)
 {
 	int		i;
 	t_red	**red;
 	char	**simple_cmd;
 
+	if (s == NULL)
+		return ;
 	i = check_pipe_place(s);
 	if (i == 0)
 	{
@@ -68,17 +79,19 @@ void	parsing(t_lst **s, t_env **env, char **envp)
 		simple_cmd = get_simple_cmd_array(s);
 	}
 	if (i == 0)
-		execution(simple_cmd, envp, env, red);
+		execution(simple_cmd, env, red);
 	if (i != 0)
-		g_retour = 1;
+		g_retour = 258;
 	free_lst(s);
 }
 
-void	execution(char **s_cmd, char **envp, t_env **env, t_red **red)
+void	execution(char **s_cmd, t_env **env, t_red **red)
 {
-	int	save;
-	int	pid;
+	int		save;
+	int		pid;
+	char	**envp;
 
+	envp = get_env_array(env);
 	if (s_cmd[0])
 		ft_exec(red, s_cmd, envp, env);
 	else
@@ -94,6 +107,7 @@ void	execution(char **s_cmd, char **envp, t_env **env, t_red **red)
 		else
 			wait(NULL);
 	}
+	free_tab(envp);
 	free_red(red);
 //	free_tab(s_cmd);
 }

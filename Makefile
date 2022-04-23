@@ -11,13 +11,13 @@ SRCS =  env/createenv.c \
         signals/signals.c \
         echo.c \
 		execution/redirection.c \
+		execution/get_env_array.c \
 		execution/execution_1.c \
 		execution/execution_2.c \
 		execution/built_in.c \
 		execution/built_in_mini.c \
 		execution/get_command.c \
 		execution/get_array_exec.c \
-		parsing/get_quote.c \
 		parsing/check_pipe.c \
 		parsing/get_variable.c \
 		parsing/get_variable_in_quote.c \
@@ -27,6 +27,7 @@ SRCS =  env/createenv.c \
 		parsing/red_utils.c \
 		parsing/simple_cmd.c \
 		lexer/lexer.c \
+		lexer/get_quote.c \
 		lexer/enum.c \
 		lexer/lst_utils.c \
 		lexer/simple_quote.c \

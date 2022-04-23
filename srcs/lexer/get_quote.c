@@ -13,23 +13,27 @@
 #include "../../include/minishell.h"
 
 // lire les data entre quote et les enleve si necessaire (ex : '' '')
-void	get_qoute(t_lst **s)
+int	get_qoute(t_lst **s)
 {
-	t_lst	*lst;
+	t_quote	q;
 
-	lst = *s;
-	while (lst)
+	q.lst = *s;
+	while (q.lst)
 	{
-		if ((lst->type == '\'' || lst ->type == '"') && lst->next->type == 0)
+		if (q.lst->type == '"')
 		{
-			lst_del(s, lst->pos);
-			break ;
+			q = double_quote(q, s);
+			if (q.i > 0)
+				return (1);
 		}
-		if (lst->type == '"')
-			lst = double_quote(lst, s);
-		else if (lst->type == '\'')
-			lst = simple_quote(lst, s);
+		else if (q.lst->type == '\'')
+		{
+			q = simple_quote(q, s);
+			if (q.i > 0)
+				return (1);
+		}
 		else
-			lst = lst->next;
+			q.lst = q.lst->next;
 	}
+	return (0);
 }

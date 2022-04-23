@@ -12,52 +12,49 @@
 
 #include "../../include/minishell.h"
 
-t_lst	*double_quote(t_lst *lst, t_lst **s)
+t_quote	double_quote(t_quote q, t_lst **s)
 {
-	if (lst->type == '"' && lst->next->type != '"' && lst->next->type != 0)
-		lst = double_quote_case_1(lst, s);
-	else if (lst->type == '"' && lst->next->type == '"')
-		lst = double_quote_case_2(lst, s);
-	else if (lst->type == '"')
-		lst = double_quote_case_3(lst, s);
-	return (lst);
+	if (q.lst->type == '"' && q.lst->next->type != '"')
+		q = double_quote_case_1(q, s);
+	else if (q.lst->type == '"' && q.lst->next->type == '"')
+		q = double_quote_case_2(q, s);
+	return (q);
 }
 
-t_lst	*double_quote_case_1(t_lst *lst, t_lst **s)
+t_quote	double_quote_case_1(t_quote q, t_lst **s)
 {
-	lst = lst->next;
-	lst_del(s, lst->pos - 1);
-	while (lst->next->data)
+	q.lst = q.lst->next;
+	if (! q.lst || q.lst->type == 0)
 	{
-		lst->type = -2;
-		if (lst->next->type == '"')
+		q.i = 1;
+		return (q);
+	}
+	lst_del(s, q.lst->pos - 1);
+	while (q.lst)
+	{
+		if (q.lst->next && q.lst->next->type == '"')
 			break ;
-		lst->data = ft_strjoin_v2(lst->data, lst->next->data);
-		lst_del(s, lst->pos + 1);
+		if (q.lst == NULL || q.lst->next == NULL)
+		{
+			q.i = 1;
+			return (q);
+		}
+		q.lst->data = ft_strjoin_v2(q.lst->data, q.lst->next->data);
+		q.lst->type = -1;
+		lst_del(s, q.lst->pos + 1);
 	}
-	if (lst->next->type != 0)
-		lst_del(s, lst->pos + 1);
-//	lst = lst->next;
-	return (lst);
+	if (q.lst->next->type != 0)
+		lst_del(s, q.lst->pos + 1);
+	if (q.lst)
+		q.lst = q.lst->next;
+	return (q);
 }
 
-t_lst	*double_quote_case_2(t_lst *lst, t_lst **s)
+t_quote	double_quote_case_2(t_quote q, t_lst **s)
 {
-		lst = lst->next;
-	lst_del(s, lst->pos - 1);
-	lst = lst->next;
-	lst_del(s, lst->pos - 1);
-	return (lst);
-}
-
-t_lst	*double_quote_case_3(t_lst *lst, t_lst **s)
-{
-	if (lst->next->type == 0)
-		lst_del(s, lst->pos);
-	else
-	{
-		lst = lst->next;
-		lst_del(s, lst->pos - 1);
-	}
-	return (lst);
+	q.lst = q.lst->next;
+	lst_del(s, q.lst->pos - 1);
+	q.lst = q.lst->next;
+	lst_del(s, q.lst->pos - 1);
+	return (q);
 }
