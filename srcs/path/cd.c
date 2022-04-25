@@ -6,7 +6,7 @@
 /*   By: jforner <jforner@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 14:20:57 by jforner           #+#    #+#             */
-/*   Updated: 2022/04/22 16:13:14 by jforner          ###   ########.fr       */
+/*   Updated: 2022/04/25 15:27:28 by jforner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,23 +77,6 @@ void	envcwd(t_env **env, char *path)
 	}
 	free((envname(env, ".", 2))->content);
 	(envname(env, ".", 2))->content = getcwd(NULL, 0);
-}
-
-void	cwdisdel(t_env **env)
-{
-	DIR				*dir;
-	struct dirent	*d;
-
-	dir = opendir("./");
-	d = readdir(dir);
-	while (d == NULL)
-	{
-		cd(env, ft_strdup(".."));
-		closedir(dir);
-		dir = opendir(".");
-		d = readdir(dir);
-	}
-	closedir(dir);
 }
 
 // Fr :

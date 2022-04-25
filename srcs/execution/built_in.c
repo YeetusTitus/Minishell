@@ -6,7 +6,7 @@
 /*   By: jforner <jforner@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 17:28:03 by ktroude           #+#    #+#             */
-/*   Updated: 2022/04/22 15:57:56 by jforner          ###   ########.fr       */
+/*   Updated: 2022/04/25 16:03:36 by jforner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int	built_in_no_fork(t_env **env, char *simple_cmd, char **array)
 	}
 	if (ft_strcmp(b.table[0], "unset"))
 		return (unset_no(b, env));
-	if (ft_strcmp(b.table[0], "export"))
+	if (ft_strcmp(b.table[0], "export") && b.table[1])
 		return (export_no(b, env));
 	if (ft_strcmp(b.table[0], "cd"))
 		return (cd_no(b, simple_cmd, env));

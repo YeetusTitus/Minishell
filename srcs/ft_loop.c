@@ -6,7 +6,7 @@
 /*   By: jforner <jforner@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 16:40:40 by ktroude           #+#    #+#             */
-/*   Updated: 2022/04/22 16:21:10 by jforner          ###   ########.fr       */
+/*   Updated: 2022/04/25 16:27:32 by jforner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ t_lst	**lexer(t_env **env)
 	char	*str;
 	int		i;
 
+	cwdisdel(env);
 	str = readline("$> ");
 	if (str == NULL)
 		ms_exit(NULL);
@@ -58,12 +59,6 @@ t_lst	**lexer(t_env **env)
 	get_variable_in_quote(s, env);
 	translate_variable(s, env);
 	free(str);
-	t_lst *lst = *s;
-	while (lst)
-	{
-		printf("type == %d - data == %s\n", lst->type, lst->data);
-		lst = lst->next;
-	}
 	return (s);
 }
 

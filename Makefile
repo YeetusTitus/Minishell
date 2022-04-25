@@ -6,6 +6,7 @@ SRCS =  env/createenv.c \
         utils/utils1.c \
         path/cd.c \
 		path/pwd.c \
+		path/cd_utils.c \
         signals/exit.c \
         signals/exit_utils.c \
         signals/signals.c \

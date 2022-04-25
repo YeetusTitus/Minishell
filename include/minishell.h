@@ -6,7 +6,7 @@
 /*   By: jforner <jforner@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 16:13:41 by ktroude           #+#    #+#             */
-/*   Updated: 2022/04/21 14:33:02 by jforner          ###   ########.fr       */
+/*   Updated: 2022/04/25 15:47:25 by jforner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -221,6 +221,11 @@ void			envoldpwd2(t_env **env);
 // path/pwd
 int				cd_special(t_env **env, char **path);
 int				pwd(t_env **env);
+
+//path/cd_utils
+void			cwdisdel(t_env **env);
+int				dircount(t_env **env);
+int				checkdir(char *str);
 
 // echo
 void			ms_echo(char **table);
