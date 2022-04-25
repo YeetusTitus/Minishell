@@ -355,6 +355,10 @@ int				export_no_fork(t_built b, t_env **env);
 int				export_fork(char **table, t_env **env);
 int				cd_no_fork(t_built b, t_env **env, char *simple_cmd);
 int				unset_no_fork(t_built b, t_env **env);
+int				unset_no(t_built b, t_env **env);
+int				export_no(t_built b, t_env **env);
+int				cd_no(t_built b, char *simple_cmd, t_env **env);
+int				exit_no(t_built b);
 
 //redirection.c
 void			dup_mannager_out(t_red *red, int i, int save_out, char *cmd);

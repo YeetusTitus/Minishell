@@ -15,6 +15,7 @@ SRCS =  env/createenv.c \
 		execution/execution_1.c \
 		execution/execution_2.c \
 		execution/built_in.c \
+		execution/built_in_no_fork.c \
 		execution/built_in_mini.c \
 		execution/get_command.c \
 		execution/get_array_exec.c \
