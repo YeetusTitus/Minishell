@@ -52,13 +52,18 @@ t_lst	**lexer(t_env **env)
 		free(str);
 		free_lst(s);
 		g_retour = 258;
-		ft_putstr_fd("Quote error\n", 2);
 		return (NULL);
 	}
 	get_variable(s);
 	get_variable_in_quote(s, env);
 	translate_variable(s, env);
 	free(str);
+	t_lst *lst = *s;
+	while (lst)
+	{
+		printf("type == %d - data == %s\n", lst->type, lst->data);
+		lst = lst->next;
+	}
 	return (s);
 }
 

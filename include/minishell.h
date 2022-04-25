@@ -274,12 +274,9 @@ void			add_lst(t_lst *lst);
 
 //get quote protos;
 int				get_qoute(t_lst **s);
-t_quote			simple_quote(t_quote q, t_lst **s);
-t_quote			simple_quote_case_1(t_quote q, t_lst **s);
-t_quote			simple_quote_case_2(t_quote q, t_lst **s);
-t_quote			double_quote(t_quote q, t_lst **s);
-t_quote			double_quote_case_1(t_quote q, t_lst **s);
-t_quote			double_quote_case_2(t_quote q, t_lst **s);
+t_quote			del_quote(t_quote q);
+t_quote			simple_quote(t_quote q);
+t_quote			double_quote(t_quote q);
 
 // get variable protos;
 void			get_variable(t_lst **s);

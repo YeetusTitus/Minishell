@@ -30,8 +30,6 @@ SRCS =  env/createenv.c \
 		lexer/get_quote.c \
 		lexer/enum.c \
 		lexer/lst_utils.c \
-		lexer/simple_quote.c \
-		lexer/double_quote.c \
 		lexer/utils.c \
         ft_loop.c \
 

@@ -23,21 +23,21 @@ int	built_in_a_fork(char *simple_cmd, t_env **env)
 
 	table = ft_split(simple_cmd, ' ');
 	i = 0;
-	if (ft_strncmp(table[0], "echo", 4) == 0)
+	if (ft_strcmp(table[0], "echo"))
 	{
 		ms_echo(table + 1);
 		return (0);
 	}
-	if (ft_strncmp(table[0], "export", 6) == 0)
+	if (ft_strcmp(table[0], "export"))
 		return (export_fork(table, env));
-	if (ft_strncmp(table[0], "pwd", 3) == 0)
+	if (ft_strcmp(table[0], "pwd"))
 	{
 		i = pwd(env);
 		if (i == 0)
 			return (1);
 		return (0);
 	}
-	if (ft_strncmp(table[0], "env", 3) == 0)
+	if (ft_strcmp(table[0], "env"))
 	{
 		print_env(*env);
 		return (0);
@@ -58,13 +58,25 @@ int	built_in_no_fork(t_env **env, char *simple_cmd, char **array)
 		free_tab(b.table);
 		return (-10);
 	}
-	if (ft_strncmp(b.table[0], "unset", 5) == 0)
-		return (unset_no_fork(b, env));
-	if (ft_strncmp(b.table[0], "export", 6) == 0)
-		return (export_no_fork(b, env));
-	if (ft_strncmp(b.table[0], "cd", 2) == 0)
-		return (cd_no_fork(b, env, simple_cmd));
-	if (ft_strncmp(b.table[0], "exit", 4) == 0)
+	if (ft_strcmp(b.table[0], "unset"))
+	{
+		b.ret = unset_no_fork(b, env);
+		free_tab(b.table);
+		return (0);
+	}
+	if (ft_strcmp(b.table[0], "export"))
+	{
+		b.ret = export_no_fork(b, env);
+		free_tab(b.table);
+		return (b.ret);
+	}
+	if (ft_strcmp(b.table[0], "cd"))
+	{
+		b.ret = cd_no_fork(b, env, simple_cmd);
+		free_tab(b.table);
+		return (b.ret);
+	}
+	if (ft_strcmp(b.table[0], "exit"))
 	{
 		ms_exit(b.table + 1);
 		free_tab(b.table);

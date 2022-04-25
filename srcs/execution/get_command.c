@@ -14,8 +14,10 @@
 
 char	*find_path(char **env)
 {
-	while (ft_strncmp("PATH", *env, 4))
-		env++;
+	if (!env[0])
+		return (NULL);
+	while (ft_strncmp("PATH", env[0], 4))
+		env[0]++;
 	return (*env + 5);
 }
 
