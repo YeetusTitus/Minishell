@@ -68,11 +68,11 @@ void	child_things(t_exec ex, t_red *red, t_env **env, char **envp)
 	char	*path;
 
 	cmd = ft_split(ex.s_cmd[ex.i], ' ');
-	if (cmd[0][0] == '/')
+	if (cmd && cmd[0] && cmd[0][0] == '/')
 		path = ft_strdup(cmd[0]);
 	else
 		path = get_cmd(envp, cmd[0]);
-	if (access(path, 0) != 0)
+	if (path && access(path, 0) != 0)
 	{
 		free(path);
 		path = NULL;

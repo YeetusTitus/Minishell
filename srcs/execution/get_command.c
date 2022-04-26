@@ -14,11 +14,17 @@
 
 char	*find_path(char **env)
 {
-	if (!env[0])
+	int	i;
+
+	i = 0;
+	if (!env)
 		return (NULL);
-	while (ft_strncmp("PATH", env[0], 4))
-		env[0]++;
-	return (*env + 5);
+	while (env[i] && ft_strncmp("PATH", env[i], 4))
+		i++;
+	if (env[i] && ft_strlen_v2(env[i]) >= 5)
+		return (env[i] + 5);
+	else
+		return (NULL);
 }
 
 void	free_tab(char **path_tab)
@@ -39,29 +45,28 @@ void	free_tab(char **path_tab)
 
 char	*get_cmd(char **envp, char *cmd)
 {
-	char	*path;
-	char	**path_tab;
-	char	*tmp;
-	char	*command;
-	int		i;
+	t_g_cmd	c;
 
-	path = find_path(envp);
-	path_tab = ft_split(path, ':');
-	i = 0;
-	while (path_tab[i])
+	c.path = find_path(envp);
+	if (c.path)
+		c.path_tab = ft_split(c.path, ':');
+	else
+		return (NULL);
+	c.i = 0;
+	while (c.path_tab[c.i])
 	{
-		tmp = ft_strjoin(path_tab[i], "/");
-		command = ft_strjoin(tmp, cmd);
-		free(tmp);
-		if (access(command, 0) == 0)
+		c.tmp = ft_strjoin(c.path_tab[c.i], "/");
+		c.command = ft_strjoin(c.tmp, cmd);
+		free(c.tmp);
+		if (access(c.command, 0) == 0)
 		{
-			free_tab(path_tab);
-			return (command);
+			free_tab(c.path_tab);
+			return (c.command);
 		}
-		free(command);
-		i++;
+		free(c.command);
+		c.i++;
 	}
-	free_tab(path_tab);
+	free_tab(c.path_tab);
 	return (NULL);
 }
 

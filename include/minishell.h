@@ -116,6 +116,16 @@ typedef struct s_cmd
 	char	**sc;
 }	t_cmd;
 
+//get_command.c struc
+typedef struct s_g_cmd
+{
+	char	*path;
+	char	**path_tab;
+	char	*tmp;
+	char	*command;
+	int		i;
+}	t_g_cmd;
+
 // built in struct dans exec
 typedef struct s_built
 {
