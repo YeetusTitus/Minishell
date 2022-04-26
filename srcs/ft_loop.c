@@ -31,9 +31,7 @@ void	ft_loop(char **envp)
 		if (s)
 			parsing(s, env);
 	}
-	system("leaks minishell");
 }
-//	free_env(*env);
 
 t_lst	**lexer(t_env **env)
 {

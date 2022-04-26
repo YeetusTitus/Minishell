@@ -57,15 +57,11 @@ void	ms_exit(char **table)
 
 	printf("exit\n");
 	if (table == NULL || !tablen(table))
-	{
-		system("leaks minishell");
 		exit(g_glob.retour);
-	}
 	status = exit_error(table);
 	if (status >= 0)
 	{
 		g_glob.retour = status;
-		system("leaks minishell");
 		exit(status);
 	}
 	else
