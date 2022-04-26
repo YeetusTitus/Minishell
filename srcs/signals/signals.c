@@ -15,16 +15,16 @@
 void	handler_sig(int num)
 {
 	(void)(num);
-	if (!g_sign && num == 2)
+	if (!g_glob.sign && num == 2)
 	{
 		write(1, "\n", 1);
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
 	}
-	else if (g_sign && num == 2)
+	else if (g_glob.sign && num == 2)
 		write(1, "\n", 1);
-	if (g_sign && num == 3)
+	if (g_glob.sign && num == 3)
 		write(1, "Quit: 3\n", 8);
 }
 
@@ -38,7 +38,7 @@ void	sign_onoff(int toogle)
 	else
 		conf.c_lflag &= ~(ECHOCTL);
 	tcsetattr(ttyslot(), 0, &conf);
-	g_sign = toogle;
+	g_glob.sign = toogle;
 	if (toogle)
 		signal(SIGQUIT, handler_sig);
 	else

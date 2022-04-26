@@ -55,7 +55,7 @@ int	built_in_no_fork(t_env **env, char *simple_cmd, char **array)
 	b.i = 1;
 	if (array[1])
 	{
-		free_tab(b.table);
+		b.table = free_tab(b.table);
 		return (-10);
 	}
 	if (ft_strcmp(b.table[0], "unset"))
@@ -66,7 +66,7 @@ int	built_in_no_fork(t_env **env, char *simple_cmd, char **array)
 		return (cd_no(b, simple_cmd, env));
 	if (ft_strcmp(b.table[0], "exit"))
 		return (exit_no(b));
-	free_tab(b.table);
+	b.table = free_tab(b.table);
 	return (-10);
 }
 
@@ -92,7 +92,7 @@ int	export_no_fork(t_built b, t_env **env)
 			b.j = 0;
 			b.i++;
 	}
-	free_tab(b.table);
+	b.table = free_tab(b.table);
 	if (b.ret == 1)
 		return (0);
 	return (1);

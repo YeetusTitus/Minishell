@@ -48,7 +48,7 @@ void	c4_ft_exec(t_red *red, char **envp, t_exec ex, t_env **env)
 		close(ex.fd[1]);
 		dup2(ex.fd[0], 0);
 		close(ex.fd[0]);
-		free_tab(cmd);
+		cmd = free_tab(cmd);
 	}
 }
 
@@ -58,7 +58,7 @@ void	cmd_not_found(char **cmd, t_exec ex)
 	close(ex.save_out);
 	ft_putstr_fd(cmd[0], 2);
 	ft_putstr_fd(" : command not found\n", 2);
-	free_tab(cmd);
+	cmd = free_tab(cmd);
 	exit(127);
 }
 

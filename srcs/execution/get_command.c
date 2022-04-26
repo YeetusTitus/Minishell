@@ -27,12 +27,12 @@ char	*find_path(char **env)
 		return (NULL);
 }
 
-void	free_tab(char **path_tab)
+char	**free_tab(char **path_tab)
 {
 	int	i;
 
 	if (!path_tab)
-		return ;
+		return (NULL);
 	i = 0;
 	while (path_tab[i])
 	{
@@ -41,6 +41,7 @@ void	free_tab(char **path_tab)
 	}
 	free(path_tab[i]);
 	free(path_tab);
+	return (NULL);
 }
 
 char	*get_cmd(char **envp, char *cmd)

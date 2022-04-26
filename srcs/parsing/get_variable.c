@@ -71,7 +71,7 @@ void	get_variable_case_1(t_lst *lst, t_env **tmp, t_lst **s)
 	if (ft_strcmp(lst->data, "$?") == 1)
 	{
 		free(lst->data);
-		lst->data = ft_itoa(g_retour);
+		lst->data = ft_itoa(g_glob.retour);
 		lst->type = -1;
 		return ;
 	}

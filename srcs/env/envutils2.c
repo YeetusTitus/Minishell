@@ -110,7 +110,7 @@ int	env_error(char *name, char *content, char c)
 			write(2, content, ft_strlen(content));
 		}
 		write(2, ": not a valid identifier\n", 25);
-		g_retour = 1;
+		g_glob.retour = 1;
 		if (c == 'e')
 			free(name);
 		if (content)

@@ -12,12 +12,12 @@
 
 #include "include/minishell.h"
 
-int	g_retour = 0;
 
-int	g_sign;
+t_global g_glob;
 
 int	main(int argc, char **argv, char **envp)
 {
+	g_glob.retour = 0;
 	(void)(argc);
 	(void)(argv);
 	signal(SIGINT, handler_sig);

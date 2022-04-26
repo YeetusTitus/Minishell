@@ -31,8 +31,13 @@
 # include <stddef.h>
 # include <fcntl.h>
 
-extern int	g_retour;
-extern int	g_sign;
+typedef struct s_global
+{
+	int	retour;
+	int	sign;
+}	t_global;
+
+extern t_global	g_glob;
 
 // lexer struct
 typedef struct s_lst
@@ -136,6 +141,15 @@ typedef struct s_built
 	int		j;
 	int		ret;
 }	t_built;
+
+//ft_loop.c struct
+typedef struct s_redirection
+{
+	int		i;
+	t_lst	**s;
+	char	**simple_cmd;
+	t_red	**red;
+}	t_redirection;
 
 // --------------------------------------------------------------------
 
@@ -314,7 +328,7 @@ int				ft_strcmp(char *s1, char *s2);
 
 //get command protos;
 char			*find_path(char **env);
-void			free_tab(char **path_tab);
+char			**free_tab(char **path_tab);
 char			*get_cmd(char **envp, char *cmd);
 char			**get_array_execve(t_lst *lst, t_lst **s);
 char			**g_a_execve_size(t_lst *lst, int pos, int i, char **array);
@@ -386,5 +400,6 @@ void			red_man_cas_4(t_red *red, int j, char *cmd);
 t_lst			**lexer(t_env **env);
 void			parsing(t_lst **s, t_env **env);
 void			execution(char **s_cmd, t_env **env, t_red **red);
+t_redirection	get_red(t_lst **s, t_redirection r);
 
 #endif

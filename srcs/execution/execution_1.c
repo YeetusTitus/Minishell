@@ -46,13 +46,13 @@ int	restore_fd(t_exec ex)
 	while (wait(&ex.pid) != -1)
 		;
 	if (WIFEXITED(ex.pid))
-		g_retour = WEXITSTATUS(ex.pid);
+		g_glob.retour = WEXITSTATUS(ex.pid);
 	dup2(ex.save_out, 1);
 	dup2(ex.save_in, 0);
 	close(ex.save_out);
 	close(ex.save_in);
-	free_tab(ex.s_cmd);
-	return (g_retour);
+	ex.s_cmd = free_tab(ex.s_cmd);
+	return (g_glob.retour);
 }
 
 int	c1_ft_exec(t_red *red, char **envp, t_exec ex, t_env **env)
