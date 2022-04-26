@@ -6,7 +6,7 @@
 /*   By: jforner <jforner@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/14 14:07:27 by ktroude           #+#    #+#             */
-/*   Updated: 2022/04/22 16:39:55 by jforner          ###   ########.fr       */
+/*   Updated: 2022/04/26 14:25:37 by jforner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,14 +41,14 @@ void	get_variable(t_lst **s)
 void	translate_variable(t_lst **s, t_env **env)
 {
 	t_lst	*lst;
-	t_env	*tmp;
+	t_env	**tmp;
 	char	*tmp2;
 	int		i;
 
 	i = 0;
 	lst = *s;
 	tmp2 = NULL;
-	tmp = *env;
+	tmp = env;
 	while (lst)
 	{
 		if (lst->type == '$')
@@ -56,14 +56,14 @@ void	translate_variable(t_lst **s, t_env **env)
 		else if (lst->type == -2)
 			get_variable_case_2(lst, tmp, tmp2, i);
 		i = 0;
-		tmp = *env;
+		tmp = env;
 		if (lst)
 			lst = lst->next;
 	}
 }
 
 // loop de la fonction du dessus pour la norme
-void	get_variable_case_1(t_lst *lst, t_env *tmp, t_lst **s)
+void	get_variable_case_1(t_lst *lst, t_env **tmp, t_lst **s)
 {
 	int	i;
 
@@ -75,48 +75,45 @@ void	get_variable_case_1(t_lst *lst, t_env *tmp, t_lst **s)
 		lst->type = -1;
 		return ;
 	}
-	while (tmp)
+	while (i < 3)
 	{
-		if (ft_strcmp(lst->data + 1, tmp->name) == 1)
+		if (envname(tmp, lst->data + 1, i) != NULL
+			&& !ft_strcmp(lst->data + 1, "."))
 		{
-			if (tmp->content[0] == '\0')
+			if (envname(tmp, lst->data + 1, i)->content[0] == '\0')
 				lst_del(s, lst->pos);
 			else
-				free_lst_data(lst, tmp);
-			break ;
+				free_lst_data(lst, envname(tmp, lst->data + 1, i));
+			return ;
 		}
-		tmp = tmp->next;
+		i += 2;
 	}
-	if (!tmp)
-		lst_del(s, lst->pos);
+	lst_del(s, lst->pos);
 }
 
 // idem que case 1
-void	get_variable_case_2(t_lst *lst, t_env *env, char *tmp2, int i)
+void	get_variable_case_2(t_lst *lst, t_env **env, char *tmp2, int i)
 {
 	int		j;
 
-	j = -1;
+	j = 0;
 	while (lst->data[i] != '$' && lst->data[i])
 		i++;
 	if (i < ft_strlen_v2(lst->data))
 	{
-		while (env)
+		while (j < 3)
 		{
-			if (ft_strcmp(lst->data + i + 1, env->name) == 1)
+			if (envname(env, lst->data + i + 1, j) != NULL
+				&& !ft_strcmp(lst->data + 1, "."))
 			{
-				tmp2 = malloc(sizeof(char) * i + 1);
-				while (++j < i)
-					tmp2[j] = lst->data[j];
-				tmp2[j] = '\0';
+				tmp2 = ft_strndup(lst->data, i);
 				free(lst->data);
-				lst->data = ft_strjoin_v2(tmp2, env->content);
-				break ;
+				lst->data = ft_strjoin_v2(tmp2, envname(env, tmp2, j)->content);
+				return ;
 			}
-			env = env->next;
+			j += 2;
 		}
-		if (!env)
-			get_v_case_2_loop(lst, i, tmp2);
+		get_v_case_2_loop(lst, i, tmp2);
 	}
 	lst->type = -1;
 }

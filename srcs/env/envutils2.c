@@ -6,7 +6,7 @@
 /*   By: jforner <jforner@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/24 15:09:22 by jforner           #+#    #+#             */
-/*   Updated: 2022/04/25 19:01:17 by jforner          ###   ########.fr       */
+/*   Updated: 2022/04/26 15:11:11 by jforner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,13 +76,27 @@ void	free_export(t_env **env)
 	}
 }
 
+int	env_error_chr(char *name)
+{
+	int	i;
+
+	i = -1;
+	while (name[++i])
+	{
+		if ((name[0] >= '0' && name[0] <= '9'))
+			return (1);
+		if (name[i] < 'A' || name[i] > 'Z')
+			if (name[i] < 'a' || name[i] > 'z')
+				if (name[i] != '_')
+					if (name[i] < '0' || name[i] > '9')
+						return (1);
+	}
+	return (0);
+}
+
 int	env_error(char *name, char *content, char c)
 {
-	if (ft_strchr(name, ' ') || ft_strchr(name, '|') || ft_strchr(name, '?')
-		|| ft_strchr(name, 39) || ft_strchr(name, '"') || ft_strchr(name, '&')
-		|| ft_strchr(name, '<') || ft_strchr(name, '>') || ft_strchr(name, '~')
-		|| ft_strchr(name, '.') || ft_strchr(name, ' ') || ft_strchr(name, '-')
-		|| (name[0] >= '0' && name[0] <= '9'))
+	if (env_error_chr(name))
 	{
 		write(2, "minishell: ", 11);
 		if (c == 'e')
@@ -97,7 +111,8 @@ int	env_error(char *name, char *content, char c)
 		}
 		write(2, ": not a valid identifier\n", 25);
 		g_retour = 1;
-		free(name);
+		if (c == 'e')
+			free(name);
 		if (content)
 			free(content);
 		return (0);

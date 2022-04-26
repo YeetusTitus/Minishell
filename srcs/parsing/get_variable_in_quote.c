@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_variable_in_quote.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ktroude <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: jforner <jforner@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/14 17:07:31 by ktroude           #+#    #+#             */
-/*   Updated: 2022/04/19 19:25:34 by ktroude          ###   ########.fr       */
+/*   Updated: 2022/04/26 15:11:50 by jforner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ char	*env_name_loop(t_env **env, char *variable)
 	i = 0;
 	while (i < 3)
 	{
-		if (!env[i]->content)
+		if (!env[i] || !env[i]->content)
 			i++;
 		if (ft_strcmp(variable, env[i]->name) == 1)
 		{

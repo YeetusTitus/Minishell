@@ -6,7 +6,7 @@
 /*   By: jforner <jforner@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 16:13:41 by ktroude           #+#    #+#             */
-/*   Updated: 2022/04/25 15:47:25 by jforner          ###   ########.fr       */
+/*   Updated: 2022/04/26 14:16:53 by jforner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -286,9 +286,9 @@ t_quote			double_quote(t_quote q);
 // get variable protos;
 void			get_variable(t_lst **s);
 void			translate_variable(t_lst **s, t_env **env);
-void			get_variable_case_1(t_lst *lst, t_env *tmp, t_lst **s);
+void			get_variable_case_1(t_lst *lst, t_env **tmp, t_lst **s);
 void			free_lst_data(t_lst *lst, t_env *tmp);
-void			get_variable_case_2(t_lst *lst, t_env *tmp, char *tmp2, int i);
+void			get_variable_case_2(t_lst *lst, t_env **tmp, char *tmp2, int i);
 void			loop_get_v_case_2(t_env *env, t_lst *lst, int i, char *tmp2);
 void			get_v_case_2_loop(t_lst *lst, int i, char *tmp2);
 void			get_variable_in_quote(t_lst **s, t_env **envp);
