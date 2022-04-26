@@ -34,6 +34,7 @@ SRCS =  env/createenv.c \
 		lexer/lst_utils.c \
 		lexer/utils.c \
         ft_loop.c \
+        ft_loop_utils.c \
 
 MAIN = main.c
 

@@ -224,7 +224,7 @@ int				env_exist(t_env **env, char *name);
 int				export(t_env **env, char *name, char *content);
 int				export_env(t_env **env, char *name, char *content);
 void			print_env(t_env *env);
-void			print_export(t_env **env);
+int				print_export(t_env **env);
 
 // env/unset
 int				unset(t_env **env, char *name);
@@ -382,6 +382,8 @@ char			**get_env_array(t_env **env);
 int				built_in_a_fork(char *simple_cmd, t_env **env);
 int				built_in_no_fork(t_env **env, char *simple_cmd, char **array);
 int				export_no_fork(t_built b, t_env **env);
+int				export_error(t_built b);
+t_built			export_no_fork_loop(t_built b, t_env **env);
 int				export_fork(char **table, t_env **env);
 int				cd_no_fork(t_built b, t_env **env, char *simple_cmd);
 int				unset_no_fork(t_built b, t_env **env);
@@ -399,6 +401,7 @@ void			red_man_cas_4(t_red *red, int j, char *cmd);
 
 // ft_loop proto
 t_lst			**lexer(t_env **env);
+t_lst			**return_lst(t_lst **s, char *str);
 void			parsing(t_lst **s, t_env **env);
 void			execution(char **s_cmd, t_env **env, t_red **red);
 t_redirection	get_red(t_lst **s, t_redirection r);

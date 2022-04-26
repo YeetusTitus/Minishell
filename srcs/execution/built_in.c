@@ -79,24 +79,7 @@ int	export_no_fork(t_built b, t_env **env)
 		while (b.table[b.i][b.j])
 		{
 			if (b.table[b.i][b.j] == '=')
-			{
-				b.name = ft_strndup(b.table[b.i], b.j);
-				b.content = ft_strdup(b.table[b.i] + b.j + 1);
-				if (!b.name || b.name[0] == '\0')
-				{
-					ft_putstr_fd("export : =", 2);
-					ft_putstr_fd(b.content, 2);
-					ft_putstr_fd(": not a valid identifier\n", 2);
-					b.ret = 1;
-					free(b.name);
-					free(b.content);
-				}
-				else if (!b.ret)
-					b.ret = export(env, b.name, b.content);
-				else
-					export(env, b.name, b.content);
-				break ;
-			}
+				b = export_no_fork_loop(b, env);
 			else if (!ft_strchr(b.table[b.i], '=') && !(b.j))
 			{
 				if (!b.ret)
@@ -111,4 +94,28 @@ int	export_no_fork(t_built b, t_env **env)
 	}
 	b.table = free_tab(b.table);
 	return (b.ret);
+}
+
+int	export_error(t_built b)
+{
+	ft_putstr_fd("export : =", 2);
+	ft_putstr_fd(b.content, 2);
+	ft_putstr_fd(": not a valid identifier\n", 2);
+	b.ret = 1;
+	free(b.name);
+	free(b.content);
+	return (b.ret);
+}
+
+t_built	export_no_fork_loop(t_built b, t_env **env)
+{
+	b.name = ft_strndup(b.table[b.i], b.j);
+	b.content = ft_strdup(b.table[b.i] + b.j + 1);
+	if (!b.name || b.name[0] == '\0')
+		b.ret = export_error(b);
+	else if (!b.ret)
+		b.ret = export(env, b.name, b.content);
+	else
+		export(env, b.name, b.content);
+	return (b);
 }

@@ -46,7 +46,6 @@ int	unset_no_fork(t_built b, t_env **env)
 			unset(env, b.table[b.i]);
 		b.i ++;
 	}
-	printf("%d\n", b.j);
 	free_tab(b.table);
 	return (b.j);
 }

@@ -71,10 +71,7 @@ int	env_exist(t_env **env, char *name)
 int	export(t_env **env, char *name, char *content)
 {
 	if (name == NULL)
-	{
-		print_export(env);
-		return (0);
-	}
+		return (print_export(env));
 	g_glob.retour = env_error(name, content, 'e');
 	if (g_glob.retour)
 		return (g_glob.retour);
@@ -156,7 +153,7 @@ void	print_env(t_env *env)
 // En :
 // Desc : Display the environments variables like export does.
 
-void	print_export(t_env **env)
+int	print_export(t_env **env)
 {
 	t_env	*envtemp;
 
@@ -175,4 +172,5 @@ void	print_export(t_env **env)
 			printf("declare -x %s=\"%s\"\n", envtemp->name, envtemp->content);
 		envtemp = envtemp->next;
 	}
+	return (0);
 }

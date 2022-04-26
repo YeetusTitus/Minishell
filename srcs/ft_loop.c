@@ -55,12 +55,7 @@ t_lst	**lexer(t_env **env)
 	s = get_data_in_lst(str);
 	i = get_qoute(s);
 	if (i > 0)
-	{
-		free(str);
-		free_lst(s);
-		g_glob.retour = 258;
-		return (NULL);
-	}
+		return (return_lst(s, str));
 	get_variable(s);
 	get_variable_in_quote(s, env);
 	translate_variable(s, env);
@@ -84,7 +79,6 @@ void	parsing(t_lst **s, t_env **env)
 		execution(r.simple_cmd, env, r.red);
 	if (r.i != 0)
 	{
-
 		free_red(r.red);
 		r.simple_cmd = free_tab(r.simple_cmd);
 		g_glob.retour = 258;
@@ -115,14 +109,4 @@ void	execution(char **s_cmd, t_env **env, t_red **red)
 	}
 	envp = free_tab(envp);
 	free_red(red);
-//	s_cmd = free_tab(s_cmd);
-}
-
-t_redirection	get_red(t_lst **s, t_redirection r)
-{
-	r.i += get_redirection_with_file(s);
-	if_only_red(s);
-	r.red = get_red_array(s);
-	r.simple_cmd = get_simple_cmd_array(s);
-	return (r);
 }

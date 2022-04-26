@@ -66,8 +66,6 @@ t_lex	big_loop_lexer(t_lex t, char *str)
 			|| t.array[t.i] == ' '))
 		t.i++;
 	t.lst->type = t.array[t.i];
-//	if (t.array[t.i] == '|' && t.array[t.i + 1] == '|' && t.i++ >= 0)
-//		t.lst->type = '|' * -1;
 	if (t.array[t.i] == '&' && t.array[t.i + 1] == '&' && t.i++ >= 0)
 		t.lst->type = '&' * -1;
 	else if (t.array[t.i] == '<' && t.array[t.i + 1] == '<' && t.i++ >= 0)

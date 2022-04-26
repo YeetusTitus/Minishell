@@ -33,5 +33,6 @@ int	cd_no(t_built b, char *simple_cmd, t_env **env)
 int	exit_no(t_built b)
 {
 	ms_exit(b.table + 1);
+	free_tab(b.table);
 	return (0);
 }
