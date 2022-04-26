@@ -20,6 +20,7 @@ void	ft_exec(t_red **s, char **simple_cmd, char **envp, t_env **env)
 
 	red = *s;
 	ex.i = 0;
+	ex.ret = -10;
 	ex.save_out = dup(1);
 	ex.save_in = dup(0);
 	ex.s_cmd = simple_cmd;
@@ -45,7 +46,8 @@ int	restore_fd(t_exec ex)
 {
 	while (wait(&ex.pid) != -1)
 		;
-	if (WIFEXITED(ex.pid))
+	g_glob.retour = ex.ret;
+	if (g_glob.retour == -10)
 		g_glob.retour = WEXITSTATUS(ex.pid);
 	dup2(ex.save_out, 1);
 	dup2(ex.save_in, 0);

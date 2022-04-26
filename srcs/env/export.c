@@ -73,10 +73,11 @@ int	export(t_env **env, char *name, char *content)
 	if (name == NULL)
 	{
 		print_export(env);
-		return (1);
-	}
-	if (!env_error(name, content, 'e'))
 		return (0);
+	}
+	g_glob.retour = env_error(name, content, 'e');
+	if (g_glob.retour)
+		return (g_glob.retour);
 	if (content == NULL)
 	{
 		if (!env_exist(env, name))
@@ -93,8 +94,8 @@ int	export(t_env **env, char *name, char *content)
 	}
 	else
 		if (!export_env(env, name, content))
-			return (0);
-	return (1);
+			return (1);
+	return (0);
 }
 
 // Fr :

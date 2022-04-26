@@ -35,6 +35,7 @@ typedef struct s_global
 {
 	int	retour;
 	int	sign;
+	int	ret;
 }	t_global;
 
 extern t_global	g_glob;

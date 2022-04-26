@@ -21,9 +21,7 @@ int	export_fork(char **table, t_env **env)
 		return (-10);
 	else
 		i = export(env, NULL, NULL);
-	if (i == 0)
-		return (1);
-	return (0);
+	return (i);
 }
 
 int	cd_no_fork(t_built b, t_env **env, char *simple_cmd)
@@ -42,11 +40,13 @@ int	unset_no_fork(t_built b, t_env **env)
 {
 	while (b.table[b.i])
 	{
-		b.j = unset(env, b.table[b.i]);
+		if (!b.j)
+			b.j = unset(env, b.table[b.i]);
+		else
+			unset(env, b.table[b.i]);
 		b.i ++;
 	}
+	printf("%d\n", b.j);
 	free_tab(b.table);
-	if (b.j == 1)
-		return (0);
-	return (1);
+	return (b.j);
 }

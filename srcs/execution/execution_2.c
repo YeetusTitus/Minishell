@@ -79,10 +79,10 @@ void	child_things(t_exec ex, t_red *red, t_env **env, char **envp)
 	}
 	dup_mannager_out(red, 1, ex.save_out, cmd[0]);
 	if (ex.ret != -10)
-		exit(0);
+		exit(ex.ret);
 	ex.ret = built_in_a_fork(ex.s_cmd[ex.i], env);
 	if (ex.ret != -10)
-		exit(0);
+		exit(ex.ret);
 	if (!path)
 		cmd_not_found(cmd, ex);
 	else

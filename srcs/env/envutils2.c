@@ -76,11 +76,19 @@ void	free_export(t_env **env)
 	}
 }
 
-int	env_error_chr(char *name)
+int	env_error_chr(char *name, char c)
 {
 	int	i;
 
 	i = -1;
+	if (name[0] == '-')
+	{
+		if (c == 'e')
+			free(name);
+		ft_putstr_fd(name, 2);
+		ft_putstr_fd(" : invalid option\n", 2);
+		return (2);
+	}
 	while (name[++i])
 	{
 		if ((name[0] >= '0' && name[0] <= '9'))
@@ -96,7 +104,8 @@ int	env_error_chr(char *name)
 
 int	env_error(char *name, char *content, char c)
 {
-	if (env_error_chr(name))
+	g_glob.ret = env_error_chr(name, c);
+	if (g_glob.ret == 1)
 	{
 		write(2, "minishell: ", 11);
 		if (c == 'e')
@@ -110,12 +119,13 @@ int	env_error(char *name, char *content, char c)
 			write(2, content, ft_strlen(content));
 		}
 		write(2, ": not a valid identifier\n", 25);
-		g_glob.retour = 1;
 		if (c == 'e')
 			free(name);
 		if (content)
 			free(content);
-		return (0);
+		return (1);
 	}
-	return (1);
+	if (g_glob.ret == 2)
+		return (2);
+	return (0);
 }

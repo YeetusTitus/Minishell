@@ -23,9 +23,15 @@ void	handler_sig(int num)
 		rl_redisplay();
 	}
 	else if (g_glob.sign && num == 2)
+	{
+		g_glob.retour = 1;
 		write(1, "\n", 1);
+	}
 	if (g_glob.sign && num == 3)
+	{
+		g_glob.retour = 131;
 		write(1, "Quit: 3\n", 8);
+	}
 }
 
 void	sign_onoff(int toogle)

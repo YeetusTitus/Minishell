@@ -26,14 +26,15 @@
 
 int	unset(t_env **env, char *name)
 {
-	if (!env_error(name, NULL, 'u'))
-		return (0);
+	g_glob.retour = env_error(name, NULL, 'u');
+	if (g_glob.retour)
+		return (g_glob.retour);
 	unset_env_set(env, name, 0);
 	unset_export(env, name);
 	unset_env_set(env, name, 2);
 	if (!env_exist(env, name))
 		return (1);
-	return (1);
+	return (0);
 }
 
 int	unset_export(t_env **env, char *name)
