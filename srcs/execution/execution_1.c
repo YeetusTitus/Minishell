@@ -19,11 +19,7 @@ void	ft_exec(t_red **s, char **simple_cmd, char **envp, t_env **env)
 	t_red	*red;
 
 	red = *s;
-	ex.i = 0;
-	ex.ret = -10;
-	ex.save_out = dup(1);
-	ex.save_in = dup(0);
-	ex.s_cmd = simple_cmd;
+	ex = init_exec(simple_cmd);
 	sign_onoff(1);
 	while (simple_cmd[ex.i])
 	{
@@ -41,6 +37,18 @@ void	ft_exec(t_red **s, char **simple_cmd, char **envp, t_env **env)
 	}
 	restore_fd(ex);
 	sign_onoff(0);
+}
+
+t_exec	init_exec(char **simple_cmd)
+{
+	t_exec	ex;
+
+	ex.i = 0;
+	ex.ret = -10;
+	ex.save_out = dup(1);
+	ex.save_in = dup(0);
+	ex.s_cmd = simple_cmd;
+	return (ex);
 }
 
 int	restore_fd(t_exec ex)

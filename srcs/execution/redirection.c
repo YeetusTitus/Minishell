@@ -12,7 +12,7 @@
 
 #include "../../include/minishell.h"
 
-void	dup_mannager_out(t_red *red, int i, int save_out, char *cmd)
+void	dup_mannager(t_red *red, int save_out, char *cmd, t_env **env)
 {
 	int	j;
 
@@ -24,9 +24,9 @@ void	dup_mannager_out(t_red *red, int i, int save_out, char *cmd)
 		else if (red->type[j] == '>' * -1)
 			red_man_cas_2(red, j);
 		else if (red->type[j] == '<')
-			red_man_cas_3(red, j, save_out, i);
+			red_man_cas_3(red, j, save_out);
 		else if (red->type[j] == '<' * -1)
-			red_man_cas_4(red, j, cmd);
+			red_man_cas_4(red, j, cmd, env);
 		j++;
 	}
 }
@@ -49,7 +49,7 @@ void	red_man_cas_2(t_red *red, int j)
 	close(fd);
 }
 
-void	red_man_cas_3(t_red *red, int j, int save_out, int i)
+void	red_man_cas_3(t_red *red, int j, int save_out)
 {
 	int	fd;
 	int	save;
@@ -65,39 +65,8 @@ void	red_man_cas_3(t_red *red, int j, int save_out, int i)
 		ft_putstr_fd(" : No such file or directory\n", 2);
 		dup2(save, 1);
 		close(save);
-		if (i == 0)
-			return ;
-		else
-			exit(1);
+		exit(0);
 	}
 	dup2(fd, 0);
 	close(fd);
-}
-
-void	red_man_cas_4(t_red *red, int j, char *cmd)
-{
-	char	*str;
-	int		fdp[2];
-
-	pipe(fdp);
-	while (1)
-	{
-		str = readline("HereDoc > ");
-		if (ft_strcmp(str, red->file[j]) || !str)
-		{
-			free(str);
-			break ;
-		}
-		write(fdp[1], str, ft_strlen(str));
-		write(fdp[1], "\n", 1);
-		free(str);
-	}
-	close(fdp[1]);
-	if (cmd == NULL)
-		return ;
-	else
-	{
-		dup2(fdp[0], 0);
-		close(fdp[0]);
-	}
 }

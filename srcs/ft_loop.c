@@ -99,7 +99,7 @@ void	execution(char **s_cmd, t_env **env, t_red **red)
 		if (pid == 0)
 		{
 			save = dup(1);
-			dup_mannager_out(*red, 1, save, NULL);
+			dup_mannager(*red, save, NULL, env);
 			exit(0);
 		}
 		else

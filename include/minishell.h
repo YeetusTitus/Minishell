@@ -6,7 +6,7 @@
 /*   By: jforner <jforner@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 16:13:41 by ktroude           #+#    #+#             */
-/*   Updated: 2022/04/27 11:37:21 by jforner          ###   ########.fr       */
+/*   Updated: 2022/04/27 15:56:12 by ktroude          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,6 +151,14 @@ typedef struct s_redirection
 	char	**simple_cmd;
 	t_red	**red;
 }	t_redirection;
+
+//struct pour les heredoc
+typedef struct s_hd
+{
+	char	*str;
+	int		fdp[2];
+	t_lst	**s;
+}	t_hd;
 
 // --------------------------------------------------------------------
 
@@ -365,6 +373,7 @@ void			if_only_red_loop(t_lst *tmp, t_lst *lst, t_lst **s);
 
 // execution.c
 void			ft_exec(t_red **s, char **simple_cmd, char **envp, t_env **env);
+t_exec			init_exec(char **simple_cmd);
 int				c1_ft_exec(t_red *red, char **envp, t_exec ex, t_env **env);
 void			c2_ft_exec(t_red *red, char **envp, t_exec ex, t_env **env);
 void			c3_ft_exec(t_red *red, char **envp, t_exec ex, t_env **env);
@@ -394,11 +403,13 @@ int				cd_no(t_built b, char *simple_cmd, t_env **env);
 int				exit_no(t_built b);
 
 //redirection.c
-void			dup_mannager_out(t_red *red, int i, int save_out, char *cmd);
+void			dup_mannager(t_red *red, int save_out, char *cmd, t_env **env);
 void			red_man_cas_1(t_red *red, int j);
 void			red_man_cas_2(t_red *red, int j);
-void			red_man_cas_3(t_red *red, int j, int save_out, int i);
-void			red_man_cas_4(t_red *red, int j, char *cmd);
+void			red_man_cas_3(t_red *red, int j, int save_out);
+void			red_man_cas_4(t_red *red, int j, char *cmd, t_env **env);
+t_hd			hd_init(t_env **env);
+t_hd			get_hd_variable(t_hd hd);
 
 // ft_loop proto
 t_lst			**lexer(t_env **env);

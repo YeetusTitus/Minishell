@@ -77,7 +77,7 @@ void	child_things(t_exec ex, t_red *red, t_env **env, char **envp)
 		free(path);
 		path = NULL;
 	}
-	dup_mannager_out(red, 1, ex.save_out, cmd[0]);
+	dup_mannager(red, ex.save_out, cmd[0], env);
 	if (ex.ret != -10)
 		exit(ex.ret);
 	ex.ret = built_in_a_fork(ex.s_cmd[ex.i], env);
