@@ -6,7 +6,7 @@
 /*   By: jforner <jforner@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 16:13:41 by ktroude           #+#    #+#             */
-/*   Updated: 2022/04/26 14:16:53 by jforner          ###   ########.fr       */
+/*   Updated: 2022/04/27 11:37:21 by jforner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -210,6 +210,7 @@ void			envadd_front(t_env **alst, t_env *new);
 t_env			*envname(t_env **env, char *name, int colonne);
 void			free_env(t_env *env);
 void			free_export(t_env **env);
+int				env_error_chr(char *name);
 int				env_error(char *name, char *content, char c);
 
 // env/createenv

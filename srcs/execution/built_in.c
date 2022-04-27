@@ -6,7 +6,7 @@
 /*   By: jforner <jforner@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 17:28:03 by ktroude           #+#    #+#             */
-/*   Updated: 2022/04/25 16:03:36 by jforner          ###   ########.fr       */
+/*   Updated: 2022/04/27 11:20:32 by jforner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,10 @@ int	export_no_fork(t_built b, t_env **env)
 		while (b.table[b.i][b.j])
 		{
 			if (b.table[b.i][b.j] == '=')
+			{
 				b = export_no_fork_loop(b, env);
+				break ;
+			}
 			else if (!ft_strchr(b.table[b.i], '=') && !(b.j))
 			{
 				if (!b.ret)

@@ -6,7 +6,7 @@
 /*   By: jforner <jforner@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/24 15:09:22 by jforner           #+#    #+#             */
-/*   Updated: 2022/04/26 15:11:11 by jforner          ###   ########.fr       */
+/*   Updated: 2022/04/27 11:40:56 by jforner          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,19 +76,13 @@ void	free_export(t_env **env)
 	}
 }
 
-int	env_error_chr(char *name, char c)
+int	env_error_chr(char *name)
 {
 	int	i;
 
 	i = -1;
 	if (name[0] == '-')
-	{
-		if (c == 'e')
-			free(name);
-		ft_putstr_fd(name, 2);
-		ft_putstr_fd(" : invalid option\n", 2);
 		return (2);
-	}
 	while (name[++i])
 	{
 		if ((name[0] >= '0' && name[0] <= '9'))
@@ -104,8 +98,8 @@ int	env_error_chr(char *name, char c)
 
 int	env_error(char *name, char *content, char c)
 {
-	g_glob.ret = env_error_chr(name, c);
-	if (g_glob.ret == 1)
+	g_glob.ret = env_error_chr(name);
+	if (g_glob.ret)
 	{
 		write(2, "minishell: ", 11);
 		if (c == 'e')
@@ -118,14 +112,15 @@ int	env_error(char *name, char *content, char c)
 			write(2, "=", 1);
 			write(2, content, ft_strlen(content));
 		}
-		write(2, ": not a valid identifier\n", 25);
+		if (g_glob.ret == 2)
+			ft_putstr_fd(" : invalid option\n", 2);
+		else
+			write(2, ": not a valid identifier\n", 25);
 		if (c == 'e')
 			free(name);
 		if (content)
 			free(content);
-		return (1);
+		return (g_glob.ret);
 	}
-	if (g_glob.ret == 2)
-		return (2);
 	return (0);
 }
