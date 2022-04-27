@@ -21,10 +21,11 @@ void	handler_sig(int num)
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
+		g_glob.retour = 1;
 	}
 	else if (g_glob.sign && num == 2)
 	{
-		g_glob.retour = 1;
+		g_glob.retour = 130;
 		write(1, "\n", 1);
 	}
 	if (g_glob.sign && num == 3)

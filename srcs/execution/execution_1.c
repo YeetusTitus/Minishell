@@ -37,6 +37,7 @@ void	ft_exec(t_red **s, char **simple_cmd, char **envp, t_env **env)
 			c4_ft_exec(red, envp, ex, env);
 		ex.i++;
 		red = red->next;
+		g_glob.retour = ex.ret;
 	}
 	restore_fd(ex);
 	sign_onoff(0);
@@ -46,7 +47,6 @@ int	restore_fd(t_exec ex)
 {
 	while (wait(&ex.pid) != -1)
 		;
-	g_glob.retour = ex.ret;
 	if (g_glob.retour == -10)
 		g_glob.retour = WEXITSTATUS(ex.pid);
 	dup2(ex.save_out, 1);

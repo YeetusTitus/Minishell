@@ -103,7 +103,10 @@ void	execution(char **s_cmd, t_env **env, t_red **red)
 			exit(0);
 		}
 		else
+		{
+			free(s_cmd);
 			wait(NULL);
+		}
 	}
 	envp = free_tab(envp);
 	free_red(red);
